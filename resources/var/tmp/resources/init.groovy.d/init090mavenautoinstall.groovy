@@ -11,20 +11,21 @@ def mavenName = "M3"
 def mavenVersion = "3.5.0"
 
 def boolean isMavenAlreadyInstalled(def mavenName) {
+  def returnValue = false
   def descriptor = Jenkins.instance.getDescriptor("hudson.tasks.Maven")
   def installations = descriptor.getInstallations()
   if (installations != null) {
     installations.each { installation ->
       def inst = "${installation}"
       if (inst.contains(mavenName)) {
-        return true
+        returnValue = true
       }
     }
   }
-  return false
+  return returnValue
 }
 
-def createMavenInstallation(def mavenName, def mavenVersion) { 
+def createMavenInstallation(def mavenName, def mavenVersion) {
   def mvnInstaller = new Maven.MavenInstaller(mavenVersion)
   def instSourcProp = new InstallSourceProperty([mvnInstaller])
   return new Maven.MavenInstallation(mavenName, null, [instSourcProp])
