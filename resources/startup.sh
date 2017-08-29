@@ -55,7 +55,8 @@ fi
 
 # Set maven truststore options in .mavenrc file so they won't get copied to slave machines
 if [[ ! -e /var/lib/jenkins/.mavenrc ]]; then
-  echo "export MAVEN_OPTS=\"\$MAVEN_OPTS-Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks -Djavax.net.ssl.trustStorePassword=changeit\"" > /var/lib/jenkins/.mavenrc
+  echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStore=${TRUSTSTORE}\"" > /var/lib/jenkins/.mavenrc
+  echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> /var/lib/jenkins/.mavenrc
 fi
 
 # starting jenkins
