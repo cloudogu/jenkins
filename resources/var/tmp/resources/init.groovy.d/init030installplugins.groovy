@@ -23,7 +23,7 @@ def plugins = [
   'workflow-aggregator',
   'simple-theme-plugin',
   'matrix-auth',
-  'maven',
+  'maven-plugin',
   'credentials-binding'
 ];
 
