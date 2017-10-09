@@ -38,13 +38,16 @@ def pluginManager = jenkins.pluginManager;
 def updateCenter = jenkins.updateCenter;
 
 pluginManager.doCheckUpdatesServer();
-def available = updateCenter.getAvailables();
 
+def availablePlugins = updateCenter.getAvailables();
+println "available plugins: " + availablePlugins.size()
 for (def shortName : plugins){
-  def plugin = updateCenter.getById('default').getPlugin(shortName);
-  if (available.contains(plugin)){
+  def plugin = updateCenter.getPlugin(shortName);
+  if (availablePlugins.contains(plugin)) {
       println "install missing plugin " + shortName;
       plugin.deploy(true).get();
+  } else {
+    println "plugin not available or already installed : " + shortName
   }
 }
 
