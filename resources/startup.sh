@@ -20,7 +20,7 @@ create-ca-certificates.sh /var/lib/jenkins/ca-certificates.crt
 
 # copy init scripts
 
-# remove old folder to be sure, 
+# remove old folder to be sure,
 # that it contains no script which is already removed from custom init script folder
 if [ -d "${INIT_SCRIPT_FOLDER}" ]; then
   rm -rf "${INIT_SCRIPT_FOLDER}"
@@ -51,6 +51,12 @@ CLI_CONFIG_FILE="/var/lib/jenkins/jenkins.CLI.xml"
 if [ ! -f "${CLI_CONFIG_FILE}" ]; then
 	cp /var/tmp/resources/jenkins.CLI.xml "${CLI_CONFIG_FILE}"
 	chmod 0644 "${CLI_CONFIG_FILE}"
+fi
+
+# Set maven truststore options in .mavenrc file so they won't get copied to slave machines
+if [[ ! -e /var/lib/jenkins/.mavenrc ]]; then
+  echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStore=${TRUSTSTORE}\"" > /var/lib/jenkins/.mavenrc
+  echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> /var/lib/jenkins/.mavenrc
 fi
 
 # starting jenkins

@@ -5,8 +5,7 @@ import hudson.slaves.EnvironmentVariablesNodeProperty.Entry;
 def jenkins = Jenkins.getInstance();
 
 def opts = "-Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
-opts    += "-Djavax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks "
-opts    += "-Djavax.net.ssl.trustStorePassword=changeit"
+// Additional truststore options are set in .mavenrc file
 
 def found = false;
 def globalNodeProperties = jenkins.getGlobalNodeProperties();
