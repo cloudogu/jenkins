@@ -17,8 +17,49 @@ boolean isProxyEnabledInEtcd = false;
 @Field String proxyName, noProxyHost, proxyUser, proxyPassword;
 @Field int proxyPort;
 
+def enableProxy(){
+	enableProxyInJenkins = true;
+}
+
+def disableProxy(){
+	enableProxyInJenkins = false;
+}
+
+def setProxyServerSettings(){
+	try{
+		proxyName = getValueFromEtcd("config/_global/proxy/server")
+		proxyPort = Integer.parseInt(getValueFromEtcd("config/_global/proxy/port"));
+		} catch (FileNotFoundException e){
+			System.out.println("Etcd proxy configuration is incomplete (server or port not found).");
+			disableProxy();
+		}
+}
+
+def setProxyAuthenticationSettings(){
+		// Authentication credentials are optional
+	try{
+		proxyPassword = getValueFromEtcd("config/_global/proxy/password");
+		proxyUser = getValueFromEtcd("config/_global/proxy/username");
+	} catch (FileNotFoundException e){
+		System.out.println("Etcd proxy authentication configuration is incomplete or not existent.");
+	}
+}
+
+def setProxyExcludes(){
+	noProxyHost = getValueFromEtcd("config/_global/fqdn")
+}
+
+if(enableProxyInJenkins){
+	def proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHost)
+	instance.proxy = proxyConfiguration
+	instance.save()
+}
+
+// Try block to stop Jenkins in case an exception occurs in the script
 try {
-	isProxyEnabledInEtcd = "true".equals(getValueFromEtcd("config/_global/proxy/enabled"));
+
+	try {
+		isProxyEnabledInEtcd = "true".equals(getValueFromEtcd("config/_global/proxy/enabled"));
 	} catch (FileNotFoundException e){
 		System.out.println("Etcd proxy configuration does not exist.");
 	}
@@ -30,40 +71,10 @@ try {
 		setProxyExcludes();
 	}
 
-	def enableProxy(){
-		enableProxyInJenkins = true;
-	}
-
-	def disableProxy(){
-		enableProxyInJenkins = false;
-	}
-
-	def setProxyServerSettings(){
-		try{
-			proxyName = getValueFromEtcd("config/_global/proxy/server")
-			proxyPort = Integer.parseInt(getValueFromEtcd("config/_global/proxy/port"));
-			} catch (FileNotFoundException e){
-				System.out.println("Etcd proxy configuration is incomplete (server or port not found).");
-				disableProxy();
-			}
-	}
-
-	def setProxyAuthenticationSettings(){
-			// Authentication credentials are optional
-		try{
-			proxyPassword = getValueFromEtcd("config/_global/proxy/password");
-			proxyUser = getValueFromEtcd("config/_global/proxy/username");
-		} catch (FileNotFoundException e){
-			System.out.println("Etcd proxy authentication configuration is incomplete or not existent.");
-		}
-	}
-
-	def setProxyExcludes(){
-		noProxyHost = getValueFromEtcd("config/_global/fqdn")
-	}
-
-	if(enableProxyInJenkins){
-		def proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHost)
-		instance.proxy = proxyConfiguration
-		instance.save()
+	// Stop Jenkins in case an exception occurs
+	} catch (Exception exception){
+		println("An exception occured during initialization");
+		exception.printStackTrace();
+		println("Init script and Jenkins will be stopped now...");
+		throw new Exception("initialization exception")
 	}
