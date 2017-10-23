@@ -49,14 +49,14 @@ def setProxyExcludes(){
 	noProxyHost = getValueFromEtcd("config/_global/fqdn")
 }
 
+// Try block to stop Jenkins in case an exception occurs in the script
+try {
+
 if(enableProxyInJenkins){
 	def proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHost)
 	instance.proxy = proxyConfiguration
 	instance.save()
 }
-
-// Try block to stop Jenkins in case an exception occurs in the script
-try {
 
 	try {
 		isProxyEnabledInEtcd = "true".equals(getValueFromEtcd("config/_global/proxy/enabled"));
