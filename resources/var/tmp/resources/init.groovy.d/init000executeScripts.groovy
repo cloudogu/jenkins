@@ -6,9 +6,10 @@ try {
 	// Get all filenames from scripts directory
 	def scripts = []
 	def scriptsDirectory = new File(getClass().protectionDomain.codeSource.location.path).parent + "/scripts"
-	new File(scriptsDirectory).eachFileRecurse (FileType.FILES) { script ->
+	new File(scriptsDirectory).eachFile (FileType.FILES) { script ->
 		scripts << script
 	}
+	scripts.sort();
 
 	// Execute scripts
 	scripts.each {

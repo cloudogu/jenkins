@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-INIT_SCRIPT_FOLDER="/var/lib/jenkins/init.groovy.d/scripts"
+INIT_SCRIPT_FOLDER="/var/lib/jenkins/init.groovy.d"
 # TODO rename resources to jenkins
 MAIN_INIT_SCRIPTS_FOLDER="/var/tmp/resources/init.groovy.d"
 CUSTOM_INIT_SCRIPTS_FOLDER="/var/lib/custom.init.groovy.d"
@@ -31,7 +31,7 @@ cp -rf "${MAIN_INIT_SCRIPTS_FOLDER}" "${INIT_SCRIPT_FOLDER}"
 
 # merge custom init scripts, if the volume is not empty
 if [ "$(ls -A ${CUSTOM_INIT_SCRIPTS_FOLDER})" ]; then
-  cp "${CUSTOM_INIT_SCRIPTS_FOLDER}"/* "${INIT_SCRIPT_FOLDER}"
+  cp "${CUSTOM_INIT_SCRIPTS_FOLDER}"/* "${INIT_SCRIPT_FOLDER}"/scripts
 fi
 
 # set initial setting for slave-to-master-security
