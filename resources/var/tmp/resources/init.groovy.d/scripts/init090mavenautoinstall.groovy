@@ -40,18 +40,7 @@ def addMavenToInstallations(def installation) {
   Jenkins.instance.save()
 }
 
-// Try block to stop Jenkins in case an exception occurs in the script
-try {
-
 if (!isMavenAlreadyInstalled(mavenName)) {
   def installation = createMavenInstallation(mavenName, mavenVersion)
   addMavenToInstallations(installation)
-}
-
-// Stop Jenkins in case an exception occurs
-} catch (Exception exception){
-  println("An exception occured during initialization");
-  exception.printStackTrace();
-  println("Init script and Jenkins will be stopped now...");
-  throw new Exception("initialization exception")
 }

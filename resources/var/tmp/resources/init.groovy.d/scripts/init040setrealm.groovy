@@ -11,9 +11,6 @@ def getValueFromEtcd(String key){
 	return json.node.value
 }
 
-// Try block to stop Jenkins in case an exception occurs in the script
-try {
-
 String fqdn = getValueFromEtcd("config/_global/fqdn");
 def protocol = new Saml11Protocol("groups,roles", "cn", "mail", 5000);
 def realm = new CasSecurityRealm("https://${fqdn}/cas", protocol, false, true, true);
@@ -22,11 +19,3 @@ def instance = Jenkins.getInstance();
 instance.setSecurityRealm(realm);
 instance.setDisableRememberMe(true);
 instance.save();
-
-// Stop Jenkins in case an exception occurs
-} catch (Exception exception){
-  println("An exception occured during initialization");
-  exception.printStackTrace();
-  println("Init script and Jenkins will be stopped now...");
-  throw new Exception("initialization exception")
-}

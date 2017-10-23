@@ -2,9 +2,6 @@ import jenkins.model.*;
 import hudson.slaves.EnvironmentVariablesNodeProperty;
 import hudson.slaves.EnvironmentVariablesNodeProperty.Entry;
 
-// Try block to stop Jenkins in case an exception occurs in the script
-try {
-
 def jenkins = Jenkins.getInstance();
 
 def opts = "-Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
@@ -26,11 +23,3 @@ if (!found){
 }
 
 jenkins.save();
-
-// Stop Jenkins in case an exception occurs
-} catch (Exception exception){
-  println("An exception occured during initialization");
-  exception.printStackTrace();
-  println("Init script and Jenkins will be stopped now...");
-  throw new Exception("initialization exception")
-}

@@ -24,15 +24,12 @@ def convertNodesToUpdateSites(Object nodes, int parentKeyOffset) {
 		// trim the directory from the nodes key
 		def name = node.key.substring(parentKeyOffset+1);
 		def url = node.value;
-
+    
 		println "found update site: ${name} ${url}";
 		updateSites.add(new hudson.model.UpdateSite(name, url));
 	}
 	return updateSites;
 }
-
-// Try block to stop Jenkins in case an exception occurs in the script
-try {
 
 def instance = Jenkins.getInstance();
 List<hudson.model.UpdateSite> updateSites = getUpdateSitesFromEtcd("config/jenkins/updateSiteUrl");
@@ -50,12 +47,4 @@ if(updateSites.size() > 0) {
 	}
 	println "save instance";
 	instance.save();
-}
-
-// Stop Jenkins in case an exception occurs
-} catch (Exception exception){
-  println("An exception occured during initialization");
-  exception.printStackTrace();
-  println("Init script and Jenkins will be stopped now...");
-  throw new Exception("initialization exception")
 }

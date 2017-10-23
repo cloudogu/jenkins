@@ -22,9 +22,6 @@ def buildNewAccessList(userOrGroup, permissions) {
 	return newPermissionsMap
 }
 
-// Try block to stop Jenkins in case an exception occurs in the script
-try {
-
 
 if ( Jenkins.instance.pluginManager.activePlugins.find { it.shortName == "matrix-auth" } != null ) {
   if ( Jenkins.instance.isUseSecurity() ) {
@@ -103,12 +100,4 @@ if ( Jenkins.instance.pluginManager.activePlugins.find { it.shortName == "matrix
     // now set the strategy globally
     Jenkins.instance.setAuthorizationStrategy(strategy)
   }
-}
-
-// Stop Jenkins in case an exception occurs
-} catch (Exception exception){
-  println("An exception occured during initialization");
-  exception.printStackTrace();
-  println("Init script and Jenkins will be stopped now...");
-  throw new Exception("initialization exception")
 }
