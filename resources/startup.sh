@@ -3,7 +3,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-INIT_SCRIPT_FOLDER="/var/lib/jenkins/init.groovy.d"
+INIT_SCRIPT_FOLDER="/var/lib/jenkins/init.groovy.d/scripts"
 # TODO rename resources to jenkins
 MAIN_INIT_SCRIPTS_FOLDER="/var/tmp/resources/init.groovy.d"
 CUSTOM_INIT_SCRIPTS_FOLDER="/var/lib/custom.init.groovy.d"
