@@ -9,7 +9,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.73.1 \
+    JENKINS_VERSION=2.73.3 \
     # glibc for alpine version
     GLIBC_VERSION=2.23-r3
 
@@ -20,7 +20,7 @@ RUN set -x \
  && addgroup -S -g 1000 jenkins \
  && adduser -S -h "$JENKINS_HOME" -s /bin/bash -G jenkins -u 1000 jenkins \
  # install coreutils, ttf-dejavu, openssh and scm clients
- # coreutils and ttf-dejavu is required because of java.awt.headless problem: 
+ # coreutils and ttf-dejavu is required because of java.awt.headless problem:
  # - https://wiki.jenkins.io/display/JENKINS/Jenkins+got+java.awt.headless+problem
  && apk add --no-cache coreutils ttf-dejavu openssh-client git subversion mercurial \
  # could use ADD but this one does not check Last-Modified header
