@@ -36,8 +36,12 @@ if (keyExists("dogu/sonar/current")) {
 def jenkins = Jenkins.instance;
 def pluginManager = jenkins.pluginManager;
 def updateCenter = jenkins.updateCenter;
-
-pluginManager.doCheckUpdatesServer();
+try {
+	pluginManager.doCheckUpdatesServer();
+} catch (SocketException socketException){
+	println "Plugin update server unreachable"
+	println socketException
+}
 
 def availablePlugins = updateCenter.getAvailables();
 println "available plugins: " + availablePlugins.size()
