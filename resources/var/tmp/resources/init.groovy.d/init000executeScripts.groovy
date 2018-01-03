@@ -1,4 +1,5 @@
 import groovy.io.FileType
+import jenkins.model.*;
 
 // Stop Jenkins in case an exception occurs in one of the scripts
 try {
@@ -21,6 +22,6 @@ try {
 } catch (Exception exception){
 	println("An exception occured during initialization");
 	exception.printStackTrace();
-	println("Init script and Jenkins will be stopped now...");
-	throw new Exception("initialization exception")
+	println("Init script and Jenkins exit now...");
+	Jenkins.instance.doExit(null, null);
 }
