@@ -18,7 +18,7 @@ module.exports = {
     firstname: 'admin',
     lastname: 'admin',
     displayName: 'admin',
-    email: 'cwolfes@triology.com',
+    email: 'cwolfes@triology.de',
     webdriverType: webdriverType,
     debug: true,
     adminGroup: 'admin'
