@@ -1,7 +1,7 @@
 let cesFqdn = process.env.CES_FQDN;
 if (!cesFqdn) {
   // url from ecosystem with private network
-  cesFqdn = "192.168.56.2"
+  cesFqdn = "192.168.42.2"
 }
 
 let webdriverType = process.env.WEBDRIVER;
@@ -13,13 +13,13 @@ module.exports = {
     fqdn: cesFqdn,
     baseUrl: 'https://' + cesFqdn,
     jenkinsContextPath: '/jenkins',
-    username: 'admin',
-    password: 'admin',
+    username: 'ces-admin',
+    password: 'ecosystem2016',
     firstname: 'admin',
     lastname: 'admin',
     displayName: 'admin',
-    email: 'cwolfes@triology.de',
+    email: 'ces-admin@cloudogu.com',
     webdriverType: webdriverType,
     debug: true,
-    adminGroup: 'admin'
+    adminGroup: 'CesAdministrators'
 };
