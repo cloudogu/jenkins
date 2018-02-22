@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 
-describe('cas rest basic authentication', () => {
+xdescribe('cas rest basic authentication', () => {
 
     test('authentication with username password', async () => {
         await request(config.baseUrl)
@@ -34,8 +34,7 @@ describe('cas rest basic authentication', () => {
     test('authentication with API key', async () => {
         driver.get(utils.getCasUrl(driver));
         utils.login(driver);
-        await driver.findElement(By.xpath("//div[@id='header']/div[2]/span/a/b")).click();
-        await driver.findElement(By.linkText("Configure")).click();
+        driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + config.username + "/configure");
         await driver.findElement(By.id("yui-gen1-button")).click();
         const input = await driver.findElement(By.id("apiToken"));
         const apikey = await input.getAttribute("value");

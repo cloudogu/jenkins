@@ -2,6 +2,7 @@ const config = require('./config');
 
 const webdriver = require('selenium-webdriver');
 const By = webdriver.By;
+const until = webdriver.until;
 
 exports.createDriver = function(){
     if (config.webdriverType === 'local') {
@@ -24,18 +25,20 @@ function createLocalDriver() {
 
 
 exports.getCasUrl = async function getCasUrl(driver){
-    driver.get(config.baseUrl + config.jenkinsContextPath);
+    await driver.get(config.baseUrl + config.jenkinsContextPath);
     return await driver.getCurrentUrl();
 };
 
 exports.login = async function login(driver) {
-    driver.findElement(By.id('username')).sendKeys("admin");
-    driver.findElement(By.id('password')).sendKeys("admin");
+    await driver.wait(until.elementLocated(By.id('password')), 5000);
+
+    await driver.findElement(By.id('username')).sendKeys(config.username);
+    await driver.findElement(By.id('password')).sendKeys(config.password);
     return await driver.findElement(By.css('input[name="submit"]')).click();
 };
 
 exports.isAdministrator = async function isAdministrator(driver){
-    return await driver.findElement(By.xpath("(//a[contains(text(),'Manage Jenkins')])[2]")).then(function() {
+    return await driver.findElement(By.xpath("(//a[@href='/jenkins/manage'])")).then(function() {
         return true;//element was found
     }, function(err) {
         if (err instanceof webdriver.error.NoSuchElementError) {

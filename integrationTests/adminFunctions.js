@@ -41,11 +41,11 @@ module.exports = class AdminFunctions{
         await request(config.baseUrl)
             .del('/usermgt/api/users/' + this.testuserName)
             .auth(config.username, config.password);
-        utils.getCasUrl(driver)
-        utils.login(driver);
-        await driver.findElement(By.linkText("People")).click();
-        await driver.findElement(By.linkText("testUser")).click();
-        await driver.findElement(By.linkText("Delete")).click();
+        await utils.getCasUrl(driver);
+        await utils.login(driver);
+        await driver.get(config.baseUrl + config.jenkinsContextPath + "/asynchPeople");
+       await driver.findElement(By.linkText(this.testuserName)).click();
+        await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + this.testuserName + "/delete");
         await driver.findElement(By.id("yui-gen2-button")).click();
 
     };
@@ -86,6 +86,8 @@ module.exports = class AdminFunctions{
     };
 
     async testUserLogin(driver) {
+        await driver.wait(until.elementLocated(By.id('password')), 5000);
+
         await driver.findElement(By.id('username')).sendKeys(this.testuserName);
         await driver.findElement(By.id('password')).sendKeys(this.testuserPasswort);
         await driver.findElement(By.css('input[name="submit"]')).click();
