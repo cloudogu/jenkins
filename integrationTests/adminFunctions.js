@@ -100,4 +100,23 @@ module.exports = class AdminFunctions{
         await driver.findElement(By.xpath("//div[@id='header']/div[2]/span/a[2]/b")).click();
     };
 
+    async getApiKeyOfTestuser(driver){
+
+        await this.testUserLogin(driver);
+        await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + this.testuserName + "/configure");
+        await driver.findElement(By.id("yui-gen1-button")).click();
+        const input = await driver.findElement(By.id("apiToken"));
+        const apikey = await input.getAttribute("value");
+        await this.testUserLogout(driver);
+        return apikey;
+    };
+
+    async accessUsersJson(apiKey, expectStatus){
+
+        await request(config.baseUrl)
+            .get(config.jenkinsContextPath+"/pluginManager/api/json")
+            .auth(this.testuserName, apiKey)
+            .expect(expectStatus); //403 = "Forbidden", 200 = "OK"
+    };
+
 };
