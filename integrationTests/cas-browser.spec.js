@@ -19,7 +19,7 @@ afterEach(() => {
     driver.quit();
 });
 
-xdescribe('cas browser login', () => {
+describe('cas browser login', () => {
 
     test('automatic redirect to cas login', async () => {
         await driver.get(config.baseUrl + config.jenkinsContextPath);
@@ -54,7 +54,7 @@ xdescribe('cas browser login', () => {
 });
 
 
-xdescribe('browser attributes', () => {
+describe('browser attributes', () => {
 
     test('front channel user attributes', async () => {
         await driver.get(utils.getCasUrl(driver));

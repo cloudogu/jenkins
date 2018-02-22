@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 
-xdescribe('cas rest basic authentication', () => {
+describe('cas rest basic authentication', () => {
 
     test('authentication with username password', async () => {
         await request(config.baseUrl)
