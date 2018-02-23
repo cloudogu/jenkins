@@ -48,3 +48,27 @@ describe('cas rest basic authentication', () => {
 });
 
 
+describe('rest attributes', () => {
+
+    test('rest - user attributes', async () => {
+        const response = await request(config.baseUrl)
+            .get(config.jenkinsContextPath + '/user/' + config.username + '/api/json')
+            .auth(config.username, config.password)
+            .expect('Content-Type', /json/)
+            .expect(200);
+
+        expect(response.body.fullName).toBe(config.username);
+        expect(response.body.property[response.body.property.length-1].address).toBe(config.email);
+
+    });
+
+    test('rest - user is administrator', async () => {
+        await request(config.baseUrl)
+            .get(config.jenkinsContextPath+"/pluginManager/api/json")
+            .auth(config.username, config.password)
+            .expect(200);
+    });
+
+
+
+});
