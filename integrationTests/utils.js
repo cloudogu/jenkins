@@ -31,6 +31,7 @@ exports.getCasUrl = async function getCasUrl(driver){
 
 exports.login = async function login(driver) {
     await driver.wait(until.elementLocated(By.id('password')), 5000);
+    await driver.wait(until.elementLocated(By.id('username')), 5000);
 
     await driver.findElement(By.id('username')).sendKeys(config.username);
     await driver.findElement(By.id('password')).sendKeys(config.password);
