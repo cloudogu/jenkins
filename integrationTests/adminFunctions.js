@@ -18,26 +18,23 @@ module.exports = class AdminFunctions{
     };
 
     async createUser(){
-
         await request(config.baseUrl)
             .post('/usermgt/api/users/')
             .auth(config.username, config.password)
-
             .set('Content-Type', 'application/json;charset=UTF-8')
             .type('json')
             .send({
-                'username':this.testuserName,
-                'givenname':this.testuserFirstname,
+                'username': this.testuserName,
+                'givenname': this.testuserFirstname,
                 'surname': this.testuserSurname,
-                'displayName':this.testuserName,
-                'mail':this.testuserEmail,
-                'password':this.testuserPasswort,
+                'displayName': this.testuserName,
+                'mail': this.testuserEmail,
+                'password': this.testuserPasswort,
                 'memberOf':[]
             });
     };
 
     async removeUser(driver){
-
         await request(config.baseUrl)
             .del('/usermgt/api/users/' + this.testuserName)
             .auth(config.username, config.password);
@@ -46,9 +43,7 @@ module.exports = class AdminFunctions{
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/asynchPeople");
        await driver.findElement(By.linkText(this.testuserName)).click();
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + this.testuserName + "/delete");
-        await driver.findElement(By.id("yui-gen2-button")).click();
-
-    };
+        await driver.findElement(By.id("yui-gen2-button")).click();};
 
     async giveAdminRights(){
 
@@ -111,11 +106,11 @@ module.exports = class AdminFunctions{
         return apikey;
     };
 
-    async accessUsersJson(apiKey, expectStatus){
+    async accessUsersJson(expectStatus){
 
         await request(config.baseUrl)
             .get(config.jenkinsContextPath+"/pluginManager/api/json")
-            .auth(this.testuserName, apiKey)
+            .auth(this.testuserName, this.testuserPasswort)
             .expect(expectStatus); //403 = "Forbidden", 200 = "OK"
     };
 

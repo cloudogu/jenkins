@@ -22,6 +22,7 @@ beforeEach(async() => {
 });
 
 afterEach(async() => {
+
     await adminFunctions.removeUser(driver);
     await driver.quit();
 });
@@ -31,15 +32,12 @@ describe('administration rest tests', () => {
 
     test('rest - user (testUser) has admin privileges', async() => {
         await adminFunctions.giveAdminRights();
-        await driver.get(utils.getCasUrl(driver));
-        const apiKey = await adminFunctions.getApiKeyOfTestuser(driver);
-        await adminFunctions.accessUsersJson(apiKey, 200);
+        await adminFunctions.accessUsersJson(200);
     });
 
     test('rest - user (testUser) has no admin privileges', async() => {
         await driver.get(utils.getCasUrl(driver));
-        const apiKey = await adminFunctions.getApiKeyOfTestuser(driver);
-        await adminFunctions.accessUsersJson(apiKey, 403);
+        await adminFunctions.accessUsersJson(403);
     });
 
 
@@ -50,9 +48,7 @@ describe('administration rest tests', () => {
         await adminFunctions.testUserLogout(driver);
         adminFunctions.takeAdminRights();
         await driver.get(utils.getCasUrl(driver));
-        const apiKey = await adminFunctions.getApiKeyOfTestuser(driver);
-
-        await adminFunctions.accessUsersJson(apiKey, 200);
+        await adminFunctions.accessUsersJson(403);
     });
 
 });
