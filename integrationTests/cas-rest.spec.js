@@ -34,9 +34,9 @@ describe('cas rest basic authentication', () => {
     test('authentication with API key', async () => {
         driver.get(utils.getCasUrl(driver));
         utils.login(driver);
-        await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + config.username + "/configure");
-        await driver.wait(until.elementLocated(By.id('yui-gen1-button')), 5000);
-        await driver.findElement(By.id("yui-gen1-button")).click();
+        driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + config.username + "/configure");
+        driver.wait(until.elementLocated(By.id('yui-gen1-button')), 5000);
+        driver.findElement(By.id("yui-gen1-button")).click();
         const input = await driver.findElement(By.id("apiToken"));
         const apikey = await input.getAttribute("value");
         await request(config.baseUrl)

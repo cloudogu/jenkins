@@ -25,17 +25,17 @@ function createLocalDriver() {
 
 
 exports.getCasUrl = async function getCasUrl(driver){
-    await driver.get(config.baseUrl + config.jenkinsContextPath);
-    return await driver.getCurrentUrl();
+    driver.get(config.baseUrl + config.jenkinsContextPath);
+    return driver.getCurrentUrl();
 };
 
 exports.login = async function login(driver) {
-    await driver.wait(until.elementLocated(By.id('password')), 5000);
-    await driver.wait(until.elementLocated(By.id('username')), 5000);
+    driver.wait(until.elementLocated(By.id('password')), 5000);
+    driver.wait(until.elementLocated(By.id('username')), 5000);
 
-    await driver.findElement(By.id('username')).sendKeys(config.username);
-    await driver.findElement(By.id('password')).sendKeys(config.password);
-    return await driver.findElement(By.css('input[name="submit"]')).click();
+    driver.findElement(By.id('username')).sendKeys(config.username);
+    driver.findElement(By.id('password')).sendKeys(config.password);
+    return driver.findElement(By.css('input[name="submit"]')).click();
 };
 
 exports.isAdministrator = async function isAdministrator(driver){

@@ -22,31 +22,31 @@ afterEach(() => {
 describe('cas browser login', () => {
 
     test('automatic redirect to cas login', async () => {
-        await driver.get(config.baseUrl + config.jenkinsContextPath);
+        driver.get(config.baseUrl + config.jenkinsContextPath);
         const url = await driver.getCurrentUrl();
         expect(url).toMatch(loginUrl);
     });
 
     test('login', async() => {
-        await driver.get(utils.getCasUrl(driver));
-        await utils.login(driver);
+        driver.get(utils.getCasUrl(driver));
+        utils.login(driver);
         const username = await driver.findElement(By.className('login')).getText();
         expect(username).toContain(config.username);
     });
 
     test('logout front channel', async() => {
-        await driver.get(utils.getCasUrl(driver));
-        await utils.login(driver);
-        await driver.findElement(By.xpath("//div[@id='header']/div[2]/span/a[2]/b")).click();
+        driver.get(utils.getCasUrl(driver));
+        utils.login(driver);
+        driver.findElement(By.xpath("//div[@id='header']/div[2]/span/a[2]/b")).click();
         const url = await driver.getCurrentUrl();
         expect(url).toMatch(logoutUrl);
     });
 
     test('logout back channel', async() => {
-        await driver.get(utils.getCasUrl(driver));
-        await utils.login(driver);
-        await driver.get(config.baseUrl + logoutUrl);
-        await driver.get(config.baseUrl + config.jenkinsContextPath);
+        driver.get(utils.getCasUrl(driver));
+        utils.login(driver);
+        driver.get(config.baseUrl + logoutUrl);
+        driver.get(config.baseUrl + config.jenkinsContextPath);
         const url = await driver.getCurrentUrl();
         expect(url).toMatch(loginUrl);
     });
@@ -57,9 +57,9 @@ describe('cas browser login', () => {
 describe('browser attributes', () => {
 
     test('front channel user attributes', async () => {
-        await driver.get(utils.getCasUrl(driver));
-        await utils.login(driver);
-        await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + config.username + "/configure");
+        driver.get(utils.getCasUrl(driver));
+        utils.login(driver);
+        driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + config.username + "/configure");
         const emailAddressInput = await driver.findElement(By.name("email.address"));
         const emailAddress = await emailAddressInput.getAttribute("value");
         const usernameInput= await driver.findElement(By.name('_.fullName'));
@@ -69,8 +69,8 @@ describe('browser attributes', () => {
     });
 
     test('front channel user administrator', async () => {
-        await driver.get(utils.getCasUrl(driver));
-        await utils.login(driver);
+        driver.get(utils.getCasUrl(driver));
+        utils.login(driver);
         var isAdministrator = await utils.isAdministrator(driver);
         expect(isAdministrator).toBe(true);
     });

@@ -36,14 +36,14 @@ describe('administration rest tests', () => {
     });
 
     test('rest - user (testUser) has no admin privileges', async() => {
-        await driver.get(utils.getCasUrl(driver));
+        driver.get(utils.getCasUrl(driver));
         await adminFunctions.accessUsersJson(403);
     });
 
 
     test('rest - user (testUser) remove admin privileges', async() => {
 
-        await driver.get(utils.getCasUrl(driver));
+        driver.get(utils.getCasUrl(driver));
         adminFunctions.testUserLogin(driver); // test user login to update information in redmine
         await adminFunctions.testUserLogout(driver);
         adminFunctions.takeAdminRights();
