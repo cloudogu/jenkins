@@ -16,7 +16,7 @@ node('vagrant') {
         // lint dockerfiles
         // only latest version available
         docker.image('projectatomic/dockerfile-lint:latest').inside({
-            sh 'dockerfile_lint -f Dockerfile'
+            sh 'dockerfile_lint -p -f Dockerfile'
         })
     }
 
