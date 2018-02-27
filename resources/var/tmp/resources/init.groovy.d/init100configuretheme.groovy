@@ -3,7 +3,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.*;
 import java.lang.reflect.Method;
 
-// Check if version >= 0.3 of simple-theme-plugin is available
+// Check if version > 0.3 of simple-theme-plugin is available
 boolean setCssUrlIsAvailable() {
   try {
     Method setCssUrlMethod = org.codefirst.SimpleThemeDecorator.class.getMethod("setCssUrl", String.class);
