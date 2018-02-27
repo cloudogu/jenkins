@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ci-test": "jest --runInBand --ci --testResultsProcessor='jest-junit'",
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "chromedriver": "^2.33.2",
