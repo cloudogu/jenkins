@@ -31,7 +31,10 @@ afterEach(async() => {
 describe('administration rest tests', () => {
 
     test('rest - user (testUser) has admin privileges', async() => {
+        await driver.get(utils.getCasUrl(driver));
         await adminFunctions.giveAdminRights();
+        await adminFunctions.testUserLogin(driver);
+        await adminFunctions.testUserLogout(driver);
         await adminFunctions.accessUsersJson(200);
     });
 
@@ -44,7 +47,7 @@ describe('administration rest tests', () => {
     test('rest - user (testUser) remove admin privileges', async() => {
 
         driver.get(utils.getCasUrl(driver));
-        adminFunctions.testUserLogin(driver); // test user login to update information in redmine
+        adminFunctions.testUserLogin(driver);
         await adminFunctions.testUserLogout(driver);
         adminFunctions.takeAdminRights();
         await driver.get(utils.getCasUrl(driver));
