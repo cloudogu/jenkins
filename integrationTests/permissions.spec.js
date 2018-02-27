@@ -29,7 +29,7 @@ afterEach(async() => {
 
 describe('user permissions', () => {
 
-    xtest('user (testUser) has admin privileges', async() => {
+    test('user (testUser) has admin privileges', async() => {
         await driver.get(utils.getCasUrl(driver));
         await adminFunctions.giveAdminRights();
         await adminFunctions.testUserLogin(driver);
