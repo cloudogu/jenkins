@@ -43,7 +43,7 @@ module.exports = class AdminFunctions{
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/asynchPeople");
         await driver.findElement(By.linkText(this.testuserName)).click();
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + this.testuserName + "/delete");
-        await driver.findElement(By.id("yui-gen3-button")).click();};
+        await driver.findElement(By.id("yui-gen2-button")).click();};
 
     async giveAdminRights(){
 

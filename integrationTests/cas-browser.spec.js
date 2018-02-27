@@ -31,7 +31,7 @@ describe('cas browser login', () => {
         driver.get(utils.getCasUrl(driver));
         utils.login(driver);
         const username = await driver.findElement(By.className('login')).getText();
-        expect(username).toContain(config.username);
+        expect(username).toContain(config.displayName);
     });
 
     test('logout front channel', async() => {
@@ -64,7 +64,7 @@ describe('browser attributes', () => {
         const emailAddress = await emailAddressInput.getAttribute("value");
         const usernameInput= await driver.findElement(By.name('_.fullName'));
         const username = await usernameInput.getAttribute("value");
-        expect(username).toBe(config.username);
+        expect(username).toBe(config.displayName);
         expect(emailAddress).toBe(config.email);
     });
 
