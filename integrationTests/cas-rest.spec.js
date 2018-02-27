@@ -58,7 +58,7 @@ describe('rest attributes', () => {
             .expect('Content-Type', /json/)
             .expect(200);
 
-        expect(response.body.fullName).toBe(config.username);
+        expect(response.body.fullName).toBe(config.displayName);
         expect(response.body.property[response.body.property.length-1].address).toBe(config.email);
 
     });
