@@ -11,7 +11,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # jenkins version
     JENKINS_VERSION=2.89.4 \
     # glibc for alpine version
-    GLIBC_VERSION=2.23-r3
+    GLIBC_VERSION=2.27-r0
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
