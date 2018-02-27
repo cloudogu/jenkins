@@ -41,9 +41,9 @@ module.exports = class AdminFunctions{
         await utils.getCasUrl(driver);
         await utils.login(driver);
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/asynchPeople");
-       await driver.findElement(By.linkText(this.testuserName)).click();
+        await driver.findElement(By.linkText(this.testuserName)).click();
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + this.testuserName + "/delete");
-        await driver.findElement(By.id("yui-gen2-button")).click();};
+        await driver.findElement(By.id("yui-gen3-button")).click();};
 
     async giveAdminRights(){
 
@@ -93,17 +93,6 @@ module.exports = class AdminFunctions{
     async testUserLogout(driver) {
         await driver.wait(until.elementLocated(By.xpath("//div[@id='header']/div[2]/span/a[2]/b")),5000);
         await driver.findElement(By.xpath("//div[@id='header']/div[2]/span/a[2]/b")).click();
-    };
-
-    async getApiKeyOfTestuser(driver){
-
-        await this.testUserLogin(driver);
-        await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + this.testuserName + "/configure");
-        await driver.findElement(By.id("yui-gen1-button")).click();
-        const input = await driver.findElement(By.id("apiToken"));
-        const apikey = await input.getAttribute("value");
-        await this.testUserLogout(driver);
-        return apikey;
     };
 
     async accessUsersJson(expectStatus){
