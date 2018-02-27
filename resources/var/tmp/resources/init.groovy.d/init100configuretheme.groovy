@@ -11,11 +11,7 @@ def jenkins = Jenkins.instance;
 
 def simpleThemeDesc = jenkins.getDescriptor("SimpleThemeDecorator");
 
-def stapler = Stapler.getCurrentRequest();
-
-JSONObject json = JSONObject.fromObject('{cssUrl:"/jenkins/userContent/jenkins-material-theme.css", jsUrl:""}');
-
-simpleThemeDesc.configure(stapler, json);
+simpleThemeDesc.setCssUrl("/jenkins/userContent/jenkins-material-theme.css");
 
 simpleThemeDesc.save();
 jenkins.save();
