@@ -15,7 +15,7 @@ let driver;
 let adminFunctions;
 
 beforeEach(async() => {
-    driver = utils.createDriver(webdriver);
+    driver = await utils.createDriver(webdriver);
     adminFunctions = new AdminFunctions('testUser', 'testUser', 'testUser', 'testUser@test.de', 'testuserpassword');
     await adminFunctions.createUser();
 });
@@ -34,7 +34,7 @@ describe('user permissions', () => {
         await adminFunctions.giveAdminRights();
         await adminFunctions.testUserLogin(driver);
         await driver.wait(until.elementLocated(By.className('login')), 5000);
-        var adminPermissions = await utils.isAdministrator(driver);
+        const adminPermissions = await utils.isAdministrator(driver);
         expect(adminPermissions).toBe(true);
     });
 
@@ -42,7 +42,7 @@ describe('user permissions', () => {
         await driver.get(utils.getCasUrl(driver));
         await adminFunctions.testUserLogin(driver);
         await driver.wait(until.elementLocated(By.className('login')), 5000);
-        var adminPermissions = await utils.isAdministrator(driver);
+        const adminPermissions = await utils.isAdministrator(driver);
         expect(adminPermissions).toBe(false);
     });
 
@@ -57,7 +57,7 @@ describe('user permissions', () => {
         await driver.get(utils.getCasUrl(driver));
         await adminFunctions.testUserLogin(driver);
         await driver.wait(until.elementLocated(By.className('login')), 5000);
-        var adminPermissions = await utils.isAdministrator(driver);
+        const adminPermissions = await utils.isAdministrator(driver);
         expect(adminPermissions).toBe(false);
     });
 

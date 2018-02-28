@@ -44,7 +44,8 @@ module.exports = class AdminFunctions{
         await driver.wait(until.elementLocated(By.linkText(this.testuserName)),5000);
         await driver.findElement(By.linkText(this.testuserName)).click();
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + this.testuserName + "/delete");
-        await driver.findElement(By.id("yui-gen2-button")).click();};
+        await driver.findElement(By.id("yui-gen2-button")).click();
+    };
 
     async giveAdminRights(){
 
@@ -83,7 +84,6 @@ module.exports = class AdminFunctions{
 
     async testUserLogin(driver) {
         await driver.wait(until.elementLocated(By.id('password')), 5000);
-
         await driver.findElement(By.id('username')).sendKeys(this.testuserName);
         await driver.findElement(By.id('password')).sendKeys(this.testuserPasswort);
         await driver.findElement(By.css('input[name="submit"]')).click();
@@ -97,7 +97,6 @@ module.exports = class AdminFunctions{
     };
 
     async accessUsersJson(expectStatus){
-
         await request(config.baseUrl)
             .get(config.jenkinsContextPath+"/pluginManager/api/json")
             .auth(this.testuserName, this.testuserPasswort)

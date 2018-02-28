@@ -1,12 +1,7 @@
-
-const request = require('supertest');
 const config = require('./config');
 const AdminFunctions = require('./adminFunctions');
 const utils = require('./utils');
 const webdriver = require('selenium-webdriver');
-const By = webdriver.By;
-const keys = webdriver.Key;
-const until = webdriver.until;
 
 jest.setTimeout(30000);
 let driver;
@@ -22,7 +17,6 @@ beforeEach(async() => {
 });
 
 afterEach(async() => {
-
     await adminFunctions.removeUser(driver);
     await driver.quit();
 });
@@ -39,17 +33,16 @@ describe('administration rest tests', () => {
     });
 
     test('rest - user (testUser) has no admin privileges', async() => {
-        driver.get(utils.getCasUrl(driver));
+        await driver.get(utils.getCasUrl(driver));
         await adminFunctions.accessUsersJson(403);
     });
 
 
     test('rest - user (testUser) remove admin privileges', async() => {
-
-        driver.get(utils.getCasUrl(driver));
-        adminFunctions.testUserLogin(driver);
+        await driver.get(utils.getCasUrl(driver));
+        await adminFunctions.testUserLogin(driver);
         await adminFunctions.testUserLogout(driver);
-        adminFunctions.takeAdminRights();
+        await adminFunctions.takeAdminRights();
         await driver.get(utils.getCasUrl(driver));
         await adminFunctions.accessUsersJson(403);
     });
