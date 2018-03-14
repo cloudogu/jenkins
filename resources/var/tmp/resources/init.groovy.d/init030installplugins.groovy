@@ -24,7 +24,8 @@ def plugins = [
   'simple-theme-plugin',
   'matrix-auth',
   'maven-plugin',
-  'credentials-binding'
+  'credentials-binding',
+  'ssh-slaves'
 ];
 
 // add sonar plugin to Jenkins if SonarQube is installed
