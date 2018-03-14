@@ -1,5 +1,5 @@
 # cesi/scm
-FROM registry.cloudogu.com/official/java:8u121-4
+FROM registry.cloudogu.com/official/java:8u151-1
 MAINTAINER Sebastian Sdorra <sebastian.sdorra@cloudogu.com>
 
 LABEL NAME="official/jenkins"
@@ -11,9 +11,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.89.2 \
+    JENKINS_VERSION=2.89.4 \
     # glibc for alpine version
-    GLIBC_VERSION=2.23-r3
+    GLIBC_VERSION=2.27-r0
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
@@ -36,7 +36,6 @@ RUN set -x \
  # set subversion system ca-certificates
  && mkdir /etc/subversion \
  && printf "[global]\nssl-authority-files=/var/lib/jenkins/ca-certificates.crt\n" > /etc/subversion/server \
-
  # install glibc for alpine
  # that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
  && apk add --no-cache libstdc++ \
@@ -46,12 +45,10 @@ RUN set -x \
  && apk add --no-cache --allow-untrusted /tmp/glibc-bin.apk \
  && curl -Lo /tmp/glibc-i18n.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk" \
  && apk add --no-cache --allow-untrusted /tmp/glibc-i18n.apk \
-
  # do not abort https://github.com/sgerrand/alpine-pkg-glibc/issues/5
  && (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true ) \
  && echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
  && /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib \
-
  # cleanup
  && rm -rf /tmp/* /var/cache/apk/*
 
