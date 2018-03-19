@@ -31,7 +31,7 @@ describe('cas browser login', () => {
         await driver.get(utils.getCasUrl(driver));
         await utils.login(driver);
         const username = await driver.findElement(By.className('login')).getText();
-        expect(username).toContain(config.displayName);
+        expect(username.toLowerCase()).toContain(config.displayName);
     });
 
     test('logout front channel', async() => {
