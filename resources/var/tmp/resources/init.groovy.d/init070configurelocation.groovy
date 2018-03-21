@@ -13,11 +13,22 @@ def getValueFromEtcd(String key){
 def instance = Jenkins.getInstance();
 
 // configure jenkins location
-String domain = getValueFromEtcd("config/_global/domain");
+String emailAddress;
+String configuredMailAddress;
+try {
+	configuredMailAddress = getValueFromEtcd("config/_global/mail_address");
+} catch (FileNotFoundException ex) {
+  println "could not find mail_address configuration in registry"
+}
+if (configuredMailAddress != null && configuredMailAddress.length() > 0) {
+	emailAddress = configuredMailAddress;
+} else {
+	emailAddress = "jenkins@" + getValueFromEtcd("config/_global/domain");
+}
 String fqdn = getValueFromEtcd("config/_global/fqdn");
 
 def location = JenkinsLocationConfiguration.get()
-location.setAdminAddress("jenkins@${domain}");
+location.setAdminAddress(emailAddress);
 location.setUrl("https://${fqdn}/jenkins");
 location.save()
 
