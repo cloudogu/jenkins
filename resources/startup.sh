@@ -31,7 +31,7 @@ cp -rf "${MAIN_INIT_SCRIPTS_FOLDER}" "${INIT_SCRIPT_FOLDER}"
 
 # merge custom init scripts, if the volume is not empty
 if [ "$(ls -A ${CUSTOM_INIT_SCRIPTS_FOLDER})" ]; then
-  cp "${CUSTOM_INIT_SCRIPTS_FOLDER}"/* "${INIT_SCRIPT_FOLDER}"
+  cp "${CUSTOM_INIT_SCRIPTS_FOLDER}"/* "${INIT_SCRIPT_FOLDER}"/scripts
 fi
 
 # set initial setting for slave-to-master-security
