@@ -39,9 +39,9 @@ def pluginManager = jenkins.pluginManager;
 def updateCenter = jenkins.updateCenter;
 try {
 	pluginManager.doCheckUpdatesServer();
-} catch (SocketException socketException){
+} catch (IOException ex){
 	println "Plugin update server unreachable"
-	println socketException
+	println ex
 }
 
 def availablePlugins = updateCenter.getAvailables();
