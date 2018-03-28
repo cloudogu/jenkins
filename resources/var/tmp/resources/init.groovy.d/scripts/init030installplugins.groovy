@@ -21,7 +21,6 @@ def plugins = [
   'mercurial',
   'subversion',
   'workflow-aggregator',
-  'simple-theme-plugin',
   'matrix-auth',
   'maven-plugin',
   'credentials-binding',
