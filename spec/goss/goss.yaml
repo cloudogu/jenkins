@@ -80,13 +80,6 @@ file:
     group: jenkins
     filetype: directory
     contains: []
-  /var/lib/jenkins/plugins/simple-theme-plugin:
-    exists: false
-    mode: "0755"
-    owner: jenkins
-    group: jenkins
-    filetype: directory
-    contains: []
   /var/lib/jenkins/plugins/subversion:
     exists: true
     mode: "0755"
