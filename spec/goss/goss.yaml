@@ -80,13 +80,6 @@ file:
     group: jenkins
     filetype: directory
     contains: []
-  /var/lib/jenkins/plugins/simple-theme-plugin:
-    exists: true
-    mode: "0755"
-    owner: jenkins
-    group: jenkins
-    filetype: directory
-    contains: []
   /var/lib/jenkins/plugins/subversion:
     exists: true
     mode: "0755"
@@ -126,7 +119,7 @@ file:
     - javax.net.ssl.trustStore=/var/lib/jenkins/truststore.jks
     - javax.net.ssl.trustStorePassword=changeit
   /var/lib/jenkins/userContent/jenkins-material-theme.css:
-    exists: true
+    exists: false
     mode: "0644"
     owner: jenkins
     group: jenkins

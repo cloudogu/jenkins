@@ -62,10 +62,11 @@ node('vagrant') {
             } else {
                 sh 'rm -f reports/goss_official/*.xml'
             }
-            catchError {
+            try {
                 sh 'vagrant ssh -c "sudo cesapp verify --health-timeout 600 --keep-container --ci --report-directory=/dogu/reports /dogu"'
+            } finally {
+                junit allowEmptyResults: true, testResults: 'reports/goss_official/*.xml'
             }
-            junit allowEmptyResults: true, testResults: 'reports/goss_official/*.xml'
         }
 
         stage('Integration Tests') {
