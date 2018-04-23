@@ -15,7 +15,7 @@ def writeValueToEtcd(String key, String value){
     writer.close();
 
     def responseCode = conn.getResponseCode();
-    if (responseCode != 200) {
+    if (responseCode != 200 && responseCode != 201) {
         throw new IllegalStateException("etcd returned invalid response code " + responseCode);
     }
 }
@@ -23,5 +23,9 @@ def writeValueToEtcd(String key, String value){
 def writeState(String state) {
     writeValueToEtcd('state/jenkins', state);
 }
+def writeConfigured(String configured){
+    writeValueToEtcd('/config/jenkins/configured', configured)
+}
 
 writeState('ready');
+writeConfigured('true');
