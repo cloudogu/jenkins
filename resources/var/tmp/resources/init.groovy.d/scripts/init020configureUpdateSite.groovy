@@ -48,16 +48,15 @@ def convertNodesToUpdateSites(Object nodes, int parentKeyOffset) {
 	return updateSites;
 }
 
-def instance = Jenkins.getInstance();
-List<hudson.model.UpdateSite> updateSites = getUpdateSitesFromEtcd("config/updateSiteUrl");
-
 final ETCD_CONFIGURED_KEY = "config/jenkins/configured"
 boolean isConfigured = getJenkinsConfigurationState(ETCD_CONFIGURED_KEY).toBoolean()
 
 
 if(!isConfigured){
+	def instance = Jenkins.getInstance();
+	List<hudson.model.UpdateSite> updateSites = getUpdateSitesFromEtcd("config/updateSiteUrl");
+
 	if(updateSites.size() > 0) {
-		println("setup update site --------------------------------------------")
 		println "set signatureCheck=false";
 		hudson.model.DownloadService.signatureCheck = false;
 		updateCenter = instance.getUpdateCenter();
