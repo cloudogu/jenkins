@@ -54,7 +54,7 @@ boolean isConfigured = getJenkinsConfigurationState(ETCD_CONFIGURED_KEY).toBoole
 
 if(!isConfigured){
 	def instance = Jenkins.getInstance();
-	List<hudson.model.UpdateSite> updateSites = getUpdateSitesFromEtcd("config/updateSiteUrl");
+	List<hudson.model.UpdateSite> updateSites = getUpdateSitesFromEtcd("config/jenkins/updateSiteUrl");
 
 	if(updateSites.size() > 0) {
 		println "set signatureCheck=false";
