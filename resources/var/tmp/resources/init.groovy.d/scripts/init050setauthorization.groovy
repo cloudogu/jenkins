@@ -95,6 +95,7 @@ if (instance.isUseSecurity()) {
             println("initialize new matrix authorization strategy")
             authStrategy = new hudson.security.ProjectMatrixAuthorizationStrategy()
         }
+        // if the user changes the authorization-strategy the admin group will not be setup automatically
         if (authStrategy instanceof GlobalMatrixAuthorizationStrategy){
             //------------------- authenticated ---------------------------------------
             authenticated = buildNewAccessList("authenticated", getJenkinsAuthenticatedUserPermissions())
