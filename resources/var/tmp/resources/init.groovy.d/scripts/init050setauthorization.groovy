@@ -4,10 +4,6 @@ import groovy.json.JsonSlurper;
 
 // based on https://gist.github.com/xbeta/e5edcf239fcdbe3f1672
 
-// https://github.com/cloudbees/jenkins-scripts/blob/master/GroupsFromLDAP.groovy
-// https://github.com/arbabnazar/configuration/blob/c08a5eaf4e04a68d2481375502a926517097b253/playbooks/roles/tools_jenkins/templates/projectBasedMatrixSecurity.groovy.j2
-// https://github.com/jenkinsci/jenkins-scripts/blob/master/scriptler/export-role-strategy-permissions-to-csv.groovy
-
 def getJenkinsAuthenticatedUserPermissions() {
     return [
             "hudson.model.Hudson.Read",
@@ -94,12 +90,12 @@ if (instance.isUseSecurity()) {
         if (!authStrategy || !isConfigured){
             println("initialize new matrix authorization strategy")
             authStrategy = new hudson.security.ProjectMatrixAuthorizationStrategy()
-        }
-        // if the user changes the authorization-strategy the admin group will not be setup automatically
-        if (authStrategy instanceof GlobalMatrixAuthorizationStrategy){
             //------------------- authenticated ---------------------------------------
             authenticated = buildNewAccessList("authenticated", getJenkinsAuthenticatedUserPermissions())
             authenticated.each { p, u -> authStrategy.add(p, u) }
+        }
+        // if the user changes the authorization-strategy the admin group will not be setup automatically
+        if (authStrategy instanceof GlobalMatrixAuthorizationStrategy){
             //----------------- jenkins admin -----------------------------------------
             String adminGroup = getValueFromEtcd("config/_global/admin_group")
             jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
@@ -111,5 +107,3 @@ if (instance.isUseSecurity()) {
 
     }
 }
-
-
