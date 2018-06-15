@@ -1,4 +1,4 @@
-![logo jenkins](https://cloudogu.com/images/dogus/jenkins.png | height=100px)
+![logo jenkins](https://cloudogu.com/images/dogus/jenkins.png | width=100px)
 
 [![GitHub license](https://img.shields.io/github/license/cloudogu/jenkins.svg)](https://github.com/cloudogu/jenkins/blob/master/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/cloudogu/jenkins.svg)](https://github.com/cloudogu/jenkins/releases)
