@@ -10,11 +10,9 @@
 
 **Name:** official/jenkins
 
-**Description:** [Jenkins](https://en.wikipedia.org/wiki/Jenkins_(software)) is an open source automation server written in Java. Jenkins helps to automate the non-human part of the software development process, with continuous integration and facilitating technical aspects of continuous delivery.
+**Description:** [Jenkins](https://en.wikipedia.org/wiki/Jenkins_(software)) is an open source automation server written in Java. Jenkins helps to automate the non-human part of the software development process with continuous integration and facilitating technical aspects of continuous delivery.
 
 **Website:** https://jenkins-ci.org
-
-**Size:** ~320MB
 
 **Dependencies:** cas, nginx, postfix
 
