@@ -16,6 +16,7 @@ let adminFunctions;
 
 beforeEach(async() => {
     driver = await utils.createDriver(webdriver);
+    await driver.manage().window().maximize();
     adminFunctions = new AdminFunctions('testUser', 'testUser', 'testUser', 'testUser@test.de', 'testuserpassword');
     await adminFunctions.createUser();
 });
