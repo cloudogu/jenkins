@@ -48,13 +48,13 @@ timestamps{
 
         stage('Wait for dependencies') {
             timeout(15) {
-                sh 'vagrant ssh -c "sudo cesapp --log-level debug healthy --wait --timeout 600 --fail-fast cas"'
-                sh 'vagrant ssh -c "sudo cesapp --log-level debug healthy --wait --timeout 600 --fail-fast usermgt"'
+                sh 'vagrant ssh -c "sudo cesapp healthy --wait --timeout 600 --fail-fast cas"'
+                sh 'vagrant ssh -c "sudo cesapp healthy --wait --timeout 600 --fail-fast usermgt"'
             }
         }
 
         stage('Build') {
-            sh 'vagrant ssh -c "sudo cesapp --log-level debug build /dogu"'
+            sh 'vagrant ssh -c "sudo cesapp build /dogu"'
         }
 
         stage('Verify') {
@@ -64,17 +64,13 @@ timestamps{
                 sh 'rm -f reports/goss_official/*.xml'
             }
             try {
-                sh 'vagrant ssh -c "sudo cesapp --log-level debug verify --health-timeout 600 --keep-container --ci --report-directory=/dogu/reports /dogu"'
+                sh 'vagrant ssh -c "sudo cesapp verify --health-timeout 600 --keep-container --ci --report-directory=/dogu/reports /dogu"'
             } finally {
                 junit allowEmptyResults: true, testResults: 'reports/goss_official/*.xml'
             }
         }
 
         stage('Integration Tests') {
-
-            // Due to a faulty health check, sonar may not be fully up at this point
-            sleep 40
-
             if (fileExists('integrationTests/it-results.xml')) {
                 sh 'rm -f integrationTests/it-results.xml'
             }
@@ -182,7 +178,6 @@ void writeSetupStagingJSON() {
       "official/cas",
       "official/nginx",
       "official/postfix",
-      "official/postgresql",
       "official/usermgt"
     ],
     "completed":true
