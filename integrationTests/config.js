@@ -13,13 +13,13 @@ module.exports = {
     fqdn: cesFqdn,
     baseUrl: 'https://' + cesFqdn,
     jenkinsContextPath: '/jenkins',
-    username: 'admin',
-    password: 'adminpw',
+    username: 'ces-admin',
+    password: 'ecosystem2016',
     firstname: 'admin',
     lastname: 'admin',
     displayName: 'admin',
     email: 'ces-admin@cloudogu.com',
     webdriverType: webdriverType,
     debug: true,
-    adminGroup: 'cesAdmin'
+    adminGroup: 'CesAdministrators'
 };
