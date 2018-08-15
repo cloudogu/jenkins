@@ -17,13 +17,15 @@
     "Name": "data",
     "Path": "/var/lib/jenkins",
     "Owner": "1000",
-    "Group": "1000"
+    "Group": "1000",
+    "NeedsBackup": true
   },
   {
     "Name": "custom.init.groovy.d",
     "Path": "/var/lib/custom.init.groovy.d",
     "Owner": "1000",
-    "Group": "1000"
+    "Group": "1000",
+    "NeedsBackup": true
   }],
   "HealthChecks": [{
     "Type": "tcp",
