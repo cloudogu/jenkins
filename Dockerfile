@@ -37,7 +37,7 @@ RUN set -x \
  && mkdir /etc/subversion \
  && printf "[global]\nssl-authority-files=/var/lib/jenkins/ca-certificates.crt\n" > /etc/subversion/server \
  # install glibc for alpine
- # that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
+ # make sure that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
  && apk add --no-cache libstdc++ \
  && curl -Lo /tmp/glibc.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk" \
  && apk add --no-cache --allow-untrusted /tmp/glibc.apk \

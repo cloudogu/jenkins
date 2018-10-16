@@ -43,17 +43,22 @@ describe('cas rest basic authentication', () => {
         // create new token with random name
         let newBackupTimeInputField = await driver.findElement(By.className("setting-input   token-name"));
         await newBackupTimeInputField.clear();
-        let randomName = "1234"; //Math.random().toString(36);
+        let randomName = Math.random().toString(36).substring(3);
         await newBackupTimeInputField.sendKeys(randomName);
         await driver.findElement(By.className("yui-button token-save")).click();
-        // await driver.findElement(By.id("yui-gen1-button")).click();
         // get new generated token
+        await driver.wait(until.elementLocated(By.className('new-token-value visible')), 5000);
         const input = await driver.findElement(By.className('new-token-value visible'));
         const apikey = await input.getText();
+        // check if authentication via token is feasible
         await request(config.baseUrl)
             .get(config.jenkinsContextPath+"/api/json")
             .auth(config.username, apikey)
             .expect(200);
+        // remove API token
+        await driver.findElement(By.className('icon-text-error icon-sm')).click();
+        await driver.switchTo().alert().accept();
+
     });
 
 
