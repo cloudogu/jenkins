@@ -14,7 +14,7 @@ let driver;
 
 beforeEach(async () => {
     driver = utils.createDriver(webdriver);
-    await driver.manage().window().maximize();
+    // await driver.manage().window().maximize();
 });
 
 afterEach(async () => {
@@ -31,15 +31,25 @@ describe('cas rest basic authentication', () => {
             .expect(200);
     });
 
-    /*login -> click on username -> configure -> show api token*/
     test('authentication with API key', async () => {
         await driver.get(utils.getCasUrl(driver));
         await utils.login(driver);
+        // go to user configuration page
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + config.username + "/configure");
-        await driver.wait(until.elementLocated(By.id('yui-gen1-button')), 5000);
-        await driver.findElement(By.id("yui-gen1-button")).click();
-        const input = await driver.findElement(By.id("apiToken"));
-        const apikey = await input.getAttribute("value");
+        await driver.wait(until.elementLocated(By.id('yui-gen2-button')), 5000);
+        // click "Add new Token" button
+        await driver.findElement(By.id('yui-gen2-button')).click();
+        await driver.wait(until.elementLocated(By.className('setting-input   token-name')), 5000);
+        // create new token with random name
+        let newBackupTimeInputField = await driver.findElement(By.className("setting-input   token-name"));
+        await newBackupTimeInputField.clear();
+        let randomName = "1234"; //Math.random().toString(36);
+        await newBackupTimeInputField.sendKeys(randomName);
+        await driver.findElement(By.className("yui-button token-save")).click();
+        // await driver.findElement(By.id("yui-gen1-button")).click();
+        // get new generated token
+        const input = await driver.findElement(By.className('new-token-value visible'));
+        const apikey = await input.getText();
         await request(config.baseUrl)
             .get(config.jenkinsContextPath+"/api/json")
             .auth(config.username, apikey)
