@@ -2,7 +2,7 @@
 FROM registry.cloudogu.com/official/java:8u151-3
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.121.3" \
+      VERSION="2.138.2" \
       maintainer="sebastian.sdorra@cloudogu.com"
 # Dockerfile based on https://github.com/cloudbees/jenkins-ci.org-docker/blob/f313389f8ab728d7b4207da36804ea54415c830b/1.580.1/Dockerfile
 
@@ -11,9 +11,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.121.3 \
+    JENKINS_VERSION=2.138.2 \
     # glibc for alpine version
-    GLIBC_VERSION=2.27-r0
+    GLIBC_VERSION=2.28-r0
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
