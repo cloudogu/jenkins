@@ -120,10 +120,6 @@ file:
     - javax.net.ssl.trustStorePassword=changeit
   /var/lib/jenkins/userContent/jenkins-material-theme.css:
     exists: false
-    mode: "0644"
-    owner: jenkins
-    group: jenkins
-    filetype: file
     contains: []
   /var/lib/jenkins/config.xml:
     exists: true
