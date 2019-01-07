@@ -39,8 +39,10 @@ jasmine.getEnv().addReporter(zaleniumReporter);
 exports.createDriver = function(){
     if (config.webdriverType === 'local') {
         driver = createLocalDriver();
+    } else {
+        driver = createRemoteDriver();
     }
-    driver = createRemoteDriver();
+    
     return driver;
 };
 
