@@ -27,6 +27,12 @@
     "Group": "1000",
     "NeedsBackup": true
   }],
+  "ExposedCommands": [
+    {
+      "Name": "upgrade-notification",
+      "Command": "/upgrade-notification.sh"
+    }
+  ],
   "HealthChecks": [{
     "Type": "tcp",
     "Port": 8080
