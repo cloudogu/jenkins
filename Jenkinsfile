@@ -1,5 +1,6 @@
 #!groovy
-@Library(['github.com/cloudogu/dogu-build-lib@ed132d8', 'github.com/cloudogu/zalenium-build-lib@eba8a3b']) _
+@Library(['github.com/cloudogu/dogu-build-lib@1e5e2a6', 'github.com/cloudogu/zalenium-build-lib@eba8a3b']) _
+
 import com.cloudogu.ces.dogubuildlib.*
 
 node('vagrant') {
