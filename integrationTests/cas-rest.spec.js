@@ -9,16 +9,10 @@ jest.setTimeout(30000);
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-
-let driver;
-
 beforeEach(async () => {
-    driver = utils.createDriver(webdriver);
-    // await driver.manage().window().maximize();
 });
 
 afterEach(async () => {
-    await driver.quit();
 });
 
 
@@ -32,6 +26,7 @@ describe('cas rest basic authentication', () => {
     });
 
     test('authentication with API key', async () => {
+        driver = utils.createDriver(webdriver);
         await driver.get(utils.getCasUrl(driver));
         await utils.login(driver);
         // go to user configuration page
@@ -58,7 +53,7 @@ describe('cas rest basic authentication', () => {
         // remove API token
         await driver.findElement(By.className('icon-text-error icon-sm')).click();
         await driver.switchTo().alert().accept();
-
+        await driver.quit();
     });
 
 
