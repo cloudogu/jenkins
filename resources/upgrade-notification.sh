@@ -6,7 +6,8 @@ set -o pipefail
 FROM_VERSION="${1}"
 TO_VERSION="${2}"
 
-if [[ $TO_VERSION == 2.138.4* ]]; then
+# show backup warning if upgrading from version < 2.138.4-1
+if [ "${FROM_VERSION}" != "2.138.4-1" ] && [ "${FROM_VERSION}" == "`printf "${FROM_VERSION}\n2.138.4-1" | sort | head -n1`" ]; then
     RED='\033[0;31m'
     COLOR_OFF='\033[0m'
     printf "${RED}~~~~WARNING~~~~\n\n"
