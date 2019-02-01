@@ -44,8 +44,9 @@ try {
 }
 
 //CAS-Plugin 1.4.3 --force
-def casPluginVersion = jenkins.getPluginManager().getPlugin('cas-plugin').getVersion();
-if (casPluginVersion != "1.4.3") {
+def casPluginVersion = jenkins.model.Jenkins.instance.getPluginManager().getPlugin('cas-plugin').getVersion();
+def incompatibleCas = "1.4.3"
+if (casPluginVersion.compareTo(incompatibleCas) < 0) {
 	updateCenter.getPlugin('cas-plugin').deploy(true).get();
 }
 
