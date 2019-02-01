@@ -43,6 +43,12 @@ try {
 	println ex
 }
 
+//CAS-Plugin 1.4.3 --force
+def casPluginVersion = jenkins.getPluginManager().getPlugin('cas-plugin').getVersion();
+if (casPluginVersion != "1.4.3") {
+	updateCenter.getPlugin('cas-plugin').deploy(true).get();
+}
+
 def availablePlugins = updateCenter.getAvailables();
 println "available plugins: " + availablePlugins.size()
 for (def shortName : plugins){
