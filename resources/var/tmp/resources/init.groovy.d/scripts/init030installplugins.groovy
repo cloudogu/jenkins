@@ -47,7 +47,10 @@ try {
 def casPluginVersion = jenkins.model.Jenkins.instance.getPluginManager().getPlugin('cas-plugin').getVersion();
 def incompatibleCas = "1.4.3"
 if (casPluginVersion.compareTo(incompatibleCas) < 0) {
-	updateCenter.getPlugin('cas-plugin').deploy(true).get();
+  updateCenter.getPlugin('cas-plugin').deploy(true).get();
+}
+else {
+  println "CAS-Plugin is higher or equal to Version 1.4.3"
 }
 
 def availablePlugins = updateCenter.getAvailables();
