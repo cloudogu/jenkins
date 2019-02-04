@@ -43,16 +43,6 @@ try {
 	println ex
 }
 
-//CAS-Plugin 1.4.3 --force
-def casPluginVersion = jenkins.getPluginManager().getPlugin('cas-plugin').getVersion();
-def incompatibleCas = "1.4.3"
-if (casPluginVersion.compareTo(incompatibleCas) < 0) {
-  updateCenter.getPlugin('cas-plugin').deploy(true).get();
-}
-else {
-  println "CAS-Plugin is higher or equal to Version 1.4.3"
-}
-
 def availablePlugins = updateCenter.getAvailables();
 println "available plugins: " + availablePlugins.size()
 for (def shortName : plugins){
@@ -63,6 +53,16 @@ for (def shortName : plugins){
   } else {
     println "plugin not available or already installed : " + shortName
   }
+}
+
+// Make sure CAS-Plugin version is at least 1.4.3
+def casPluginVersion = jenkins.getPluginManager().getPlugin('cas-plugin').getVersion();
+def incompatibleCas = "1.4.3"
+if (casPluginVersion.compareTo(incompatibleCas) < 0) {
+  updateCenter.getPlugin('cas-plugin').deploy(true).get();
+}
+else {
+  println "CAS-Plugin version is higher or equal to 1.4.3"
 }
 
 if (updateCenter.isRestartRequiredForCompletion()) {
