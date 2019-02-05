@@ -56,12 +56,18 @@ for (def shortName : plugins){
 }
 
 // Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
-def enforcedCasPluginVersion = "1.4.3"
-def currentCasPluginVersion = jenkins.getPluginManager().getPlugin('cas-plugin').getVersion();
-def sortedPluginVersions = [enforcedCasPluginVersion, currentCasPluginVersion].sort()
-if (sortedPluginVersions[0] != enforcedCasPluginVersion) {
-  println "CAS-Plugin version is lower than " + enforcedCasPluginVersion + "; Upgrading plugin..."
+def minimalCasPluginVersion = "1.4.3"
+def currentCasPlugin = jenkins.getPluginManager().getPlugin('cas-plugin');
+if (currentCasPlugin == null) {
+  println "CAS-Plugin is not installed; Installing plugin..."
   updateCenter.getPlugin('cas-plugin').deploy(true).get();
+} else {
+  def currentCasPluginVersion = currentCasPlugin.getVersion();
+  def sortedPluginVersions = [minimalCasPluginVersion, currentCasPluginVersion].sort()
+  if (sortedPluginVersions[0] != minimalCasPluginVersion) {
+    println "CAS-Plugin version is lower than " + minimalCasPluginVersion + "; Upgrading plugin..."
+    updateCenter.getPlugin('cas-plugin').deploy(true).get();
+  }
 }
 
 if (updateCenter.isRestartRequiredForCompletion()) {
