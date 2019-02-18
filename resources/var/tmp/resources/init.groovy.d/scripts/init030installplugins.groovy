@@ -17,9 +17,9 @@ def keyExists(String key){
 	return true
 }
 
+// Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
+def minimalCasPluginVersion = "1.4.3"
 boolean isCasVersionSufficient(String version) {
-    // Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
-    def minimalCasPluginVersion = "1.4.3"
     List minVer = minimalCasPluginVersion.tokenize('.')
     List testVer = version.tokenize('.')
     def commonIndices = Math.min(minVer.size(), testVer.size())
@@ -34,8 +34,6 @@ boolean isCasVersionSufficient(String version) {
       return testVer.size() >= minVer.size()
 }
 
-
-// action
 try {
 	pluginManager.doCheckUpdatesServer();
 } catch (IOException ex){
@@ -47,7 +45,7 @@ def currentCasPlugin = jenkins.getPluginManager().getPlugin('cas-plugin');
 if (currentCasPlugin != null) {
     def currentCasPluginVersion = currentCasPlugin.getVersion();
     if (! isCasVersionSufficient(currentCasPluginVersion)) {
-        println "CAS-Plugin version " + currentCasPluginVersion + " is to low; Upgrading plugin...";
+        println "CAS-Plugin version " + currentCasPluginVersion + " is lower than " + minimalCasPluginVersion + "; Upgrading plugin...";
         updateCenter.getPlugin('cas-plugin').deploy(true).get();
     }
 }
@@ -89,5 +87,5 @@ if (updateCenter.isRestartRequiredForCompletion()) {
 
 currentCasPluginVersion = jenkins.getPluginManager().getPlugin('cas-plugin').getVersion();
 if (!isCasVersionSufficient(currentCasPluginVersion)) {
-  throw new Exception("Installed cas-plugin version " + currentCasPluginVersion + " is to old");
+  throw new Exception("Installed cas-plugin version " + currentCasPluginVersion + " is too old. It needs to be at least " + minimalCasPluginVersion);
 }
