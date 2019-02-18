@@ -17,33 +17,38 @@ def keyExists(String key){
 	return true
 }
 
-String mostRecentVersion(List versions) {
-    def sorted = versions.sort(false) { a, b ->
-        List verA = a.tokenize('.')
-        List verB = b.tokenize('.')
-        def commonIndices = Math.min(verA.size(), verB.size())
-        for (int i = 0; i < commonIndices; ++i) {
-            def numA = verA[i].toInteger()
-            def numB = verB[i].toInteger()
-            if (numA != numB) {
-                return numA <=> numB
-            }
+boolean isCasVersionSufficient(String version) {
+    // Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
+    def minimalCasPluginVersion = "1.4.3"
+    List minVer = minimalCasPluginVersion.tokenize('.')
+    List testVer = version.tokenize('.')
+    def commonIndices = Math.min(minVer.size(), testVer.size())
+    for (int i = 0; i < commonIndices; ++i) {
+        def numMin = minVer[i].toInteger()
+        def numTest = testVer[i].toInteger()
+        if (numMin != numTest) {
+            return numMin < numTest
         }
-        // If we got this far then all the common indices are identical, so whichever version is longer must be more recent
-        verA.size() <=> verB.size()
     }
-    sorted[-1]
+      // If we got this far then all the common indices are identical, so whichever version is longer must be more recent
+      return testVer.size() >= minVer.size()
 }
 
-// Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
-def minimalCasPluginVersion = "1.4.3"
+
+// action
+try {
+	pluginManager.doCheckUpdatesServer();
+} catch (IOException ex){
+	println "Plugin update server unreachable"
+	println ex
+}
+
 def currentCasPlugin = jenkins.getPluginManager().getPlugin('cas-plugin');
 if (currentCasPlugin != null) {
     def currentCasPluginVersion = currentCasPlugin.getVersion();
-    def pluginVersions = [minimalCasPluginVersion, currentCasPluginVersion]
-    if (currentCasPluginVersion != minimalCasPluginVersion && mostRecentVersion(pluginVersions) == minimalCasPluginVersion) {
-        println "CAS-Plugin version is lower than " + minimalCasPluginVersion + "; Upgrading plugin..."
-        updateCenter.getPlugin('cas-plugin').deploy().get();
+    if (! isCasVersionSufficient(currentCasPluginVersion)) {
+        println "CAS-Plugin version " + currentCasPluginVersion + " is to low; Upgrading plugin...";
+        updateCenter.getPlugin('cas-plugin').deploy(true).get();
     }
 }
 
@@ -66,14 +71,6 @@ if (keyExists("dogu/sonar/current")) {
   plugins.add('sonar');
 }
 
-// action
-try {
-	pluginManager.doCheckUpdatesServer();
-} catch (IOException ex){
-	println "Plugin update server unreachable"
-	println ex
-}
-
 def availablePlugins = updateCenter.getAvailables();
 println "available plugins: " + availablePlugins.size()
 for (def shortName : plugins){
@@ -88,4 +85,9 @@ for (def shortName : plugins){
 
 if (updateCenter.isRestartRequiredForCompletion()) {
   jenkins.restart();
+}
+
+currentCasPluginVersion = jenkins.getPluginManager().getPlugin('cas-plugin').getVersion();
+if (!isCasVersionSufficient(currentCasPluginVersion)) {
+  throw new Exception("Installed cas-plugin version " + currentCasPluginVersion + " is to old");
 }
