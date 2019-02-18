@@ -18,7 +18,7 @@ def keyExists(String key){
 }
 
 // Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
-def minimalCasPluginVersion = "1.4.3"
+minimalCasPluginVersion = "1.4.3"
 boolean isCasVersionSufficient(String version) {
     List minVer = minimalCasPluginVersion.tokenize('.')
     List testVer = version.tokenize('.')
