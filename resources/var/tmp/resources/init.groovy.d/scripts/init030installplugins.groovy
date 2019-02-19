@@ -2,6 +2,10 @@ import hudson.model.*;
 import jenkins.model.*;
 import groovy.json.JsonSlurper;
 
+def jenkins = Jenkins.instance;
+def pluginManager = jenkins.pluginManager;
+def updateCenter = jenkins.updateCenter;
+
 def keyExists(String key){
 	String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
 	URL url = new URL("http://${ip}:4001/v2/keys/${key}");
@@ -11,6 +15,39 @@ def keyExists(String key){
 		return false
 	}
 	return true
+}
+
+// Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
+minimalCasPluginVersion = "1.4.3"
+boolean isCasVersionSufficient(String version) {
+    List minVer = minimalCasPluginVersion.tokenize('.')
+    List testVer = version.tokenize('.')
+    def commonIndices = Math.min(minVer.size(), testVer.size())
+    for (int i = 0; i < commonIndices; ++i) {
+        def numMin = minVer[i].toInteger()
+        def numTest = testVer[i].toInteger()
+        if (numMin != numTest) {
+            return numMin < numTest
+        }
+    }
+      // If we got this far then all the common indices are identical, so whichever version is longer must be more recent
+      return testVer.size() >= minVer.size()
+}
+
+try {
+	pluginManager.doCheckUpdatesServer();
+} catch (IOException ex){
+	println "Plugin update server unreachable"
+	println ex
+}
+
+def currentCasPlugin = jenkins.getPluginManager().getPlugin('cas-plugin');
+if (currentCasPlugin != null) {
+    def currentCasPluginVersion = currentCasPlugin.getVersion();
+    if (! isCasVersionSufficient(currentCasPluginVersion)) {
+        println "CAS-Plugin version " + currentCasPluginVersion + " is lower than " + minimalCasPluginVersion + "; Upgrading plugin...";
+        updateCenter.getPlugin('cas-plugin').deploy(true).get();
+    }
 }
 
 // configuration
@@ -32,17 +69,6 @@ if (keyExists("dogu/sonar/current")) {
   plugins.add('sonar');
 }
 
-// action
-def jenkins = Jenkins.instance;
-def pluginManager = jenkins.pluginManager;
-def updateCenter = jenkins.updateCenter;
-try {
-	pluginManager.doCheckUpdatesServer();
-} catch (IOException ex){
-	println "Plugin update server unreachable"
-	println ex
-}
-
 def availablePlugins = updateCenter.getAvailables();
 println "available plugins: " + availablePlugins.size()
 for (def shortName : plugins){
@@ -57,4 +83,9 @@ for (def shortName : plugins){
 
 if (updateCenter.isRestartRequiredForCompletion()) {
   jenkins.restart();
+}
+
+currentCasPluginVersion = jenkins.getPluginManager().getPlugin('cas-plugin').getVersion();
+if (!isCasVersionSufficient(currentCasPluginVersion)) {
+  throw new Exception("Installed cas-plugin version " + currentCasPluginVersion + " is too old. It needs to be at least " + minimalCasPluginVersion);
 }
