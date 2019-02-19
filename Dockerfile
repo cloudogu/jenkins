@@ -2,7 +2,7 @@
 FROM registry.cloudogu.com/official/java:8u171-1
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.150.2-1" \
+      VERSION="2.150.2-2" \
       maintainer="sebastian.sdorra@cloudogu.com"
 # Dockerfile based on https://github.com/cloudbees/jenkins-ci.org-docker/blob/f313389f8ab728d7b4207da36804ea54415c830b/1.580.1/Dockerfile
 
