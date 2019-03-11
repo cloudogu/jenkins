@@ -71,7 +71,7 @@ if (keyExists("dogu/sonar/current")) {
 
 // add Nexus platform plugin to Jenkins if IQ-server is installed
 if (keyExists("dogu/iqserver/current")) {
-  plugins.add('nexus-platform');
+  plugins.add('nexus-jenkins-plugin');
 }
 
 def availablePlugins = updateCenter.getAvailables();
