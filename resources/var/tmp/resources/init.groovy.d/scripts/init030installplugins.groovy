@@ -61,7 +61,8 @@ def plugins = [
   'matrix-auth',
   'maven-plugin',
   'credentials-binding',
-  'ssh-slaves'
+  'ssh-slaves',
+  'pipeline-github-lib'
 ];
 
 // add sonar plugin to Jenkins if SonarQube is installed
