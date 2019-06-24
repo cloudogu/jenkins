@@ -44,7 +44,7 @@ describe('cas rest basic authentication', () => {
             .auth(config.username, apikey)
             .expect(200);
         // remove API token
-        await driver.findElement(By.className('icon-text-error icon-sm')).click();
+        await driver.findElement(By.className('token-revoke-icon')).click();
         await driver.switchTo().alert().accept();
         await driver.quit();
     });
