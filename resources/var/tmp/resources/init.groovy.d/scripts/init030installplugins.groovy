@@ -63,6 +63,7 @@ def plugins = [
   'credentials-binding',
   'ssh-slaves',
   'pipeline-github-lib'
+  'authorize-project'
 ];
 
 // add sonar plugin to Jenkins if SonarQube is installed
