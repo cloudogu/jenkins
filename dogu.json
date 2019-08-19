@@ -1,5 +1,5 @@
 {
-  "Name": "testing/jenkins",
+  "Name": "official/jenkins",
   "Version": "2.176.2-1",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continious Integration Server",

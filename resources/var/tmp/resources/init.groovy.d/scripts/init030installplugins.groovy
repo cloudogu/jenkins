@@ -62,7 +62,7 @@ def plugins = [
   'maven-plugin',
   'credentials-binding',
   'ssh-slaves',
-  'pipeline-github-lib'
+  'pipeline-github-lib',
   'authorize-project'
 ];
 
