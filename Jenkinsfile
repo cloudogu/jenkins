@@ -1,7 +1,8 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@c622273', 'github.com/cloudogu/dogu-build-lib@f8cca7c9b101ed0bcdde8df556c13711d4cfd5a5'])
+@Library(['github.com/cloudogu/ces-build-lib@c622273', 'github.com/cloudogu/dogu-build-lib@f8cca7c9b101ed0bcdde8df556c13711d4cfd5a5', 'github.com/cloudogu/zalenium-build-lib@d8b74327'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
+import com.cloudogu.ces.zaleniumbuildlib.*
 
 node('docker'){
         stage('Checkout') {
