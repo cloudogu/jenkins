@@ -1,8 +1,8 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.164.3-1",
+  "Version": "2.176.2-1",
   "DisplayName": "Jenkins CI",
-  "Description": "Jenkins Continious Integration Server",
+  "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
   "Tags": [
     "warp", "build", "ci", "cd"
