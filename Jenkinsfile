@@ -13,7 +13,7 @@ node('docker'){
         }
 
         stage('Shellcheck'){
-           shellCheck("startup.sh upgrade-notification.sh")
+           shellCheck("resources/startup.sh resources/upgrade-notification.sh")
     }
 }
 node('vagrant') {
