@@ -1,8 +1,22 @@
 #!groovy
-@Library(['github.com/cloudogu/dogu-build-lib@1e5e2a6', 'github.com/cloudogu/zalenium-build-lib@3092363']) _
-
+@Library(['github.com/cloudogu/ces-build-lib@c622273', 'github.com/cloudogu/dogu-build-lib@f8cca7c9b101ed0bcdde8df556c13711d4cfd5a5', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
+import com.cloudogu.ces.zaleniumbuildlib.*
 
+node('docker'){
+        stage('Checkout') {
+            checkout scm
+        }
+
+        stage('Lint') {
+            lintDockerfile()
+        }
+
+        stage('Shellcheck'){
+           shellCheck("resources/startup.sh resources/upgrade-notification.sh")
+    }
+}
 node('vagrant') {
 
     timestamps{
@@ -14,14 +28,6 @@ node('vagrant') {
         ])
 
         EcoSystem ecoSystem = new EcoSystem(this, "gcloud-ces-operations-internal-packer", "jenkins-gcloud-ces-operations-internal")
-
-        stage('Checkout') {
-            checkout scm
-        }
-
-        stage('Lint') {
-            lintDockerfile()
-        }
 
         try {
 
