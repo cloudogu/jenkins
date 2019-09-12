@@ -2,7 +2,7 @@
 FROM registry.cloudogu.com/official/java:8u212-1
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.176.2-1" \
+      VERSION="2.176.3-1" \
       maintainer="sebastian.sdorra@cloudogu.com"
 # Dockerfile based on https://github.com/cloudbees/jenkins-ci.org-docker/blob/f313389f8ab728d7b4207da36804ea54415c830b/1.580.1/Dockerfile
 
@@ -11,7 +11,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.176.2 \
+    JENKINS_VERSION=2.176.3 \
     # glibc for alpine version
     GLIBC_VERSION=2.28-r0
 
@@ -64,6 +64,8 @@ USER jenkins
 
 # for main web interface:
 EXPOSE 8080
+
+HEALTHCHECK CMD [ $(doguctl healthy jenkins; EXIT_CODE=$?; echo ${EXIT_CODE}) == 0 ]
 
 # start jenkins
 CMD ["/startup.sh"]
