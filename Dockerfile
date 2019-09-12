@@ -11,7 +11,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.176.2 \
+    JENKINS_VERSION=2.176.3 \
     # glibc for alpine version
     GLIBC_VERSION=2.28-r0
 
@@ -64,6 +64,8 @@ USER jenkins
 
 # for main web interface:
 EXPOSE 8080
+
+HEALTHCHECK CMD [ $(doguctl healthy jenkins; EXIT_CODE=$?; echo ${EXIT_CODE}) == 0 ]
 
 # start jenkins
 CMD ["/startup.sh"]
