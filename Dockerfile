@@ -65,7 +65,7 @@ USER jenkins
 # for main web interface:
 EXPOSE 8080
 
-HEALTHCHECK CMD [ $(doguctl healthy jenkins; EXIT_CODE=$?; echo ${EXIT_CODE}) == 0 ]
+HEALTHCHECK CMD [ $(doguctl healthy jenkins; echo $?) == 0 ]
 
 # start jenkins
 CMD ["/startup.sh"]
