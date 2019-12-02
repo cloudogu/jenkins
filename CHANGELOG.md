@@ -7,3 +7,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Changed jenkins version to 2.190.3
+- Changed java version in Dockerfile to 8u222-1
