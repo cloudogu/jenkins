@@ -1,8 +1,8 @@
 # cesi/scm
-FROM registry.cloudogu.com/official/java:8u212-1
+FROM registry.cloudogu.com/official/java:8u222-1
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.176.4-1" \
+      VERSION="2.190.3-1" \
       maintainer="sebastian.sdorra@cloudogu.com"
 # Dockerfile based on https://github.com/cloudbees/jenkins-ci.org-docker/blob/f313389f8ab728d7b4207da36804ea54415c830b/1.580.1/Dockerfile
 
@@ -11,9 +11,12 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.176.4 \
+    JENKINS_VERSION=2.190.3 \
     # glibc for alpine version
-    GLIBC_VERSION=2.28-r0
+    GLIBC_VERSION=2.28-r0 \
+    SHA256_GLIB_APK="f0a00f56fdee9dc888bafec0bf8f54fb188e99b5346032251abb79ef9c99f079" \
+    SHA256_GLIB_BIN_APK="b9a0d8359b12a9768f6378156f160d40f8e432e78e0b2aabc9d0a81e216e7f49" \
+    SHA256_GLIB_I18N_APK="948aa0a87b2b93cef561d31c02060a162d592a3545af56171c3f8b0d6f918a48" 
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
@@ -40,10 +43,13 @@ RUN set -x \
  # make sure that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
  && apk add --no-cache libstdc++ \
  && curl -Lo /tmp/glibc.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk" \
+ && echo "${SHA256_GLIB_APK} */tmp/glibc.apk" |sha256sum -c - \
  && apk add --no-cache --allow-untrusted /tmp/glibc.apk \
  && curl -Lo /tmp/glibc-bin.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk" \
+ && echo "${SHA256_GLIB_BIN_APK} */tmp/glibc-bin.apk" |sha256sum -c - \
  && apk add --no-cache --allow-untrusted /tmp/glibc-bin.apk \
  && curl -Lo /tmp/glibc-i18n.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk" \
+ && echo "${SHA256_GLIB_I18N_APK} */tmp/glibc-i18n.apk" |sha256sum -c - \
  && apk add --no-cache --allow-untrusted /tmp/glibc-i18n.apk \
  # do not abort https://github.com/sgerrand/alpine-pkg-glibc/issues/5
  && (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true ) \
