@@ -20,21 +20,6 @@ def getUpdateSitesFromEtcd(String key) {
 	}
 }
 
-def getValueFromEtcd(String key){
-	String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-	URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-	def json = new JsonSlurper().parseText(url.text)
-	return json.node.value
-}
-
-def getJenkinsConfigurationState(String key){
-	try {
-		return getValueFromEtcd(key).toString()
-	} catch (FileNotFoundException ex) {
-		return "false"
-	}
-}
-
 def convertNodesToUpdateSites(Object nodes, int parentKeyOffset) {
 	List<hudson.model.UpdateSite> updateSites = [];
 	nodes.each{ node ->
@@ -48,25 +33,19 @@ def convertNodesToUpdateSites(Object nodes, int parentKeyOffset) {
 	return updateSites;
 }
 
-final ETCD_CONFIGURED_KEY = "config/jenkins/configured"
-boolean isConfigured = getJenkinsConfigurationState(ETCD_CONFIGURED_KEY).toBoolean()
+def instance = Jenkins.getInstance();
+List<hudson.model.UpdateSite> updateSites = getUpdateSitesFromEtcd("config/jenkins/updateSiteUrl");
 
-
-if(!isConfigured){
-	def instance = Jenkins.getInstance();
-	List<hudson.model.UpdateSite> updateSites = getUpdateSitesFromEtcd("config/jenkins/updateSiteUrl");
-
-	if(updateSites.size() > 0) {
-		println "set signatureCheck=false";
-		hudson.model.DownloadService.signatureCheck = false;
-		updateCenter = instance.getUpdateCenter();
-		def sites = updateCenter.getSites();
-		sites.clear();
-		println "add new update sites";
-		for(hudson.model.UpdateSite site : updateSites) {
-			sites.add(site);
-		}
-		println "save instance";
-		instance.save();
+if(updateSites.size() > 0) {
+	println "set signatureCheck=false";
+	hudson.model.DownloadService.signatureCheck = false;
+	updateCenter = instance.getUpdateCenter();
+	def sites = updateCenter.getSites();
+	sites.clear();
+	println "add new update sites";
+	for(hudson.model.UpdateSite site : updateSites) {
+		sites.add(site);
 	}
+	println "save instance";
+	instance.save();
 }
