@@ -77,7 +77,7 @@ def plugins = [
   'authorize-project'
 ];
 
-def additionalPluginPath = "dogu/jenkins/plugins/default";
+def additionalPluginPath = "config/jenkins/additional.plugins";
 
 if (keyExists(additionalPluginPath)){
     println("Install additional plugins");
