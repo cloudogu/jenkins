@@ -27,6 +27,13 @@
     "Group": "1000",
     "NeedsBackup": true
   }],
+  "Configuration": [
+    {
+      "Name": "additional.plugins",
+      "Description": "Comma separated list of plugin names to install on start",
+      "Optional": true
+    }
+  ],
   "ExposedCommands": [
     {
       "Name": "upgrade-notification",

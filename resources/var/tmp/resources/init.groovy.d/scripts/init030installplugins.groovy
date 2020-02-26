@@ -17,6 +17,17 @@ def keyExists(String key){
 	return true
 }
 
+def getValueFromEtcd(String key){
+    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
+    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
+    try {
+        def json = new JsonSlurper().parseText(url.text)
+        return json.node.value
+    } catch (FileNotFoundException) {
+        return false
+    }
+}
+
 // Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
 minimalCasPluginVersion = "1.4.3"
 boolean isCasVersionSufficient(String version) {
@@ -65,6 +76,20 @@ def plugins = [
   'pipeline-github-lib',
   'authorize-project'
 ];
+
+def additionalPluginPath = "config/jenkins/additional.plugins";
+
+if (keyExists(additionalPluginPath)){
+    println("Install additional plugins");
+    def additionalPluginList = getValueFromEtcd(additionalPluginPath);
+    def additionalPlugins = additionalPluginList.split(',');
+    for (additionalPlugin in additionalPlugins){
+        println("Add Plugin "+ additionalPlugin)
+        plugins.add(additionalPlugin)
+    }
+}else{
+    println("No additional plugins configured");
+}
 
 // add sonar plugin to Jenkins if SonarQube is installed
 if (keyExists("dogu/sonar/current")) {
