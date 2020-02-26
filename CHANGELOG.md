@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.190.3-3] - 2020-02-26
+### Added
+- config key additional.plugins which may contain a comma separated list with plugin names that are installed on startup
+
 ## [v2.190.3-2] - 2020-01-24
 ### Changed
 * Apply updateSite changes on every start (#45)
