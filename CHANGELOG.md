@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Updates Java version from 8u222-1 to 11.0.4-2
+- Config key additional.plugins which was introduced in the last release will be renamed
+according to our new key naming convention additional.plugins ➡ plugins/additional
 
 ## [v2.190.3-3] - 2020-02-26
 ### Added

@@ -77,7 +77,7 @@ def plugins = [
   'authorize-project'
 ];
 
-def additionalPluginPath = "config/jenkins/additional.plugins";
+def additionalPluginPath = "config/jenkins/plugins/additional";
 
 if (keyExists(additionalPluginPath)){
     println("Install additional plugins");

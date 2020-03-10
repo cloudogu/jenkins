@@ -29,7 +29,7 @@
   }],
   "Configuration": [
     {
-      "Name": "additional.plugins",
+      "Name": "plugins/additional",
       "Description": "Comma separated list of plugin names to install on start",
       "Optional": true
     }
