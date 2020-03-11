@@ -1,5 +1,5 @@
 # cesi/scm
-FROM registry.cloudogu.com/official/java:11.0.4-2
+FROM registry.cloudogu.com/official/java:8u242-1
 
 LABEL NAME="official/jenkins" \
       VERSION="2.190.3-3" \

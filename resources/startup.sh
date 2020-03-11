@@ -8,6 +8,7 @@ INIT_SCRIPT_FOLDER="/var/lib/jenkins/init.groovy.d"
 MAIN_INIT_SCRIPTS_FOLDER="/var/tmp/resources/init.groovy.d"
 CUSTOM_INIT_SCRIPTS_FOLDER="/var/lib/custom.init.groovy.d"
 # migrate etcdkey to new naming convention
+# shellcheck disable=SC1091; seperate analysis
 source keymigration.sh additional.plugins plugins/additional
 # set state to installing
 doguctl state 'installing'
