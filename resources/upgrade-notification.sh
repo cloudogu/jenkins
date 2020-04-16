@@ -19,3 +19,11 @@ fi
 if [ "2.176.1-1" == "$(printf "%s\\n2.176.1-1" "${TO_VERSION}" | sort | head -n1)" ] && [ "2.176.1-1" != "$(printf "%s\\n2.176.1-1" "${FROM_VERSION}" | sort | head -n1)" ]; then
     printf "You are upgrading the Jenkins dogu to version 2.176.1 or higher. There have been changes, including:\\n- Remoting-mode of CLI removed\\n- Symbol nonStoredPasswordParam removed\\n- Mailer plugin resources removed\\n- New security warning related to build authorization\\n- Built-in support for CCtray (cc.xml) files removed\\n- Chinese translations removed\\n\\nHave a look at the upgrade guide: %s\\n" "https://jenkins.io/doc/upgrade-guide/2.176/#upgrading%20to%20jenkins%20lts%202.176.1"
 fi
+
+# print upgrade notice for jenkins based on java 11
+
+if [ "2.190.3-4" == "$(printf "%s\\n2.190.3-4" "${TO_VERSION}" | sort | head -n1)" ] && [ "2.190.3-4" != "$(printf "%s\\n2.190.3-4" "${FROM_VERSION}" | sort | head -n1)" ]; then
+   printf "\nYou are upgrading the Jenkins dogu to version 2.190.3-4 or higher. There have been changes to the installed jdk version. \\nSince 2.190.3-4, jenkins is based on the open jdk version 11. \nLegacy builds using the internal jdk of jenkins must switch to the configured jdk <openJDK-8>."
+   printf "\nFor more information see %s \n\n" "https://github.com/cloudogu/jenkins/releases/tag/v2.190.3-4"
+
+fi
