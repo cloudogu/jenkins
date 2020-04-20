@@ -11,12 +11,10 @@ node('docker'){
 
         stage('Lint') {
             lintDockerfile()
+            shellCheck("resources/startup.sh resources/upgrade-notification.sh")
         }
-
-        stage('Shellcheck'){
-           shellCheck("resources/startup.sh resources/upgrade-notification.sh")
-    }
 }
+
 node('vagrant') {
 
     timestamps{
