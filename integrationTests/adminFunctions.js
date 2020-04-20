@@ -92,8 +92,8 @@ module.exports = class AdminFunctions{
 
 
     async testUserLogout(driver) {
-        await driver.wait(until.elementLocated(By.xpath("//div[@id='header']/div[2]/span/a[2]/b")),5000);
-        await driver.findElement(By.xpath("//div[@id='header']/div[2]/span/a[2]/b")).click();
+        await driver.wait(until.elementLocated(By.xpath("/html/body/div[2]/header/div[3]/a[2]/span")),5000);
+        await driver.findElement(By.xpath("/html/body/div[2]/header/div[3]/a[2]/span")).click();
     };
 
     async accessUsersJson(expectStatus){

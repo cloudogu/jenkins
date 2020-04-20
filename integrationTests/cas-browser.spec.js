@@ -38,7 +38,7 @@ describe('cas browser login', () => {
     test('logout front channel', async() => {
         await driver.get(utils.getCasUrl(driver));
         await utils.login(driver);
-        await driver.findElement(By.xpath("//div[@id='header']/div[2]/span/a[2]/b")).click();
+        await driver.findElement(By.xpath("/html/body/div[2]/header/div[3]/a[2]/span")).click();
         const url = await driver.getCurrentUrl();
         expect(url).toMatch(logoutUrl);
     });
