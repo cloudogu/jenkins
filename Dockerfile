@@ -8,6 +8,8 @@ LABEL NAME="official/jenkins" \
 
     # jenkins home configuration
 ENV JENKINS_HOME=/var/lib/jenkins \
+    # temporary directory for builds
+    WORKSPACE_TMP=/tmp \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
