@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@76fcbaf', 'github.com/cloudogu/dogu-build-lib@ff65ba3', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+@Library(['github.com/cloudogu/ces-build-lib@76fcbaf', 'github.com/cloudogu/dogu-build-lib@ff65ba3', 'github.com/cloudogu/zalenium-build-lib@v2.0.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
