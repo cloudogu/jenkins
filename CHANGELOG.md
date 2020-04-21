@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+* Update to Java 11 (Base image: v11.0.5-1 https://github.com/cloudogu/java/tree/v11.0.5-1) #51
+
+Note: Open JDK 8 is automatically configured on startup and can be used in legacy builds based on java 8
 
 ## [v2.190.3-3] - 2020-02-26
 ### Added
