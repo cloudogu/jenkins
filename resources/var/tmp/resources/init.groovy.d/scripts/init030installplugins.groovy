@@ -68,6 +68,7 @@ def plugins = [
   'git',
   'mercurial',
   'subversion',
+  'scm-manager',
   'workflow-aggregator',
   'matrix-auth',
   'maven-plugin',

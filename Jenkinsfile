@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@c622273', 'github.com/cloudogu/dogu-build-lib@f8cca7c9b101ed0bcdde8df556c13711d4cfd5a5', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+@Library(['github.com/cloudogu/ces-build-lib@76fcbaf', 'github.com/cloudogu/dogu-build-lib@ff65ba3', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
@@ -11,12 +11,10 @@ node('docker'){
 
         stage('Lint') {
             lintDockerfile()
+            shellCheck("resources/startup.sh resources/upgrade-notification.sh")
         }
-
-        stage('Shellcheck'){
-           shellCheck("resources/startup.sh resources/upgrade-notification.sh")
-    }
 }
+
 node('vagrant') {
 
     timestamps{

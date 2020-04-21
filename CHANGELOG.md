@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Note: Open JDK 8 is automatically configured on startup and can be used in legacy builds based on java 8
 
+## [v2.222.1-1] - 2020-04-21
+### Added
+- Added scm-manager plugin
+- Volume for /tmp directory. This volume is not included in backups!
+
+### Changed
+- Upgrade to Jenkins 2.222.1; #52
+- Upgrade java base image to 8u242-1
+
 ## [v2.190.3-3] - 2020-02-26
 ### Added
 - config key additional.plugins which may contain a comma separated list with plugin names that are installed on startup
