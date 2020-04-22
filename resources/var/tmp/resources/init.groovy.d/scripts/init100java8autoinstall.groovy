@@ -1,7 +1,7 @@
 import jenkins.model.*
 import hudson.model.*
 
-def jenkinsJDKName = "openJDK-8"
+def jenkinsJDKName = "OpenJDK-8"
 def jdkVersion = "java-1.8-openjdk"
 def inst = Jenkins.getInstance()
 

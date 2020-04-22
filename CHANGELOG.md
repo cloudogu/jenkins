@@ -6,9 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-* Update to Java 11 (Base image: v11.0.5-1 https://github.com/cloudogu/java/tree/v11.0.5-1) #51
+* Update to Java 11 (Base image: [v11.0.5-1](https://github.com/cloudogu/java/releases/tag/v11.0.5-1)) #51
 
-Note: Open JDK 8 is automatically configured on startup and can be used in legacy builds based on java 8
+Attention: From this release on, OpenJDK 11 is the default Java Development Kit version!
+If you want to keep using OpenJDK 8 in legacy builds, you have to follow the steps explained in the [README](https://github.com/cloudogu/jenkins/blob/develop/README.md#building-with-openjdk-8)
 
 ## [v2.222.1-1] - 2020-04-21
 ### Added
