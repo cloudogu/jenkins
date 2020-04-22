@@ -22,7 +22,7 @@ fi
 
 # print upgrade notice for jenkins based on java 11
 if [ "2.222.1-2" == "$(printf "%s\\n2.222.1-2" "${TO_VERSION}" | sort | head -n1)" ] && [ "2.222.1-2" != "$(printf "%s\\n2.222.1-2" "${FROM_VERSION}" | sort | head -n1)" ]; then
-   printf "\nYou are upgrading the Jenkins dogu to version 2.222.1-2 or higher. There have been changes to the installed jdk version. \\nSince 2.222.1-2, jenkins is based on OpenJDK version 11. \nLegacy builds using the internal jdk of jenkins must switch to the configured jdk \"OpenJDK-8\"."
+   printf "\nYou are upgrading the Jenkins dogu to version 2.222.1-2 or higher. There have been changes to the installed jdk version. \\nSince 2.222.1-2, Jenkins is based on OpenJDK version 11. \nLegacy builds using the internal jdk of Jenkins must switch to the configured jdk \"OpenJDK-8\"."
    printf "\nFor more information see %s \n\n" "https://github.com/cloudogu/jenkins/blob/develop/README.md#building-with-openjdk-8"
 
 fi
