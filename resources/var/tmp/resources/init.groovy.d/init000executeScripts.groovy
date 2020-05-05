@@ -1,6 +1,11 @@
 import groovy.io.FileType
 import jenkins.model.*;
 
+/**
+ * javadoc on the used classes can be found here:
+ * https://javadoc.jenkins.io
+ */
+
 // Stop Jenkins in case an exception occurs in one of the scripts
 try {
 
