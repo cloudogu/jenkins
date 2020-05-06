@@ -1,5 +1,8 @@
 // creates a global tool installer for maven.
 
+// based on https://wiki.jenkins.io/display/JENKINS/Add+a+Maven+Installation%2C+Tool+Installation%2C+Modify+System+Config
+// more info https://github.com/glenjamin/jenkins-groovy-examples/blob/master/README.md
+
 import jenkins.model.*
 import hudson.*
 import hudson.model.*
@@ -10,7 +13,7 @@ import hudson.tools.*
 def mavenName = "M3"
 def targetVersion = "3.6.3"
 
-Collection<String> installedM3Versions() {
+Collection<String> installedM3Versions(def mavenName) {
     def versions = []
 
     Jenkins.instance.getDescriptor("hudson.tasks.Maven").getInstallations().each { i ->
@@ -41,8 +44,43 @@ def addMavenToInstallations(def installation) {
     Jenkins.instance.save()
 }
 
-def m3Versions = installedM3Versions()
-if (!m3Versions.contains(targetVersion)) {
+def removeNonTargetM3Installations(def mavenName, def targetVersion) {
+    def mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
+    def mavenInstallationsList = (mavenInstallations.installations as List)
+
+    def toRemove = []
+
+    // iterate over every maven installation
+    mavenInstallationsList.each { i ->
+        // check only for installations named $mavenName
+        if (i.toString().contains(mavenName)) {
+            def versions = []
+
+            // find version ids of the installation
+            i.getProperties().each { p ->
+                p.installers.each { inst ->
+                    versions.add(inst.id)
+                }
+            }
+
+            // remember it as to be removed
+            if (!versions.contains(targetVersion)) {
+                toRemove.add(i)
+            }
+        }
+    }
+
+    // remove all remembered installations
+    toRemove.each { tr -> mavenInstallationsList.remove(tr) }
+
+    mavenInstallations.installations = mavenInstallationsList
+    mavenInstallations.save()
+    Jenkins.instance.save()
+}
+
+removeNonTargetM3Installations(mavenName, targetVersion)
+
+if (!installedM3Versions(mavenName).contains(targetVersion)) {
     addMavenToInstallations(
             createMavenInstallation(mavenName, targetVersion)
     )
