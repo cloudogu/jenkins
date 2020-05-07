@@ -16,11 +16,13 @@ def targetVersion = "3.6.3"
 Collection<String> installedM3Versions(def mavenName) {
     def versions = []
 
-    Jenkins.instance.getDescriptor("hudson.tasks.Maven").getInstallations().each { i ->
-        if (i.toString().contains(mavenName)) {
-            i.getProperties().each { p ->
-                p.installers.each { inst ->
-                    versions.add(inst.id)
+    def installations = Jenkins.instance.getDescriptor("hudson.tasks.Maven").getInstallations()
+
+    installations?.each { installation ->
+        if (installation.toString().contains(mavenName)) {
+            installation.getProperties().each { property ->
+                property.installers.each { installer ->
+                    versions.add(installer.id)
                 }
             }
         }
@@ -51,27 +53,27 @@ def removeNonTargetM3Installations(def mavenName, def targetVersion) {
     def toRemove = []
 
     // iterate over every maven installation
-    mavenInstallationsList.each { i ->
+    mavenInstallationsList.each { installation ->
         // check only for installations named $mavenName
-        if (i.toString().contains(mavenName)) {
+        if (installation.toString().contains(mavenName)) {
             def versions = []
 
             // find version ids of the installation
-            i.getProperties().each { p ->
-                p.installers.each { inst ->
-                    versions.add(inst.id)
+            installation.getProperties().each { property ->
+                property.installers.each { installer ->
+                    versions.add(installer.id)
                 }
             }
 
             // remember it as to be removed
             if (!versions.contains(targetVersion)) {
-                toRemove.add(i)
+                toRemove.add(installation)
             }
         }
     }
 
     // remove all remembered installations
-    toRemove.each { tr -> mavenInstallationsList.remove(tr) }
+    toRemove.each { installation -> mavenInstallationsList.remove(installation) }
 
     mavenInstallations.installations = mavenInstallationsList
     mavenInstallations.save()
