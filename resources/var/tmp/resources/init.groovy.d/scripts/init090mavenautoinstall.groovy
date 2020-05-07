@@ -1,5 +1,8 @@
 // creates a global tool installer for maven.
 
+// based on https://wiki.jenkins.io/display/JENKINS/Add+a+Maven+Installation%2C+Tool+Installation%2C+Modify+System+Config
+// more info https://github.com/glenjamin/jenkins-groovy-examples/blob/master/README.md
+
 import jenkins.model.*
 import hudson.*
 import hudson.model.*
@@ -8,39 +11,79 @@ import hudson.tools.*
 
 // the name M3 is chosen, because of the GitHub + Maven Pipeline sample
 def mavenName = "M3"
-def mavenVersion = "3.5.0"
+def targetVersion = "3.6.3"
 
-def boolean isMavenAlreadyInstalled(def mavenName) {
-  def returnValue = false
-  def descriptor = Jenkins.instance.getDescriptor("hudson.tasks.Maven")
-  def installations = descriptor.getInstallations()
-  if (installations != null) {
-    installations.each { installation ->
-      def inst = "${installation}"
-      if (inst.contains(mavenName)) {
-        returnValue = true
-      }
+Collection<String> installedM3Versions(def mavenName) {
+    def versions = []
+
+    def installations = Jenkins.instance.getDescriptor("hudson.tasks.Maven").getInstallations()
+
+    installations?.each { installation ->
+        if (installation.toString().contains(mavenName)) {
+            installation.getProperties().each { property ->
+                property.installers.each { installer ->
+                    versions.add(installer.id)
+                }
+            }
+        }
     }
-  }
-  return returnValue
+
+    return versions
 }
 
-def createMavenInstallation(def mavenName, def mavenVersion) {
-  def mvnInstaller = new Maven.MavenInstaller(mavenVersion)
-  def instSourcProp = new InstallSourceProperty([mvnInstaller])
-  return new Maven.MavenInstallation(mavenName, null, [instSourcProp])
+static def createMavenInstallation(def mavenName, def mavenVersion) {
+    def mvnInstaller = new Maven.MavenInstaller(mavenVersion)
+    def instSourcProp = new InstallSourceProperty([mvnInstaller])
+    return new Maven.MavenInstallation(mavenName, null, [instSourcProp])
 }
 
 def addMavenToInstallations(def installation) {
-  mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
-  mavenInstallationsList = (mavenInstallations.installations as List)
-  mavenInstallationsList.add(installation)
-  mavenInstallations.installations = mavenInstallationsList
-  mavenInstallations.save()
-  Jenkins.instance.save()
+    mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
+    mavenInstallationsList = (mavenInstallations.installations as List)
+    mavenInstallationsList.add(installation)
+    mavenInstallations.installations = mavenInstallationsList
+    mavenInstallations.save()
+    Jenkins.instance.save()
 }
 
-if (!isMavenAlreadyInstalled(mavenName)) {
-  def installation = createMavenInstallation(mavenName, mavenVersion)
-  addMavenToInstallations(installation)
+def removeNonTargetM3Installations(def mavenName, def targetVersion) {
+    def mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
+    def mavenInstallationsList = (mavenInstallations.installations as List)
+
+    def toRemove = []
+
+    // iterate over every maven installation
+    mavenInstallationsList.each { installation ->
+        // check only for installations named $mavenName
+        if (installation.toString().contains(mavenName)) {
+            def versions = []
+
+            // find version ids of the installation
+            installation.getProperties().each { property ->
+                property.installers.each { installer ->
+                    versions.add(installer.id)
+                }
+            }
+
+            // remember it as to be removed
+            if (!versions.contains(targetVersion)) {
+                toRemove.add(installation)
+            }
+        }
+    }
+
+    // remove all remembered installations
+    toRemove.each { installation -> mavenInstallationsList.remove(installation) }
+
+    mavenInstallations.installations = mavenInstallationsList
+    mavenInstallations.save()
+    Jenkins.instance.save()
+}
+
+removeNonTargetM3Installations(mavenName, targetVersion)
+
+if (!installedM3Versions(mavenName).contains(targetVersion)) {
+    addMavenToInstallations(
+            createMavenInstallation(mavenName, targetVersion)
+    )
 }

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.222.1-3] - 2020-05-07
+### Changed
+- The tool M3 gets automatically upgraded from 3.5 to 3.6.3 on startup
+
 ## [v2.222.1-2] - 2020-04-22
 
 **Attention:** From this release on, OpenJDK 11 is the default Java Development Kit version!
