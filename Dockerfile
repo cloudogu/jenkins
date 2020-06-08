@@ -18,6 +18,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_APK="f0a00f56fdee9dc888bafec0bf8f54fb188e99b5346032251abb79ef9c99f079" \
     SHA256_GLIB_BIN_APK="b9a0d8359b12a9768f6378156f160d40f8e432e78e0b2aabc9d0a81e216e7f49" \
     SHA256_GLIB_I18N_APK="948aa0a87b2b93cef561d31c02060a162d592a3545af56171c3f8b0d6f918a48" \
+    SHA256_JENKINS_WAR="6c95721b90272949ed8802cab8a84d7429306f72b180c5babc33f5b073e1c47c" \
     # additional java version for legacy builds
     ADDITIONAL_OPENJDK_VERSION="8.242.08-r0"
 
@@ -35,6 +36,7 @@ RUN set -x \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
  && curl -L http://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \
+ && echo "${SHA256_JENKINS_WAR} *jenkins.war" | sha256sum -c - \
  # set git system ca-certificates
  && git config --system http.sslCaInfo /var/lib/jenkins/ca-certificates.crt \
  # set mercurial system ca-certificates
