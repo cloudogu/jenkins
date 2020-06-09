@@ -18,6 +18,8 @@ node('docker'){
 node('vagrant') {
 
     Git git = new Git(this, "cesmarvin")
+    git.committerName = 'cesmarvin'
+    git.committerEmail = 'cesmarvin@cloudogu.com'
     GitFlow gitflow = new GitFlow(this, git)
     GitHub github = new GitHub(this, git)
     Changelog changelog = new Changelog(this)
