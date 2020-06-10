@@ -1,39 +1,46 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.222.1-3",
+  "Version": "2.222.4-1",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
   "Tags": [
-    "warp", "build", "ci", "cd"
+    "warp",
+    "build",
+    "ci",
+    "cd"
   ],
   "Logo": "https://cloudogu.com/images/dogus/jenkins.png",
   "Url": "https://jenkins-ci.org",
   "Image": "registry.cloudogu.com/official/jenkins",
   "Dependencies": [
-    "cas", "nginx", "postfix"
+    "cas",
+    "nginx",
+    "postfix"
   ],
-  "Volumes": [{
-    "Name": "data",
-    "Path": "/var/lib/jenkins",
-    "Owner": "1000",
-    "Group": "1000",
-    "NeedsBackup": true
-  },
-  {
-    "Name": "custom.init.groovy.d",
-    "Path": "/var/lib/custom.init.groovy.d",
-    "Owner": "1000",
-    "Group": "1000",
-    "NeedsBackup": true
-  },
-  {
-    "Name": "tmp",
-    "Path": "/tmp",
-    "Owner": "1000",
-    "Group": "1000",
-    "NeedsBackup": false
-  }],
+  "Volumes": [
+    {
+      "Name": "data",
+      "Path": "/var/lib/jenkins",
+      "Owner": "1000",
+      "Group": "1000",
+      "NeedsBackup": true
+    },
+    {
+      "Name": "custom.init.groovy.d",
+      "Path": "/var/lib/custom.init.groovy.d",
+      "Owner": "1000",
+      "Group": "1000",
+      "NeedsBackup": true
+    },
+    {
+      "Name": "tmp",
+      "Path": "/tmp",
+      "Owner": "1000",
+      "Group": "1000",
+      "NeedsBackup": false
+    }
+  ],
   "Configuration": [
     {
       "Name": "additional.plugins",
@@ -47,10 +54,13 @@
       "Command": "/upgrade-notification.sh"
     }
   ],
-  "HealthChecks": [{
-    "Type": "tcp",
-    "Port": 8080
-  }, {
-    "Type": "state"
-  }]
+  "HealthChecks": [
+    {
+      "Type": "tcp",
+      "Port": 8080
+    },
+    {
+      "Type": "state"
+    }
+  ]
 }
