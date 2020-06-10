@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@76fcbaf', 'github.com/cloudogu/dogu-build-lib@ff65ba3', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@v1.0.0', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
@@ -16,6 +16,13 @@ node('docker'){
 }
 
 node('vagrant') {
+
+    Git git = new Git(this, "cesmarvin")
+    git.committerName = 'cesmarvin'
+    git.committerEmail = 'cesmarvin@cloudogu.com'
+    GitFlow gitflow = new GitFlow(this, git)
+    GitHub github = new GitHub(this, git)
+    Changelog changelog = new Changelog(this)
 
     timestamps{
         properties([
@@ -81,6 +88,22 @@ node('vagrant') {
                         // archive test results
                         junit allowEmptyResults: true, testResults: 'integrationTests/it-results.xml'
                     }
+                }
+            }
+
+            if (gitflow.isReleaseBranch()) {
+                String releaseVersion = git.getSimpleBranchName();
+
+                stage('Finish Release') {
+                    gitflow.finishRelease(releaseVersion)
+                }
+
+                stage('Push Dogu to registry') {
+                    ecoSystem.push("/dogu")
+                }
+
+                stage ('Add Github-Release'){
+                    github.createReleaseWithChangelog(releaseVersion, changelog)
                 }
             }
 

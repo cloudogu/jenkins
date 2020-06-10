@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.222.4-1] - 2020-06-10
+### Changed
+- Upgrade to Jenkins 2.222.4; #57
+
 ## [v2.222.1-3] - 2020-05-07
 ### Changed
 - The tool M3 gets automatically upgraded from 3.5 to 3.6.3 on startup
