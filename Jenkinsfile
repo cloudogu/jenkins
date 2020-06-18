@@ -26,10 +26,14 @@ node('vagrant') {
 
     timestamps{
         properties([
-                // Keep only the last x builds to preserve space
-                buildDiscarder(logRotator(numToKeepStr: '10')),
-                // Don't run concurrent builds for a branch, because they use the same workspace directory
-                disableConcurrentBuilds()
+            // Keep only the last x builds to preserve space
+            buildDiscarder(logRotator(numToKeepStr: '10')),
+            // Don't run concurrent builds for a branch, because they use the same workspace directory
+            disableConcurrentBuilds()
+            // Parameter to activate dogu upgrade test on demand
+            parameters([
+                booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release', name: 'TestDoguUpgradeFromLatestRelease'),
+            ])
         ])
 
         EcoSystem ecoSystem = new EcoSystem(this, "gcloud-ces-operations-internal-packer", "jenkins-gcloud-ces-operations-internal")
@@ -89,6 +93,23 @@ node('vagrant') {
                         junit allowEmptyResults: true, testResults: 'integrationTests/it-results.xml'
                     }
                 }
+            }
+
+            if (params.TestDoguUpgradeFromLatestRelease != null && params.TestDoguUpgradeFromLatestRelease){
+                stage('Upgrade test') {
+                    // Remove new dogu that has been built and tested above
+                    // e.g. ecoSystem.purge("/dogu")
+
+                    // Install latest released version of dogu
+                    // e.g. ecoSystem.install("official/jenkins")
+
+                    // Upgrade dogu by building again
+                    ecoSystem.build("/dogu")
+
+                    // Run integration tests again to verify that the upgrade was successful
+                    // see above
+                }
+
             }
 
             if (gitflow.isReleaseBranch()) {
