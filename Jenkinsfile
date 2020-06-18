@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@v1.0.0', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@3f65cd5c', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
@@ -98,12 +98,13 @@ node('vagrant') {
             if (params.TestDoguUpgradeFromLatestRelease != null && params.TestDoguUpgradeFromLatestRelease){
                 stage('Upgrade test') {
                     // Remove new dogu that has been built and tested above
-                    // e.g. ecoSystem.purge("/dogu")
+                    ecoSystem.purge("jenkins")
 
                     // Install latest released version of dogu
-                    // e.g. ecoSystem.install("official/jenkins")
+                    ecoSystem.install("official/jenkins")
 
                     // Upgrade dogu by building again
+                    // TODO: Bump version in dogu.json or else upgrade scripts will not trigger
                     ecoSystem.build("/dogu")
 
                     // Run integration tests again to verify that the upgrade was successful
