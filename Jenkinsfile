@@ -74,20 +74,14 @@ node('vagrant') {
                 }
 
                 timeout(time: 15, unit: 'MINUTES') {
-
                     try {
-
                         withZalenium { zaleniumIp ->
-
                             dir('integrationTests') {
-
                                 docker.image('node:8.14.0-stretch').inside("-e WEBDRIVER=remote -e CES_FQDN=${externalIP} -e SELENIUM_BROWSER=chrome -e SELENIUM_REMOTE_URL=http://${zaleniumIp}:4444/wd/hub") {
                                     sh 'yarn install'
                                     sh 'yarn run ci-test'
                                 }
-
                             }
-
                         }
                     } finally {
                         // archive test results
@@ -108,29 +102,44 @@ node('vagrant') {
                     ecoSystem.start(doguName)
                     ecoSystem.waitForDogu(doguName)
 
-                    // Upgrade dogu by building again
+                    // Upgrade dogu by building again with new version
                     // currentDoguVersionString, e.g. "Version": "2.222.4-1",
                     String currentDoguVersionString = sh(returnStdout: true, script: 'grep .Version dogu.json').trim()
                     // releaseNumber, e.g. 1
                     int releaseNumber = (currentDoguVersionString.split('-')[1] - "\",").toInteger()
                     // newReleaseNumber, e.g. 2
                     int newReleaseNumber = releaseNumber + 1
-                    print "new number: ${newReleaseNumber}"
                     // currentDoguVersion, e.g. 2.222.4-1
                     String currentDoguVersion = currentDoguVersionString.split("\"")[3]
-                    print "current dogu version: ${currentDoguVersion}"
                     // newDoguVersion, e.g. 2.222.4-2
                     String newDoguVersion = currentDoguVersion.split("-")[0] + "-" + newReleaseNumber
-                    print "newDoguVersion = ${newDoguVersion}"
                     ecoSystem.setVersion(newDoguVersion)
                     ecoSystem.vagrant.sync()
+                    // Build/Upgrade dogu and wait for it to get healthy
                     ecoSystem.build("/dogu")
                     ecoSystem.waitForDogu(doguName)
 
                     // Run integration tests again to verify that the upgrade was successful
-                    // see above
+                    String externalIP = ecoSystem.externalIP
+                    if (fileExists('integrationTests/it-results-upgrade.xml')) {
+                        sh 'rm -f integrationTests/it-results-upgrade.xml'
+                    }
+                    timeout(time: 15, unit: 'MINUTES') {
+                        try {
+                            withZalenium { zaleniumIp ->
+                                dir('integrationTests') {
+                                    docker.image('node:8.14.0-stretch').inside("-e WEBDRIVER=remote -e CES_FQDN=${externalIP} -e SELENIUM_BROWSER=chrome -e SELENIUM_REMOTE_URL=http://${zaleniumIp}:4444/wd/hub") {
+                                        sh 'yarn install'
+                                        sh 'yarn run ci-test'
+                                    }
+                                }
+                            }
+                        } finally {
+                            // archive test results
+                            junit allowEmptyResults: true, testResults: 'integrationTests/it-results-upgrade.xml'
+                        }
+                    }
                 }
-
             }
 
             if (gitflow.isReleaseBranch()) {
