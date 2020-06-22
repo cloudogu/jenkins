@@ -17,6 +17,7 @@ node('docker'){
 
 node('vagrant') {
 
+    String doguName = "jenkins"
     Git git = new Git(this, "cesmarvin")
     git.committerName = 'cesmarvin'
     git.committerEmail = 'cesmarvin@cloudogu.com'
@@ -98,34 +99,33 @@ node('vagrant') {
             if (params.TestDoguUpgradeFromLatestRelease != null && params.TestDoguUpgradeFromLatestRelease){
                 stage('Upgrade test') {
                     // Remove new dogu that has been built and tested above
-                    ecoSystem.purge("jenkins")
+                    ecoSystem.purge(doguName)
 
                     // Install latest released version of dogu
-                    ecoSystem.install("official/jenkins")
+                    ecoSystem.install("official/" + doguName)
 
                     // Start dogu and wait until it is up
-                    ecoSystem.start("jenkins")
-                    ecoSystem.waitForDogu("jenkins")
+                    ecoSystem.start(doguName)
+                    ecoSystem.waitForDogu(doguName)
 
                     // Upgrade dogu by building again
+                    // currentDoguVersionString, e.g. "Version": "2.222.4-1",
                     String currentDoguVersionString = sh(returnStdout: true, script: 'grep .Version dogu.json').trim()
-                    print "current dogu version: ${currentDoguVersionString}"
-                    String second = currentDoguVersionString.split('-')[1]
-                    print "second half: ${second}"
-                    String withoutcrap = second - "\","
-                    int number = withoutcrap.toInteger()
-                    int newnumber = number + 1
-                    print "new numer: ${newnumber}"
-                    String[] currentDoguVersionSplitted = currentDoguVersionString.split("\"")
-                    print "splitted currentDoguVersionString"
-                    String currentDoguVersion = currentDoguVersionSplitted[3]
+                    // releaseNumber, e.g. 1
+                    int releaseNumber = (currentDoguVersionString.split('-')[1] - "\",").toInteger()
+                    // newReleaseNumber, e.g. 2
+                    int newReleaseNumber = releaseNumber + 1
+                    print "new number: ${newReleaseNumber}"
+                    // currentDoguVersion, e.g. 2.222.4-1
+                    String currentDoguVersion = currentDoguVersionString.split("\"")[3]
                     print "current dogu version: ${currentDoguVersion}"
-                    String newNumber = currentDoguVersion.split("-")[0] + "-" + newnumber
-                    print "new number = ${newNumber}"
-                    ecoSystem.setVersion(newNumber)
+                    // newDoguVersion, e.g. 2.222.4-2
+                    String newDoguVersion = currentDoguVersion.split("-")[0] + "-" + newReleaseNumber
+                    print "newDoguVersion = ${newDoguVersion}"
+                    ecoSystem.setVersion(newDoguVersion)
                     ecoSystem.vagrant.sync()
                     ecoSystem.build("/dogu")
-                    ecoSystem.waitForDogu("jenkins")
+                    ecoSystem.waitForDogu(doguName)
 
                     // Run integration tests again to verify that the upgrade was successful
                     // see above
