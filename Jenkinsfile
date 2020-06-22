@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@3f65cd5c', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@a14afd9d', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
@@ -103,9 +103,29 @@ node('vagrant') {
                     // Install latest released version of dogu
                     ecoSystem.install("official/jenkins")
 
+                    // Start dogu and wait until it is up
+                    ecoSystem.start("jenkins")
+                    ecoSystem.waitForDogu("jenkins")
+
                     // Upgrade dogu by building again
-                    // TODO: Bump version in dogu.json or else upgrade scripts will not trigger
+                    String currentDoguVersionString = sh(returnStdout: true, script: 'grep .Version dogu.json').trim()
+                    print "current dogu version: ${currentDoguVersionString}"
+                    String second = currentDoguVersionString.split('-')[1]
+                    print "second half: ${second}"
+                    String withoutcrap = second - "\","
+                    int number = withoutcrap.toInteger()
+                    int newnumber = number + 1
+                    print "new numer: ${newnumber}"
+                    String[] currentDoguVersionSplitted = currentDoguVersionString.split("\"")
+                    print "splitted currentDoguVersionString"
+                    String currentDoguVersion = currentDoguVersionSplitted[3]
+                    print "current dogu version: ${currentDoguVersion}"
+                    String newNumber = currentDoguVersion.split("-")[0] + "-" + newnumber
+                    print "new number = ${newNumber}"
+                    ecoSystem.setVersion(newNumber)
+                    ecoSystem.vagrant.sync()
                     ecoSystem.build("/dogu")
+                    ecoSystem.waitForDogu("jenkins")
 
                     // Run integration tests again to verify that the upgrade was successful
                     // see above
