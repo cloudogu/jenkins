@@ -34,7 +34,8 @@ node('vagrant') {
             // Parameter to activate dogu upgrade test on demand
             parameters([
                 booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release', name: 'TestDoguUpgradeFromLatestRelease'),
-                string(defaultValue: '',description: 'Old Dogu version for the upgrade test', name: 'OldDoguVersionForUpgradeTest', trim: false)
+                // TODO: Remove defaultValue as soon as the bug in Git Plugin is fixed: https://support.cloudbees.com/hc/en-us/articles/214462938-Jobs-Failing-After-Upgrading-The-Git-Plugin
+                string(defaultValue: 'NOT_SET',description: 'Old Dogu version for the upgrade test', name: 'OldDoguVersionForUpgradeTest', trim: false)
             ])
         ])
 
@@ -75,7 +76,7 @@ node('vagrant') {
                     // Remove new dogu that has been built and tested above
                     ecoSystem.purge(doguName)
 
-                    if (params.OldDoguVersionForUpgradeTest != null && params.OldDoguVersionForUpgradeTest != ''){
+                    if (params.OldDoguVersionForUpgradeTest != null && params.OldDoguVersionForUpgradeTest != 'NOT_SET'){
                         println "Installing user defined version of dogu: " + params.OldDoguVersionForUpgradeTest
                         ecoSystem.install("official/" + doguName + " " + params.OldDoguVersionForUpgradeTest)
                     } else {
