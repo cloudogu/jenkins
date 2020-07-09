@@ -34,7 +34,7 @@ node('vagrant') {
             // Parameter to activate dogu upgrade test on demand
             parameters([
                 booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release', name: 'TestDoguUpgradeFromLatestRelease'),
-                string(description: 'Old Dogu version for the upgrade test', name: 'OldDoguVersionForUpgradeTest', trim: false)
+                string(defaultValue: '',description: 'Old Dogu version for the upgrade test', name: 'OldDoguVersionForUpgradeTest', trim: false)
             ])
         ])
 
@@ -75,7 +75,7 @@ node('vagrant') {
                     // Remove new dogu that has been built and tested above
                     ecoSystem.purge(doguName)
 
-                    if (params.OldDoguVersionForUpgradeTest != null){
+                    if (params.OldDoguVersionForUpgradeTest != null && params.OldDoguVersionForUpgradeTest != ''){
                         println "Installing user defined version of dogu: " + params.OldDoguVersionForUpgradeTest
                         ecoSystem.install("official/" + doguName + " " + params.OldDoguVersionForUpgradeTest)
                     } else {
