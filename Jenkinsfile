@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@a14afd9d', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@50895770', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
@@ -35,7 +35,7 @@ node('vagrant') {
             parameters([
                 booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release', name: 'TestDoguUpgradeFromLatestRelease'),
                 // TODO: Remove defaultValue as soon as the bug in Git Plugin is fixed: https://support.cloudbees.com/hc/en-us/articles/214462938-Jobs-Failing-After-Upgrading-The-Git-Plugin
-                string(defaultValue: '', description: 'Old Dogu version for the upgrade test', name: 'OldDoguVersionForUpgradeTest')
+                string(defaultValue: '', description: 'Old Dogu version for the upgrade test (optional)', name: 'OldDoguVersionForUpgradeTest')
             ])
         ])
 
@@ -83,26 +83,11 @@ node('vagrant') {
                         println "Installing latest released version of dogu..."
                         ecoSystem.install("official/" + doguName)
                     }
-
-                    // Start dogu and wait until it is up
                     ecoSystem.start(doguName)
                     ecoSystem.waitForDogu(doguName)
+                    ecoSystem.upgrade(ecoSystem)
 
-                    // Upgrade dogu by building again with new version
-                    // currentDoguVersionString, e.g. "Version": "2.222.4-1",
-                    String currentDoguVersionString = sh(returnStdout: true, script: 'grep .Version dogu.json').trim()
-                    // releaseNumber, e.g. 1
-                    int releaseNumber = (currentDoguVersionString.split('-')[1] - "\",").toInteger()
-                    // newReleaseNumber, e.g. 2
-                    int newReleaseNumber = releaseNumber + 1
-                    // currentDoguVersion, e.g. 2.222.4-1
-                    String currentDoguVersion = currentDoguVersionString.split("\"")[3]
-                    // newDoguVersion, e.g. 2.222.4-2
-                    String newDoguVersion = currentDoguVersion.split("-")[0] + "-" + newReleaseNumber
-                    ecoSystem.setVersion(newDoguVersion)
-                    ecoSystem.vagrant.sync()
-                    // Build/Upgrade dogu and wait for it to get healthy
-                    ecoSystem.build("/dogu")
+                    // Wait for upgraded dogu to get healthy
                     ecoSystem.waitForDogu(doguName)
 
                     // Run integration tests again to verify that the upgrade was successful
