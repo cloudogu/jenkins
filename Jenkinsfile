@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@50895770', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@bb14c825', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
@@ -34,7 +34,6 @@ node('vagrant') {
             // Parameter to activate dogu upgrade test on demand
             parameters([
                 booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release', name: 'TestDoguUpgradeFromLatestRelease'),
-                // TODO: Remove defaultValue as soon as the bug in Git Plugin is fixed: https://support.cloudbees.com/hc/en-us/articles/214462938-Jobs-Failing-After-Upgrading-The-Git-Plugin
                 string(defaultValue: '', description: 'Old Dogu version for the upgrade test (optional)', name: 'OldDoguVersionForUpgradeTest')
             ])
         ])
@@ -74,18 +73,18 @@ node('vagrant') {
             if (params.TestDoguUpgradeFromLatestRelease != null && params.TestDoguUpgradeFromLatestRelease){
                 stage('Upgrade test') {
                     // Remove new dogu that has been built and tested above
-                    ecoSystem.purge(doguName)
+                    ecoSystem.purgeDogu(doguName)
 
                     if (params.OldDoguVersionForUpgradeTest != ''){
                         println "Installing user defined version of dogu: " + params.OldDoguVersionForUpgradeTest
-                        ecoSystem.install("official/" + doguName + " " + params.OldDoguVersionForUpgradeTest)
+                        ecoSystem.installDogu("official/" + doguName + " " + params.OldDoguVersionForUpgradeTest)
                     } else {
                         println "Installing latest released version of dogu..."
-                        ecoSystem.install("official/" + doguName)
+                        ecoSystem.installDogu("official/" + doguName)
                     }
-                    ecoSystem.start(doguName)
+                    ecoSystem.startDogu(doguName)
                     ecoSystem.waitForDogu(doguName)
-                    ecoSystem.upgrade(ecoSystem)
+                    ecoSystem.upgradeDogu(ecoSystem)
 
                     // Wait for upgraded dogu to get healthy
                     ecoSystem.waitForDogu(doguName)
