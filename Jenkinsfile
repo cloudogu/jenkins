@@ -33,7 +33,7 @@ node('vagrant') {
             disableConcurrentBuilds(),
             // Parameter to activate dogu upgrade test on demand
             parameters([
-                booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release', name: 'TestDoguUpgradeFromLatestRelease'),
+                booleanParam(defaultValue: false, description: 'Test dogu upgrade', name: 'TestDoguUpgrade'),
                 string(defaultValue: '', description: 'Old Dogu version for the upgrade test (optional; e.g. 2.222.1-1)', name: 'OldDoguVersionForUpgradeTest')
             ])
         ])
@@ -70,8 +70,8 @@ node('vagrant') {
                 runIntegrationTests(ecoSystem.externalIP)
             }
 
-            if (params.TestDoguUpgradeFromLatestRelease != null && params.TestDoguUpgradeFromLatestRelease){
-                stage('Upgrade test') {
+            if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
+                stage('Upgrade dogu') {
                     // Remove new dogu that has been built and tested above
                     ecoSystem.purgeDogu(doguName)
 
@@ -88,7 +88,9 @@ node('vagrant') {
 
                     // Wait for upgraded dogu to get healthy
                     ecoSystem.waitForDogu(doguName)
+                }
 
+                stage('Integration Tests') {
                     // Run integration tests again to verify that the upgrade was successful
                     runIntegrationTests(ecoSystem.externalIP)
                 }
