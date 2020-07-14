@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@bb14c825', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
+@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@23efb9e', 'github.com/cloudogu/zalenium-build-lib@30923630ced3089ae0861bef25b60903429841aa'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
@@ -67,7 +67,7 @@ node('vagrant') {
             }
 
             stage('Integration Tests') {
-                runIntegrationTests(ecoSystem.externalIP)
+                ecoSystem.runYarnIntegrationTests(15, 'node:8.14.0-stretch')
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
@@ -90,9 +90,9 @@ node('vagrant') {
                     ecoSystem.waitForDogu(doguName)
                 }
 
-                stage('Integration Tests') {
+                stage('Integration Tests - After Upgrade') {
                     // Run integration tests again to verify that the upgrade was successful
-                    runIntegrationTests(ecoSystem.externalIP)
+                    ecoSystem.runYarnIntegrationTests(15, 'node:8.14.0-stretch')
                 }
             }
 
@@ -116,28 +116,6 @@ node('vagrant') {
             stage('Clean') {
                 ecoSystem.destroy()
             }
-        }
-    }
-}
-
-void runIntegrationTests(String externalIP) {
-    if (fileExists('integrationTests/it-results.xml')) {
-        sh 'rm -f integrationTests/it-results.xml'
-    }
-
-    timeout(time: 15, unit: 'MINUTES') {
-        try {
-            withZalenium { zaleniumIp ->
-                dir('integrationTests') {
-                    docker.image('node:8.14.0-stretch').inside("-e WEBDRIVER=remote -e CES_FQDN=${externalIP} -e SELENIUM_BROWSER=chrome -e SELENIUM_REMOTE_URL=http://${zaleniumIp}:4444/wd/hub") {
-                        sh 'yarn install'
-                        sh 'yarn run ci-test'
-                    }
-                }
-            }
-        } finally {
-            // archive test results
-            junit allowEmptyResults: true, testResults: 'integrationTests/it-results.xml'
         }
     }
 }
