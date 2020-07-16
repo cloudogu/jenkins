@@ -33,7 +33,7 @@ node('vagrant') {
             disableConcurrentBuilds(),
             // Parameter to activate dogu upgrade test on demand
             parameters([
-                booleanParam(defaultValue: false, description: 'Test dogu upgrade', name: 'TestDoguUpgrade'),
+                booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release or optionally from defined version below', name: 'TestDoguUpgrade'),
                 string(defaultValue: '', description: 'Old Dogu version for the upgrade test (optional; e.g. 2.222.1-1)', name: 'OldDoguVersionForUpgradeTest')
             ])
         ])
