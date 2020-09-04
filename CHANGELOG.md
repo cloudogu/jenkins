@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.235.5-1] - 2020-09-04
+### Changed
+- Upgrade to Jenkins 2.235.5 LTS; #66
+- Upgrade java base image to 11.0.5-3
+
 ## [v2.235.2-2] - 2020-08-19
 ### Fixed 
 - Fix overwriting of custom installed jdks in `init100jdkautoinstall.groovy`
