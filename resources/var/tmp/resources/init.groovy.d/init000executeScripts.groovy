@@ -38,7 +38,7 @@ try {
 	if (isCriticalScript(filename)){
 		println "Critical init script ${filename} returned an error. Shutting down jenkins..."
 		Jenkins.instance.doExit(null, null);
-	}else{
+	} else {
 		println "Non-critical init script ${filename} returned an error. Continuing jenkins startup..."
 	} 
 }
