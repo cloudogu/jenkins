@@ -44,9 +44,5 @@ try {
 }
 
 def isCriticalScript(String name){
-	if (name.contains(CRITICAL_SCRIPT_INDICATOR)){
-		return true
-	}else{
-		return false
-	}
+	return name.contains(CRITICAL_SCRIPT_INDICATOR)
 }
