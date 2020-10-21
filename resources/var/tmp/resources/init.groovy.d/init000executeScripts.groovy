@@ -9,7 +9,7 @@ import jenkins.model.*
 
 // Stop Jenkins in case an exception occurs in one of the scripts
 
-// Mark critical scripts: init010CRITinitScript.groovy
+// Mark critical scripts, for example: init010CRITinitScript.groovy
 // When an error in that scripts occur the jenkins will not be startet.
 @Field String CRITICAL_SCRIPT_INDICATOR = "CRIT"
 
