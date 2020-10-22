@@ -112,4 +112,6 @@ To mark a script as system **critical** add the **prefix** **CRIT** after the sc
 ### Non-critical scripts (Normal)
 To mark a script as **non-critical** add the **prefix** **NORM** after the script number. Modifications which only apply to additional features of Jenkins are usually non-critical (NORM) e.g. configuring a JDK or Maven.
 
+If scripts are marked as neither **CRIT** nor **NORM** they will be treated as non-critical.
+
 **Example:** `init100NORMmavenautoinstall.groovy`
