@@ -34,7 +34,8 @@ scripts.each {
         filename = scriptPath.name
         if (isCriticalScript(filename)) {
             println "Critical init script ${filename} returned an error. Shutting down jenkins..."
-            Jenkins.instance.doExit(null, null)
+            Jenkins.instance.doSafeExit(null)
+            System.exit(1)
     	} else {
             println "Non-critical init script ${filename} returned an error. Continuing jenkins startup..."
         }
