@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.235.5-2] - 2020-10-22
+### Changed
+- Split init scripts into critical and normal ones and only stop Jenkins startup if critical ones fail; #68
+
 ## [v2.235.5-1] - 2020-09-04
 ### Changed
 - Upgrade to Jenkins 2.235.5 LTS; #66
