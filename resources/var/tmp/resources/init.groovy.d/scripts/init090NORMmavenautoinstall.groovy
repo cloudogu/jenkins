@@ -13,7 +13,7 @@ import hudson.tools.*
 def mavenName = "M3"
 def targetVersion = "3.6.3"
 
-Collection<String> installedM3Versions(def mavenName) {
+Collection<String> getInstalledMavenVersionsWithName(def mavenName) {
     def versions = []
 
     def installations = Jenkins.instance.getDescriptor("hudson.tasks.Maven").getInstallations()
@@ -22,7 +22,9 @@ Collection<String> installedM3Versions(def mavenName) {
         if (installation.toString().contains(mavenName)) {
             installation.getProperties().each { property ->
                 property.installers.each { installer ->
-                    versions.add(installer.id)
+                    if (installer instanceof hudson.tasks.Maven$MavenInstaller){
+                        versions.add(installer.id)
+                    }
                 }
             }
         }
@@ -37,7 +39,7 @@ static def createMavenInstallation(def mavenName, def mavenVersion) {
     return new Maven.MavenInstallation(mavenName, null, [instSourcProp])
 }
 
-def addMavenToInstallations(def installation) {
+void addMavenToInstallations(def installation) {
     mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
     mavenInstallationsList = (mavenInstallations.installations as List)
     mavenInstallationsList.add(installation)
@@ -46,7 +48,27 @@ def addMavenToInstallations(def installation) {
     Jenkins.instance.save()
 }
 
-def removeNonTargetM3Installations(def mavenName, def targetVersion) {
+// Checks if property has only one hudson.tasks.Maven$MavenInstaller installer and no other installers.
+// Other possible installers are hudson.tools.ZipExtractionInstaller,
+// hudson.tools.CommandInstaller or hudson.tools.BatchCommandInstaller.
+boolean propertyHasOneMavenInstallerOnly(def property) {
+    int numberOfMavenInstallers = 0
+    property.installers.each { installer ->
+        if (installer instanceof hudson.tasks.Maven$MavenInstaller){
+            numberOfMavenInstallers++
+        } else {
+            return false
+        }
+    }
+    return numberOfMavenInstallers == 1
+}
+
+// Gets Maven version as String if only one Maven installer is defined in property
+String getSingleMavenInstallerVersion(def property){
+    return property.installers[0].id
+}
+
+void removeNonTargetM3Installations(def mavenName, def targetVersion) {
     def mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
     def mavenInstallationsList = (mavenInstallations.installations as List)
 
@@ -58,10 +80,13 @@ def removeNonTargetM3Installations(def mavenName, def targetVersion) {
         if (installation.toString().contains(mavenName)) {
             def versions = []
 
-            // find version ids of the installation
+            // find version ids of the installation, if any
             installation.getProperties().each { property ->
-                property.installers.each { installer ->
-                    versions.add(installer.id)
+                // Only get id if there is only one maven installer.
+                // More than one installer indicates settings modification by the user,
+                // which we do not want to remove
+                if (propertyHasOneMavenInstallerOnly(property)) {
+                    versions.add(getSingleMavenInstallerVersion(property))
                 }
             }
 
@@ -80,9 +105,12 @@ def removeNonTargetM3Installations(def mavenName, def targetVersion) {
     Jenkins.instance.save()
 }
 
+
+//// function definitions ready, work is done now:
+
 removeNonTargetM3Installations(mavenName, targetVersion)
 
-if (!installedM3Versions(mavenName).contains(targetVersion)) {
+if (!getInstalledMavenVersionsWithName(mavenName).contains(targetVersion)) {
     addMavenToInstallations(
             createMavenInstallation(mavenName, targetVersion)
     )
