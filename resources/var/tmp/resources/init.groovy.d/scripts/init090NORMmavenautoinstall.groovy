@@ -17,10 +17,10 @@ import hudson.tools.*
 def mavenName = "M3"
 def targetVersion = "3.6.3"
 
-List<hudson.tasks.Maven$MavenInstallation> getInstallationsWithName(String name, List<hudson.tasks.Maven$MavenInstallation> installations){
+List<hudson.tasks.Maven$MavenInstallation> getMavenInstallationsWithName(String name, List<hudson.tasks.Maven$MavenInstallation> installations){
     List<hudson.tasks.Maven$MavenInstallation> installationsWithName = []
         installations?.each { installation ->
-        if (installation.toString().contains(name)) {
+        if (installation.toString() == "MavenInstallation[$name]") {
             installationsWithName.add(installation)
         }
     }
@@ -32,7 +32,7 @@ Collection<String> getInstalledMavenVersionsWithName(def mavenName) {
 
     def installations = Jenkins.instance.getDescriptor("hudson.tasks.Maven").getInstallations()
 
-    def m3Installations = getInstallationsWithName(mavenName, installations as List)
+    def m3Installations = getMavenInstallationsWithName(mavenName, installations as List)
     m3Installations?.each { installation ->
         installation.getProperties().each { property ->
             property.installers.each { installer ->
@@ -88,7 +88,7 @@ List getNonTargetM3Installations(def mavenName, def targetVersion) {
     def toRemove = []
 
     // iterate over every maven installation with $mavenName name
-    def installationsWithCorrectName = getInstallationsWithName(mavenName, mavenInstallationsList)
+    def installationsWithCorrectName = getMavenInstallationsWithName(mavenName, mavenInstallationsList)
     installationsWithCorrectName.each { installation ->
         def versions = []
         // find version ids of the installation, if any
@@ -122,7 +122,7 @@ void removeNonTargetM3Installations(List toRemove){
 int getAmountOfInstallationsWithCorrectName(String name){
     def mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
     def mavenInstallationsList = (mavenInstallations.installations as List)
-    def installationsWithCorrectName = getInstallationsWithName(name, mavenInstallationsList)
+    def installationsWithCorrectName = getMavenInstallationsWithName(name, mavenInstallationsList)
     return installationsWithCorrectName.size()
 }
 
