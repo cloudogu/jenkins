@@ -46,16 +46,10 @@ void addMavenToInstallations(def installation) {
 // Other possible installers are hudson.tools.ZipExtractionInstaller,
 // hudson.tools.CommandInstaller or hudson.tools.BatchCommandInstaller.
 boolean propertyHasOneMavenInstallerOnly(def property) {
-    int numberOfMavenInstallers = 0
-    boolean noOtherInstallerDetected = true
-    property.installers.each { installer ->
-        if (installer instanceof hudson.tasks.Maven$MavenInstaller){
-            numberOfMavenInstallers++
-        } else {
-            noOtherInstallerDetected = false
-        }
+    if (property.installers.size() != 1 || !(property.installers[0] instanceof hudson.tasks.Maven$MavenInstaller)) {
+        return false
     }
-    return noOtherInstallerDetected && numberOfMavenInstallers == 1
+    return true
 }
 
 // Gets Maven version as String if only one Maven installer is defined in property
@@ -63,28 +57,21 @@ String getSingleMavenInstallerVersion(def property){
     return property.installers[0].id
 }
 
-List getNonTargetM3Installations(def mavenName, def targetVersion) {
-    def mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
-    def mavenInstallationsList = (mavenInstallations.installations as List)
+List getNonTargetM3Installations(def targetVersion, hudson.tasks.Maven$MavenInstallation mavenInstallationWithCorrectName) {
     def toRemove = []
-
-    // iterate over every maven installation with $mavenName name
-    def installationsWithCorrectName = getMavenInstallationsWithName(mavenName, mavenInstallationsList)
-    installationsWithCorrectName.each { installation ->
-        def versions = []
-        // find version ids of the installation, if any
-        installation.getProperties().each { property ->
-            // Only get id if there is only one maven installer.
-            // More than one installer indicates settings modification by the user,
-            // which we do not want to remove
-            if (propertyHasOneMavenInstallerOnly(property)) {
-                versions.add(getSingleMavenInstallerVersion(property))
-            }
+    def versions = []
+    // find version ids of the installation, if any
+    mavenInstallationWithCorrectName.getProperties().each { property ->
+        // Only get id if there is only one maven installer.
+        // More than one installer indicates settings modification by the user,
+        // which we do not want to remove
+        if (propertyHasOneMavenInstallerOnly(property)) {
+            versions.add(getSingleMavenInstallerVersion(property))
         }
-        // remember it as to be removed
-        if (!versions.isEmpty() && !versions.contains(targetVersion)) {
-            toRemove.add(installation)
-        }
+    }
+    // remember it as to be removed
+    if (!versions.isEmpty() && !versions.contains(targetVersion)) {
+        toRemove.add(mavenInstallationWithCorrectName)
     }
     return toRemove
 }
@@ -100,18 +87,18 @@ void removeNonTargetM3Installations(List toRemove){
     Jenkins.instance.save()
 }
 
-int getAmountOfInstallationsWithCorrectName(String name){
+List<hudson.tasks.Maven$MavenInstallation> getInstallationsWithCorrectName(String name){
     def mavenInstallations = Jenkins.instance.getExtensionList(hudson.tasks.Maven.DescriptorImpl.class)[0]
     def mavenInstallationsList = (mavenInstallations.installations as List)
     def installationsWithCorrectName = getMavenInstallationsWithName(name, mavenInstallationsList)
-    return installationsWithCorrectName.size()
+    return installationsWithCorrectName
 }
 
 
 //// function definitions ready, work is done now:
 
-int amountOfMavenInstallationsWithCorrectName = getAmountOfInstallationsWithCorrectName(mavenName)
-switch (amountOfMavenInstallationsWithCorrectName) {
+List<hudson.tasks.Maven$MavenInstallation> mavenInstallationsWithCorrectName = getInstallationsWithCorrectName(mavenName)
+switch (mavenInstallationsWithCorrectName.size()) {
     case 0:
         println "Adding a new Maven installation with name $mavenName"
         addMavenToInstallations(
@@ -119,7 +106,7 @@ switch (amountOfMavenInstallationsWithCorrectName) {
         )
         break;
     case 1:
-        def nonTargetMavenInstallations = getNonTargetM3Installations(mavenName, targetVersion)
+        def nonTargetMavenInstallations = getNonTargetM3Installations(targetVersion, mavenInstallationsWithCorrectName[0])
         if(!nonTargetMavenInstallations.isEmpty()){
             println "Removing old Maven installation with name $mavenName"
             removeNonTargetM3Installations(nonTargetMavenInstallations)
