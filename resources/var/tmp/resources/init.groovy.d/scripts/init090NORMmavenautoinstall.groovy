@@ -46,10 +46,7 @@ void addMavenToInstallations(def installation) {
 // Other possible installers are hudson.tools.ZipExtractionInstaller,
 // hudson.tools.CommandInstaller or hudson.tools.BatchCommandInstaller.
 boolean propertyHasOneMavenInstallerOnly(def property) {
-    if (property.installers.size() != 1 || !(property.installers[0] instanceof hudson.tasks.Maven$MavenInstaller)) {
-        return false
-    }
-    return true
+    return (property.installers.size() == 1 && (property.installers[0] instanceof hudson.tasks.Maven$MavenInstaller))
 }
 
 // Gets Maven version as String if only one Maven installer is defined in property
