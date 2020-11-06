@@ -27,25 +27,6 @@ List<hudson.tasks.Maven$MavenInstallation> getMavenInstallationsWithName(String 
     return installationsWithName
 }
 
-Collection<String> getInstalledMavenVersionsWithName(def mavenName) {
-    def versions = []
-
-    def installations = Jenkins.instance.getDescriptor("hudson.tasks.Maven").getInstallations()
-
-    def m3Installations = getMavenInstallationsWithName(mavenName, installations as List)
-    m3Installations?.each { installation ->
-        installation.getProperties().each { property ->
-            property.installers.each { installer ->
-                if (installer instanceof hudson.tasks.Maven$MavenInstaller){
-                    versions.add(installer.id)
-                }
-            }
-        }
-    }
-
-    return versions
-}
-
 static def createMavenInstallation(def mavenName, def mavenVersion) {
     def mvnInstaller = new Maven.MavenInstaller(mavenVersion)
     def instSourcProp = new InstallSourceProperty([mvnInstaller])
