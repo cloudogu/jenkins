@@ -28,7 +28,7 @@ afterEach(async() => {
 });
 
 
-describe('user permissions', () => {
+describe('init scripts tests', () => {
     test('init090NORMmavenautoinstall: M3 maven installer has been created', async() => {
         await driver.get(utils.getCasUrl(driver));
         await adminFunctions.giveAdminRights();
