@@ -90,7 +90,7 @@ void writeValueToEtcd(String key, String value) {
     }
 }
 
-LinkedHashMap buildNewAccessList(userOrGroup, permissions) {
+LinkedHashMap buildNewAccessList(String userOrGroup, String[] permissions) {
     def newPermissionsMap = [:]
     permissions.each {
         newPermissionsMap.put(Permission.fromId(it), userOrGroup)
@@ -122,14 +122,14 @@ String adminGroup = getValueFromEtcd(ADMINGROUPKEY)
 String adminGroupLast = getValueFromEtcd(ADMINGROUPLASTKEY)
 if (adminGroup == '') {
     println 'ERROR: There is no global admin group set in ' + ADMINGROUPKEY
-    System.exit(0)
+    throw new IllegalStateException('etcd key ' + ADMINGROUPKEY + ' missing')
 }
 if (instance.isUseSecurity()) {
     if (instance.pluginManager.activePlugins.find { it.shortName == 'matrix-auth' } != null) {
         AuthorizationStrategy authStrategy = instance.getAuthorizationStrategy()
         if (!authStrategy || isConfigured == '') {
             println('Initializing new matrix authorization strategy')
-            authStrategy = new hudson.security.ProjectMatrixAuthorizationStrategy()
+            authStrategy = new ProjectMatrixAuthorizationStrategy()
             // add permissions for "authenticated" users
             authenticated = buildNewAccessList('authenticated', getJenkinsAuthenticatedUserPermissions())
             authenticated.each { p, u -> authStrategy.add(p, u) }
@@ -157,7 +157,7 @@ if (instance.isUseSecurity()) {
             try {
                 writeValueToEtcd(ADMINGROUPLASTKEY, adminGroup)
             } catch (IllegalStateException exception) {
-                println 'ERROR: Could not write last admin group key to etcd: ' + e
+                throw new IllegalStateException('Could not write last admin group key to etcd', exception)
             }
             // now set the strategy globally
             instance.setAuthorizationStrategy(authStrategy)
