@@ -154,7 +154,11 @@ if (instance.isUseSecurity()) {
                 authStrategy = newAuthStrategy
             }
             // Updating last admin group key with current admin group name
-            writeValueToEtcd(ADMINGROUPLASTKEY, adminGroup)
+            try {
+                writeValueToEtcd(ADMINGROUPLASTKEY, adminGroup)
+            } catch (IllegalStateException exception) {
+                println 'ERROR: Could not write last admin group key to etcd: ' + e
+            }
             // now set the strategy globally
             instance.setAuthorizationStrategy(authStrategy)
             instance.save()
