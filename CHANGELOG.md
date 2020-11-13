@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgrade to Jenkins 2.249.3 LTS; #72
 - Upgrade java base image to 11.0.5-4
+- If the CES admin group changes, the old admin group loses all permissions in Jenkins now
 
 ### Fixed
 - The init090NORMmavenautoinstall.groovy script does no longer crash when the default `M3` maven installer has been adjusted by the Jenkins administrator; #70
