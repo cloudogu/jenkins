@@ -120,6 +120,10 @@ Jenkins instance = Jenkins.get()
 String isConfigured = getValueFromEtcd(ETCD_CONFIGURED_KEY)
 String adminGroup = getValueFromEtcd(ADMINGROUPKEY)
 String adminGroupLast = getValueFromEtcd(ADMINGROUPLASTKEY)
+if (adminGroup == '') {
+    println 'ERROR: There is no global admin group set in ' + ADMINGROUPKEY
+    System.exit(0)
+}
 if (instance.isUseSecurity()) {
     if (instance.pluginManager.activePlugins.find { it.shortName == 'matrix-auth' } != null) {
         AuthorizationStrategy authStrategy = instance.getAuthorizationStrategy()
