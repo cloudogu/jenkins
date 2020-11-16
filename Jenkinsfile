@@ -11,7 +11,7 @@ node('docker'){
 
         stage('Lint') {
             lintDockerfile()
-            shellCheck("resources/startup.sh resources/upgrade-notification.sh")
+            shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
         }
 }
 
