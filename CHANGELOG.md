@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.249.3-1] - 2020-11-16
+### Changed
+- Upgrade to Jenkins 2.249.3 LTS; #72
+- Upgrade java base image to 11.0.5-4
+- If the CES admin group changes, the old admin group loses all permissions in Jenkins now
+
+Attention! DO NOT change the CES global admin group and upgrade the dogu at the same time!
+If you have changed the global admin group, restart the Jenkins dogu before upgrading it!
+
+### Fixed
+- The init090NORMmavenautoinstall.groovy script does no longer crash when the default `M3` maven installer has been adjusted by the Jenkins administrator; #70
+
 ## [v2.235.5-2] - 2020-10-22
 ### Changed
 - Split init scripts into critical and normal ones and only stop Jenkins startup if critical ones fail; #68

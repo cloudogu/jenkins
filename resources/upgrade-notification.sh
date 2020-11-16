@@ -26,3 +26,9 @@ if [ "2.222.1-2" == "$(printf "%s\\n2.222.1-2" "${TO_VERSION}" | sort | head -n1
    printf "\nFor more information see %s \n\n" "https://github.com/cloudogu/jenkins/blob/develop/README.md#building-with-openjdk-8"
 
 fi
+
+# print upgrade notice for Jenkins 2.249.3-1 concerning admin group change
+if [ "2.249.3-1" == "$(printf "%s\\n2.249.3-1" "${TO_VERSION}" | sort | head -n1)" ] && [ "2.249.3-1" != "$(printf "%s\\n2.249.3-1" "${FROM_VERSION}" | sort | head -n1)" ]; then
+   printf "\nYou are upgrading the Jenkins dogu to version 2.249.3-1 or higher. DO NOT change the CES global admin group at the same time!"
+   printf "\nIf you have changed the global admin group (via /config/_global/admin_group etcd key), restart the Jenkins dogu before upgrading it!"
+fi
