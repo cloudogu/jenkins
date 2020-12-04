@@ -60,10 +60,24 @@ if [[ ! -e /var/lib/jenkins/.mavenrc ]]; then
 fi
 
 # starting jenkins
-java -Djava.awt.headless=true \
-  -Djava.net.preferIPv4Stack=true \
-  -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
-  -Djavax.net.ssl.trustStorePassword=changeit \
-  -Djenkins.install.runSetupWizard=false \
-  -Djava.awt.headless=true \
-  -jar /jenkins.war --prefix=/jenkins
+if [[ "$(doguctl config "container_config/memory_limit" -d "empty")" == "empty" ]];  then
+  echo "Starting Jenkins without memory limits..."
+  java -Djava.awt.headless=true \
+    -Djava.net.preferIPv4Stack=true \
+    -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
+    -Djavax.net.ssl.trustStorePassword=changeit \
+    -Djenkins.install.runSetupWizard=false \
+    -Djava.awt.headless=true \
+    -jar /jenkins.war --prefix=/jenkins
+else
+  echo "Starting Jenkins with memory limits..."
+  java -Djava.awt.headless=true \
+    -Djava.net.preferIPv4Stack=true \
+    -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
+    -Djavax.net.ssl.trustStorePassword=changeit \
+    -Djenkins.install.runSetupWizard=false \
+    -Djava.awt.headless=true \
+    -XX:MaxRAMPercentage=85.0 \
+    -XX:MinRAMPercentage=50.0 \
+    -jar /jenkins.war --prefix=/jenkins
+fi
