@@ -9,6 +9,11 @@ if (!webdriverType) {
   webdriverType = 'local';
 }
 
+let disableVideoRecording = process.env.DISABLE_VIDEO_RECORDING;
+if(!disableVideoRecording) {
+    disableVideoRecording = 'true'
+}
+
 module.exports = {
     fqdn: cesFqdn,
     baseUrl: 'https://' + cesFqdn,
@@ -21,5 +26,6 @@ module.exports = {
     email: 'ces-admin@cloudogu.com',
     webdriverType: webdriverType,
     debug: true,
-    adminGroup: 'CesAdministrators'
+    adminGroup: 'CesAdministrators',
+    disableVideoRecording: disableVideoRecording
 };

@@ -34,7 +34,8 @@ node('vagrant') {
             // Parameter to activate dogu upgrade test on demand
             parameters([
                 booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release or optionally from defined version below', name: 'TestDoguUpgrade'),
-                string(defaultValue: '', description: 'Old Dogu version for the upgrade test (optional; e.g. 2.222.1-1)', name: 'OldDoguVersionForUpgradeTest')
+                string(defaultValue: '', description: 'Old Dogu version for the upgrade test (optional; e.g. 2.222.1-1)', name: 'OldDoguVersionForUpgradeTest'),
+                booleanParam(defaultValue: true, description: 'Disables the video recording during the test execution', name: 'DisableVideoRecording'),
             ])
         ])
 
@@ -67,7 +68,25 @@ node('vagrant') {
             }
 
             stage('Integration Tests') {
-                ecoSystem.runYarnIntegrationTests(15, 'node:8.14.0-stretch')
+                sh 'rm -f integrationTests/it-results.xml'
+                String nodeImage = 'node:8.14.0-stretch'
+                String externalIP = ecoSystem.externalIP
+                timeout(time: 15, unit: 'MINUTES') {
+                    try {
+                        withZalenium { zaleniumIp ->
+                            dir('integrationTests') {
+                                String disableVideoRecordingEnvVar = params.DisableVideoRecording ? "-e DISABLE_VIDEO_RECORDING=true" : ""
+                                docker.image(nodeImage).inside("-e WEBDRIVER=remote -e CES_FQDN=${externalIP} ${disableVideoRecordingEnvVar} -e SELENIUM_BROWSER=chrome -e SELENIUM_REMOTE_URL=http://${zaleniumIp}:4444/wd/hub") {
+                                    sh 'yarn install'
+                                    sh 'yarn run ci-test'
+                                }
+                            }
+                        }
+                    } finally {
+                        // archive test results
+                        script.junit allowEmptyResults: true, testResults: 'integrationTests/it-results.xml'
+                    }
+                }
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){

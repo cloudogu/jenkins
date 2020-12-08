@@ -13,6 +13,9 @@ chromeCapabilities.set('chromeOptions', chromeOptions);
 chromeCapabilities.set('name', 'Jenkins ITs');
 // set filename pattern for zalenium videos
 chromeCapabilities.set("testFileNameTemplate", "{testName}_{testStatus}");
+if(!config.disableVideoRecording) {
+    chromeCapabilities.set("recordVideo", "false");
+}
 chromeCapabilities.setAcceptInsecureCerts(true);
 
 let driver = null;
