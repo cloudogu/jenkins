@@ -84,7 +84,7 @@ node('vagrant') {
                         }
                     } finally {
                         // archive test results
-                        script.junit allowEmptyResults: true, testResults: 'integrationTests/it-results.xml'
+                        junit allowEmptyResults: true, testResults: 'integrationTests/it-results.xml'
                     }
                 }
             }
