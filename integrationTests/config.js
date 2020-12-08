@@ -9,9 +9,10 @@ if (!webdriverType) {
   webdriverType = 'local';
 }
 
-let disableVideoRecording = process.env.DISABLE_VIDEO_RECORDING;
-if(!disableVideoRecording) {
-    disableVideoRecording = 'true'
+let enableVideoRecording = false;
+if(!process.env.ENABLE_VIDEO_RECORDING) {
+    console.log('...video recording will be enabled during test execution')
+    enableVideoRecording = true;
 }
 
 module.exports = {
@@ -27,5 +28,5 @@ module.exports = {
     webdriverType: webdriverType,
     debug: true,
     adminGroup: 'CesAdministrators',
-    disableVideoRecording: disableVideoRecording
+    enableVideoRecording: enableVideoRecording
 };
