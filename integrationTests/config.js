@@ -10,7 +10,7 @@ if (!webdriverType) {
 }
 
 let enableVideoRecording = false;
-if(!process.env.ENABLE_VIDEO_RECORDING) {
+if(process.env.ENABLE_VIDEO_RECORDING) {
     console.log('...video recording will be enabled during test execution')
     enableVideoRecording = true;
 }

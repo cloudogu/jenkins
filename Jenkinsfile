@@ -35,7 +35,7 @@ node('vagrant') {
             parameters([
                 booleanParam(defaultValue: false, description: 'Test dogu upgrade from latest release or optionally from defined version below', name: 'TestDoguUpgrade'),
                 string(defaultValue: '', description: 'Old Dogu version for the upgrade test (optional; e.g. 2.222.1-1)', name: 'OldDoguVersionForUpgradeTest'),
-                booleanParam(defaultValue: true, description: 'Enables the video recording during the test execution', name: 'EnableVideoRecording'),
+                booleanParam(defaultValue: false, description: 'Enables the video recording during the test execution', name: 'EnableVideoRecording'),
             ])
         ])
 
@@ -75,7 +75,7 @@ node('vagrant') {
                     try {
                         withZalenium { zaleniumIp ->
                             dir('integrationTests') {
-                                String enableVideoRecordingEnvVar = params.EnableVideoRecording ? "-e DISABLE_VIDEO_RECORDING=true" : ""
+                                String enableVideoRecordingEnvVar = params.EnableVideoRecording ? "-e ENABLE_VIDEO_RECORDING=true" : ""
                                 docker.image(nodeImage).inside("-e WEBDRIVER=remote -e CES_FQDN=${externalIP} ${enableVideoRecordingEnvVar} -e SELENIUM_BROWSER=chrome -e SELENIUM_REMOTE_URL=http://${zaleniumIp}:4444/wd/hub") {
                                     sh 'yarn install'
                                     sh 'yarn run ci-test'
