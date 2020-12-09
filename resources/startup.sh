@@ -70,14 +70,17 @@ if [[ "$(doguctl config "container_config/memory_limit" -d "empty")" == "empty" 
     -Djava.awt.headless=true \
     -jar /jenkins.war --prefix=/jenkins
 else
-  echo "Starting Jenkins with memory limits..."
+  # Retrieve configurable java limits from etcd, valid default values exist
+  MEMORY_LIMIT_MAX_PERCENTAGE=$(doguctl config "container_config/java_max_ram_percentage")
+  MEMORY_LIMIT_MIN_PERCENTAGE=$(doguctl config "container_config/java_min_ram_percentage")
+  echo "Starting Jenkins with memory limits: MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}, MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE} ..."
   java -Djava.awt.headless=true \
     -Djava.net.preferIPv4Stack=true \
     -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
     -Djavax.net.ssl.trustStorePassword=changeit \
     -Djenkins.install.runSetupWizard=false \
     -Djava.awt.headless=true \
-    -XX:MaxRAMPercentage=85.0 \
-    -XX:MinRAMPercentage=50.0 \
+    -XX:MaxRAMPercentage="${MEMORY_LIMIT_MAX_PERCENTAGE}" \
+    -XX:MinRAMPercentage="${MEMORY_LIMIT_MIN_PERCENTAGE}" \
     -jar /jenkins.war --prefix=/jenkins
 fi
