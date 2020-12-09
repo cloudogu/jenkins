@@ -16,7 +16,7 @@ chromeCapabilities.set("testFileNameTemplate", "{testName}_{testStatus}");
 if(!config.enableVideoRecording) {
     chromeCapabilities.set("recordVideo", "false");
 }
-chromeCapabilities.setAcceptInsecureCerts(true);
+chromeCapabilities.set("acceptInsecureCerts", true);
 
 let driver = null;
 
