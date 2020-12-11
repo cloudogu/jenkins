@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@7ada1d992dbd90d22f13d0b39257ec0650168ae0', 'github.com/cloudogu/zalenium-build-lib@652e3d08880b9268239e072427abc9d838a51553'])
+@Library(['github.com/cloudogu/ces-build-lib@1.43.0', 'github.com/cloudogu/dogu-build-lib@c42865d58142d89d734f1457d077b4b8018bb62a', 'github.com/cloudogu/zalenium-build-lib@be3c37d7fafaca38edcae8a368b134584ba2c320'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
@@ -69,25 +69,6 @@ node('vagrant') {
 
             stage('Integration Tests') {
                 ecoSystem.runYarnIntegrationTests(15, 'node:8.14.0-stretch')
-//                sh 'rm -f integrationTests/it-results.xml'
-//                String nodeImage = 'node:8.14.0-stretch'
-//                String externalIP = ecoSystem.externalIP
-//                timeout(time: 15, unit: 'MINUTES') {
-//                    try {
-//                        withZalenium { zaleniumIp ->
-//                            dir('integrationTests') {
-//                                String enableVideoRecordingEnvVar = params.EnableVideoRecording ? "-e ENABLE_VIDEO_RECORDING=true" : ""
-//                                docker.image(nodeImage).inside("-e WEBDRIVER=remote -e CES_FQDN=${externalIP} ${enableVideoRecordingEnvVar} -e SELENIUM_BROWSER=chrome -e SELENIUM_REMOTE_URL=http://${zaleniumIp}:4444/wd/hub") {
-//                                    sh 'yarn install'
-//                                    sh 'yarn run ci-test'
-//                                }
-//                            }
-//                        }
-//                    } finally {
-//                        // archive test results
-//                        junit allowEmptyResults: true, testResults: 'integrationTests/it-results.xml'
-//                    }
-//                }
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
