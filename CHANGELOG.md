@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Ability to set memory limit via `cesapp edit-config`
+- Ability to configure the `MaxRamPercentage` and `MinRamPercentage` for the CAS process inside the container via `cesapp edit-conf` (#74)
+
 ## [v2.249.3-1] - 2020-11-16
 ### Changed
 - Upgrade to Jenkins 2.249.3 LTS; #72
