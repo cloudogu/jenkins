@@ -1,6 +1,6 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.249.3-1",
+  "Version": "2.249.3-2",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
@@ -49,7 +49,7 @@
     },
     {
       "Name": "container_config/memory_limit",
-      "Description":"Limits the container's memory usage. Use a positive integer value followed by one of these units [b,k,m,g] (byte, kibibyte, mebibyte, gibibyte).",
+      "Description": "Limits the container's memory usage. Use a positive integer value followed by one of these units [b,k,m,g] (byte, kibibyte, mebibyte, gibibyte).",
       "Optional": true,
       "Validation": {
         "Type": "BINARY_MEASUREMENT"
@@ -57,7 +57,7 @@
     },
     {
       "Name": "container_config/swap_limit",
-      "Description":"Limits the container's swap memory usage. Use zero or a positive integer value followed by one of these units [b,k,m,g] (byte, kibibyte, mebibyte, gibibyte). 0 will disable swapping.",
+      "Description": "Limits the container's swap memory usage. Use zero or a positive integer value followed by one of these units [b,k,m,g] (byte, kibibyte, mebibyte, gibibyte). 0 will disable swapping.",
       "Optional": true,
       "Validation": {
         "Type": "BINARY_MEASUREMENT"
@@ -65,7 +65,7 @@
     },
     {
       "Name": "container_config/java_max_ram_percentage",
-      "Description":"Limits the heap stack size of the Jenkins process to the configured percentage of the available physical memory when the container has more than approx. 250 MB of memory available. Is only considered when a memory_limit is set. Use a valid float value with decimals between 0 and 100 (f. ex. 55.0 for 55%). Default value for Jenkins: 25%",
+      "Description": "Limits the heap stack size of the Jenkins process to the configured percentage of the available physical memory when the container has more than approx. 250 MB of memory available. Is only considered when a memory_limit is set. Use a valid float value with decimals between 0 and 100 (f. ex. 55.0 for 55%). Default value for Jenkins: 25%",
       "Optional": true,
       "Default": "25.0",
       "Validation": {
@@ -74,7 +74,7 @@
     },
     {
       "Name": "container_config/java_min_ram_percentage",
-      "Description":"Limits the heap stack size of the Jenkins process to the configured percentage of the available physical memory when the container has less than approx. 250 MB of memory available. Is only considered when a memory_limit is set. Use a valid float value with decimals between 0 and 100 (f. ex. 55.0 for 55%). Default value for Jenkins: 50%",
+      "Description": "Limits the heap stack size of the Jenkins process to the configured percentage of the available physical memory when the container has less than approx. 250 MB of memory available. Is only considered when a memory_limit is set. Use a valid float value with decimals between 0 and 100 (f. ex. 55.0 for 55%). Default value for Jenkins: 50%",
       "Optional": true,
       "Default": "50.0",
       "Validation": {
