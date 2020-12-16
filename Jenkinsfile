@@ -68,7 +68,7 @@ node('vagrant') {
             }
 
             stage('Integration Tests') {
-                ecoSystem.runYarnIntegrationTests(15, 'node:8.14.0-stretch')
+                ecoSystem.runYarnIntegrationTests(15, 'node:8.14.0-stretch', [], params.EnableVideoRecording)
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
