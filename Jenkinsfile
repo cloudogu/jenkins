@@ -42,7 +42,7 @@ node('vagrant') {
                 echo 'This is a pull request; checking changelog...'
                 String newChanges = changelog.changesForVersion('Unreleased')
                 if (!newChanges || newChanges.allWhitespace) {
-                    unstable('There is no information about unreleased changes in the CHANGELOG.md')
+                    unstable('CHANGELOG.md should contain new change entries in the `[Unreleased]` section but none were found.')
                 }
             }
         }
