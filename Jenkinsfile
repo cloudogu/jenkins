@@ -13,7 +13,6 @@ node('vagrant') {
     GitFlow gitflow = new GitFlow(this, git)
     GitHub github = new GitHub(this, git)
     Changelog changelog = new Changelog(this)
-    branch = "${env.BRANCH_NAME}"
 
     timestamps {
         properties([
@@ -40,7 +39,7 @@ node('vagrant') {
             shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
 
             if (env.CHANGE_TARGET) {
-                // This branch has been detected as a pull request
+                echo 'This is a pull request; checking changelog...'
                 String newChanges = changelog.changesForVersion('Unreleased')
                 if (!newChanges || newChanges.allWhitespace) {
                     unstable('There is no information about unreleased changes in the CHANGELOG.md')
