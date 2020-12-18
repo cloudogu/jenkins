@@ -4,17 +4,6 @@ import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import com.cloudogu.ces.zaleniumbuildlib.*
 
-node('docker'){
-        stage('Checkout') {
-            checkout scm
-        }
-
-        stage('Lint') {
-            lintDockerfile()
-            shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
-        }
-}
-
 node('vagrant') {
 
     String doguName = "jenkins"
@@ -25,7 +14,7 @@ node('vagrant') {
     GitHub github = new GitHub(this, git)
     Changelog changelog = new Changelog(this)
 
-    timestamps{
+    timestamps {
         properties([
             // Keep only the last x builds to preserve space
             buildDiscarder(logRotator(numToKeepStr: '10')),
@@ -41,10 +30,26 @@ node('vagrant') {
 
         EcoSystem ecoSystem = new EcoSystem(this, "gcloud-ces-operations-internal-packer", "jenkins-gcloud-ces-operations-internal")
 
-        try {
+        stage('Checkout') {
+            checkout scm
+        }
 
+        stage('Lint') {
+            lintDockerfile()
+            shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
+
+            if (env.CHANGE_TARGET) {
+                echo 'This is a pull request; checking changelog...'
+                String newChanges = changelog.changesForVersion('Unreleased')
+                if (!newChanges || newChanges.allWhitespace) {
+                    unstable('CHANGELOG.md should contain new change entries in the `[Unreleased]` section but none were found.')
+                }
+            }
+        }
+
+        try {
             stage('Provision') {
-                ecoSystem.provision("/dogu");
+                ecoSystem.provision("/dogu")
             }
 
             stage('Setup') {
