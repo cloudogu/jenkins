@@ -25,7 +25,7 @@ node('vagrant') {
     GitHub github = new GitHub(this, git)
     Changelog changelog = new Changelog(this)
 
-    timestamps{
+    timestamps {
         properties([
             // Keep only the last x builds to preserve space
             buildDiscarder(logRotator(numToKeepStr: '10')),
@@ -43,8 +43,13 @@ node('vagrant') {
 
         try {
 
+            stage('Check changelog') {
+                String newChanges = changelog.changesForVersion('Unreleased')
+                echo 'DEBUG: NEW CHANGES:' + newChanges
+            }
+
             stage('Provision') {
-                ecoSystem.provision("/dogu");
+                ecoSystem.provision("/dogu")
             }
 
             stage('Setup') {
