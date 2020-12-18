@@ -24,6 +24,7 @@ node('vagrant') {
     GitFlow gitflow = new GitFlow(this, git)
     GitHub github = new GitHub(this, git)
     Changelog changelog = new Changelog(this)
+    branch = "${env.BRANCH_NAME}"
 
     timestamps {
         properties([
@@ -44,8 +45,13 @@ node('vagrant') {
         try {
 
             stage('Check changelog') {
-                String newChanges = changelog.changesForVersion('Unreleased')
-                echo 'DEBUG: NEW CHANGES:' + newChanges
+                if (env.CHANGE_TARGET) {
+                    // This branch has been detected as a pull request
+                    String newChanges = changelog.changesForVersion('Unreleased')
+                    if (!newChanges || newChanges.allWhitespace) {
+                        unstable('There is no information about unreleased changes in the CHANGELOG.md')
+                    }
+                }
             }
 
             stage('Provision') {
