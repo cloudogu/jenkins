@@ -6,16 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-
-- Update dogu-build-lib to `v1.1.1`
-- Update zalenium-build-lib to `v2.1.0`
-- toggle video recording with build parameter (#76)
-
 ## [v2.249.3-2] - 2020-12-14
-
 ### Added
-
 - Ability to set memory limit via `cesapp edit-config`
 - Ability to configure the `MaxRamPercentage` and `MinRamPercentage` for the CAS process inside the container via `cesapp edit-conf` (#74)
 
