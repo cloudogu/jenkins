@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Upgrade to Jenkins 2.263.2 LTS; #79
 - Update dogu-build-lib to `v1.1.1`
 - Update zalenium-build-lib to `v2.1.0`
 - Toggle video recording with build parameter (#76)
