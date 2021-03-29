@@ -68,6 +68,17 @@ node('vagrant') {
                 ecoSystem.build("/dogu")
             }
 
+            stage('Trivy-Scan') {
+                doguJson = readJSON(file: './dogu.json')
+                String imageName = doguJson.Image
+                trivyConfig = [
+                    imageName: imageName,
+                    trivyVersion: '0.16.0',
+                    allowList: []
+                ]
+                findVulnerabilitiesWithTrivy(trivyConfig as Map)
+            }
+
             stage('Verify') {
                 ecoSystem.verify("/dogu")
             }
