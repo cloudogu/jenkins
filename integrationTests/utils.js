@@ -70,7 +70,7 @@ exports.login = async function login(driver) {
 
     await driver.findElement(By.id('username')).sendKeys(config.username);
     await driver.findElement(By.id('password')).sendKeys(config.password);
-    return driver.findElement(By.css('input[name="submit"]')).click();
+    return driver.findElement(By.css('button[name="submit"]')).click();
 };
 
 exports.isAdministrator = async function isAdministrator(driver){
