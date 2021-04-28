@@ -3,7 +3,7 @@ FROM registry.cloudogu.com/official/java:11.0.5-4
 
 LABEL NAME="official/jenkins" \
       VERSION="2.263.3-1" \
-      maintainer="sebastian.sdorra@cloudogu.com"
+      maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
 ENV JENKINS_HOME=/var/lib/jenkins \
