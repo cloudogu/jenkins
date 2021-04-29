@@ -86,7 +86,7 @@ module.exports = class AdminFunctions{
         await driver.wait(until.elementLocated(By.id('password')), 5000);
         await driver.findElement(By.id('username')).sendKeys(this.testuserName);
         await driver.findElement(By.id('password')).sendKeys(this.testuserPasswort);
-        await driver.findElement(By.css('input[name="submit"]')).click();
+        await driver.findElement(By.css('button[name="submit"]')).click();
     };
 
 

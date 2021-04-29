@@ -28,8 +28,8 @@ def getValueFromEtcd(String key){
     }
 }
 
-// Make sure CAS-Plugin version is at least 1.4.3 to work with Jenkins 2.150.2 and following
-minimalCasPluginVersion = "1.4.3"
+// Make sure CAS-Plugin version is at least 1.5.0 to work with Jenkins 2.277.3 and following
+minimalCasPluginVersion = "1.5.0"
 boolean isCasVersionSufficient(String version) {
     List minVer = minimalCasPluginVersion.tokenize('.')
     List testVer = version.tokenize('.')
