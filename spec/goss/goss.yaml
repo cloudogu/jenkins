@@ -125,7 +125,6 @@ file:
     exists: true
     filetype: file
     owner: jenkins
-    owner: jenkins
     contains:
     - disabledAdministrativeMonitors
     - <string>hudson.model.UpdateCenter$CoreUpdateMonitor</string>
