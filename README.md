@@ -15,6 +15,8 @@ and facilitating technical aspects of continuous delivery.
 
 **Website:** https://jenkins-ci.org
 
+**Docs:** https://jenkins.io/doc/
+
 **Dependencies:** cas, nginx, postfix
 
 ---
