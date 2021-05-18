@@ -20,9 +20,10 @@ describe('cas rest basic authentication', () => {
 
     test('authentication with API key', async () => {
         driver = utils.createDriver(webdriver);
-        await driver.get(utils.getCasUrl(driver));
         // hide warp menu hint
-        await driver.wait(until.elementLocated(By.className('warp-onboarding-hint')), 5000).click();
+        await driver.manage().addCookie(new Cookie("warpMenuHideTooltip", "hide"));
+
+        await driver.get(utils.getCasUrl(driver));
         await utils.login(driver);
         // go to user configuration page
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + config.username + "/configure");
