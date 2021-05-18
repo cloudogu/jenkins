@@ -21,8 +21,10 @@ describe('cas rest basic authentication', () => {
     test('authentication with API key', async () => {
         driver = utils.createDriver(webdriver);
         // hide warp menu hint
-        await driver.manage().addCookie(new Cookie("warpMenuHideTooltip", "hide"));
-
+        await driver.manage().addCookie({
+            name: "warpMenuHideTooltip",
+            value: "hide"
+        });
         await driver.get(utils.getCasUrl(driver));
         await utils.login(driver);
         // go to user configuration page
