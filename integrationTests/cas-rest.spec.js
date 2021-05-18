@@ -22,8 +22,10 @@ describe('cas rest basic authentication', () => {
         driver = utils.createDriver(webdriver);
         await driver.get(utils.getCasUrl(driver));
         // hide warp menu hint
-        driver.getLocalStorage().setItem("warpMenuHideTooltip", "hide");
-        await driver.get(utils.getCasUrl(driver));
+        //driver.getLocalStorage().setItem("warpMenuHideTooltip", "hide");
+        await driver.sleep(5000);
+        await driver.wait(until.elementLocated(By.className('warp-onboarding-hint')), 5000).click();
+        await driver.sleep(5000);
         await utils.login(driver);
         // go to user configuration page
         await driver.get(config.baseUrl + config.jenkinsContextPath + "/user/" + config.username + "/configure");
