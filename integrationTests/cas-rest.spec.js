@@ -22,7 +22,6 @@ describe('cas rest basic authentication', () => {
         driver = utils.createDriver(webdriver);
         await driver.get(utils.getCasUrl(driver));
         // hide warp menu hint
-        //driver.getLocalStorage().setItem("warpMenuHideTooltip", "hide");
         await driver.sleep(5000);
         await driver.wait(until.elementLocated(By.className('warp-onboarding-hint')), 5000).click();
         await driver.sleep(5000);
