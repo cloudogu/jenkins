@@ -8,9 +8,9 @@ def installedJDKs = JDK[];
 installedJDKs = desc.getInstallations();
 print "init100jdkautoinstall: start jdk installation\n"
 
-def JDK_8_NAME = "OpenJDK-8";
+def JDK_11_NAME = "OpenJDK-11";
 // add more jdk-entries to the map to install multiple jdks by default
-def requestedJDKVersions = [ (JDK_8_NAME): "java-1.8-openjdk"];
+def requestedJDKVersions = [ (JDK_11_NAME): "java-11-openjdk"];
 
 // the installations consists of all already installed jdks and all jdks definied in requestedJDKVersions
 def installations = [];
@@ -23,9 +23,9 @@ for (jdk in requestedJDKVersions) {
 for (jdk in installedJDKs){
     print("init100jdkautoinstall: found installation ${jdk.getName()}\n")
     // do not add requestedJDKVersions
-    if (jdk.getName().equals(JDK_8_NAME)){
-        print("init100jdkautoinstall: JDK ${JDK_8_NAME} already installed\n")
-    }else{
+    if (jdk.getName().equals(JDK_11_NAME)){
+        print("init100jdkautoinstall: JDK ${JDK_11_NAME} already installed\n")
+    } else {
         installations.push(jdk)
     }
 }
