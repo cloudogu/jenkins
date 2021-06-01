@@ -6,7 +6,7 @@ def inst = Jenkins.getInstance();
 def desc = inst.getDescriptor('hudson.model.JDK');
 def installedJDKs = JDK[];
 installedJDKs = desc.getInstallations();
-print 'init100jdkautoinstall: Starting JDK configuration\n'
+print 'Starting JDK configuration\n'
 
 String JDK_8_NAME = 'OpenJDK-8'
 String JDK_11_NAME = 'OpenJDK-11'
@@ -18,14 +18,14 @@ def installations = [];
 
 for (jdk in requestedJDKVersions) {
     def installation = new JDK(jdk.key, "/usr/lib/jvm/${jdk.value}")
-    print("init100jdkautoinstall: Implementing/Keeping JDK configuration ${jdk.key}\n")
+    print("Implementing/Keeping JDK configuration ${jdk.key}\n")
     installations.push(installation)
 }
 
 for (jdk in installedJDKs) {
     // do not add requestedJDKVersions
     if (!(jdk.getName().equals(JDK_11_NAME)) && !(jdk.getName().equals(JDK_8_NAME))) {
-        print("init100jdkautoinstall: Keeping JDK configuration ${jdk.getName()}\n")
+        print("Keeping JDK configuration ${jdk.getName()}\n")
         installations.push(jdk)
     }
 }
@@ -33,4 +33,4 @@ for (jdk in installedJDKs) {
 // add all installations and save them
 desc.setInstallations(installations.toArray(new JDK[0]))
 desc.save()
-print('init100jdkautoinstall: Configuration completed successfully\n')
+print('Configuration completed successfully\n')
