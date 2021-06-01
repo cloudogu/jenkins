@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgrade to Jenkins 2.277.4; #88
 - Upgrade glibc to 2.33
-- Install OpenJDK-11 tool instead of OpenJDK-8
+- Configure OpenJDK-11 tool in addition to OpenJDK-8
 
 ## [v2.277.3-2] - 2021-05-18
 ### Changed
