@@ -1,7 +1,7 @@
 import hudson.model.*;
 import jenkins.model.*;
 import org.jenkinsci.plugins.cas.CasSecurityRealm;
-import org.jenkinsci.plugins.cas.protocols.Saml11Protocol;
+import org.jenkinsci.plugins.cas.protocols.Cas30Protocol;
 import groovy.json.JsonSlurper;
 
 def getValueFromEtcd(String key){
@@ -12,7 +12,7 @@ def getValueFromEtcd(String key){
 }
 
 String fqdn = getValueFromEtcd("config/_global/fqdn");
-def protocol = new Saml11Protocol("groups,roles", "cn", "mail", 5000);
+def protocol = new Cas30Protocol("groups,roles", "cn", "mail", true, false, "^https://${fqdn}/.*\$");
 def realm = new CasSecurityRealm("https://${fqdn}/cas", protocol, false, true, true);
 
 def instance = Jenkins.getInstance();
