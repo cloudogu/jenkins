@@ -14,4 +14,21 @@ const jenkinsIsAdmin = () => {
     })
 }
 
+const authWithApiKey = (apiKey) => {
+    cy.fixture("testuser_data").then((testUser) => {
+        cy.request({
+            method: "GET",
+            url: Cypress.config().baseUrl + "/jenkins/api/json",
+            auth : {
+                username: testUser.username,
+                password: apiKey
+            },
+            failOnStatusCode: false
+        }).then((response) => {
+            return response.status;
+        })
+    })
+}
+
 Cypress.Commands.add("jenkinsIsAdmin", jenkinsIsAdmin);
+Cypress.Commands.add("authWithApiKey", authWithApiKey);
