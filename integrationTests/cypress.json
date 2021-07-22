@@ -3,8 +3,8 @@
   "env": {
     "DoguName": "jenkins",
     "MaxLoginRetries": 3,
-    "AdminUsername": "cesadmin",
-    "AdminPassword": "cesadmin",
-    "AdminGroup": "cesadmin"
+    "AdminUsername":  "ces-admin",
+    "AdminPassword":  "ecosystem2016",
+    "AdminGroup":  "CesAdministrators"
   }
 }
