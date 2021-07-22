@@ -98,7 +98,8 @@ node('vagrant') {
 
                 stage('Integration Tests - After Upgrade') {
                     // Run integration tests again to verify that the upgrade was successful
-                    ecoSystem.runYarnIntegrationTests(15, 'node:8.14.0-stretch', [], params.EnableVideoRecording)
+                    ecoSystem.runCypressIntegrationTests([enableVideo      : params.EnableVideoRecording,
+                                                          enableScreenshots: params.EnableScreenshotRecording])
                 }
             }
 
