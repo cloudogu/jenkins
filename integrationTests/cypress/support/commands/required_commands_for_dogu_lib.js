@@ -4,8 +4,6 @@
  * @param {boolean} exitOnFail - Determines whether the test should fail when the request did not succeed. Default: false
  */
 const deleteUserFromDoguViaAPI = (username, exitOnFail = false) => {
-    /*cy.fixture("testuser_data").then(() => {
-        cy.jenkinsDeleteUser(username);
-    })*/
+    //do nothing
 }
 Cypress.Commands.add("deleteUserFromDoguViaAPI", deleteUserFromDoguViaAPI)

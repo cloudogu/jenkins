@@ -1,8 +1,8 @@
 {
-  "username": "ces-admin",
-  "password": "ces-admin",
-  "givenname": "ces-admin",
-  "surname": "ces-admin",
-  "displayName": "ces-admin",
-  "mail": "test@cloudogu.com"
+  "username": "itestUser",
+  "password": "itestPassword",
+  "givenname": "itestUser",
+  "surname": "itestUser",
+  "displayName": "itestUser",
+  "mail": "itest@cloudogu.com"
 }

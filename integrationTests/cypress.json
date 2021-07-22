@@ -5,6 +5,6 @@
     "MaxLoginRetries": 3,
     "AdminUsername": "cesadmin",
     "AdminPassword": "cesadmin",
-    "AdminGroup": "CesAdministrators"
+    "AdminGroup": "cesadmin"
   }
 }
