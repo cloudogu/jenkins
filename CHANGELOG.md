@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.289.2-1] - 2021-07-27
+### Changed
+- changed integrationTest framework to cypress/cucumber; #90
+- Upgrade to Jenkins 2.289.2; #90
+
 ## [v2.277.4-2] - 2021-07-09
 ### Changed
 - Configure cas plugin so that proxy tickets can be used #91
