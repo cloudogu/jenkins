@@ -32,8 +32,18 @@ const getUserAttributesGui = (testUser) => {
     });
 };
 
+const isJenkinsAdminGui = () => {
+    cy.get("a[href='/jenkins/manage']");
+}
+
+const isNotJenkinsAdminGui = () => {
+    cy.get("a[href='/jenkins/manage']").should("not.exist");
+}
+
 Cypress.Commands.add("jenkinsLogout", jenkinsLogout);
 Cypress.Commands.add("navigateToToolConfigAdminPage", navigateToToolConfigAdminPage);
 Cypress.Commands.add("searchM3Installation", searchM3Installation);
 Cypress.Commands.add("createJenkinsApiKey", createJenkinsApiKey);
 Cypress.Commands.add("getUserAttributesGui", getUserAttributesGui);
+Cypress.Commands.add("isJenkinsAdminGui", isJenkinsAdminGui);
+Cypress.Commands.add("isNotJenkinsAdminGui", isNotJenkinsAdminGui);
