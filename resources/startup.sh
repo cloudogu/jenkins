@@ -14,7 +14,7 @@ run_main() {
 
   # create truststore for java processes
   TRUSTSTORE="/var/lib/jenkins/truststore.jks"
-  create_truststore.sh /var/lib/jenkins/truststore.jks > /dev/null
+  create_truststore.sh "${TRUSTSTORE}" > /dev/null
 
   # create ca store for git, mercurial and subversion
   create-ca-certificates.sh /var/lib/jenkins/ca-certificates.crt
