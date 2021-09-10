@@ -15,6 +15,10 @@ setup() {
   doguctl="$(mock_create)"
   export doguctl
   ln -s "${doguctl}" "${BATS_TMPDIR}/doguctl"
+  svn="$(mock_create)"
+  export svn
+  ln -s "${svn}" "${BATS_TMPDIR}/svn"
+  export PATH="${PATH}:${BATS_TMPDIR}"
   mockCaCertificates="$(mktemp)"
   export mockCaCertificates
   mockHome="$(mktemp -d)"
@@ -25,6 +29,7 @@ setup() {
 
 teardown() {
   rm "${BATS_TMPDIR}/doguctl"
+  rm "${BATS_TMPDIR}/svn"
   rm "${mockCaCertificates}"
   rm -rf "${mockHome}"
 }
@@ -55,90 +60,105 @@ teardown() {
   grep -v "${testString}" "${mockHome}/.curlrc" || fail "Expected to not find 'Hello World'"
 }
 
-#@test "running create_truststore.sh  with parameter should write certs to truststore a Java string with the correct truststore" {
-#  mock_set_status "${doguctl}" 0
-#  mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nHELLO BASE CERTIFICATE\n-----END CERTIFICATE-----\n" 1
-#  mock_set_output "${doguctl}" "alias1 alias2\n" 2
-#  mock_set_output "${doguctl}" "alias1 alias2\n" 3
-#  mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n" 4
-#  mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT2\n-----END CERTIFICATE-----\n" 5
-#  mock_set_side_effect "${keytool}" "echo 'CERT FOR BASE' >> ${mockCaCertificates}" 1
-#  mock_set_side_effect "${keytool}" "echo 'CERT FOR CONTENT1' >> ${mockCaCertificates}" 2
-#  mock_set_side_effect "${keytool}" "echo 'CERT FOR CONTENT2' >> ${mockCaCertificates}" 3
-#
-#  export BASE_CREATE_CERT_SKRIPT=/workspace/unitTests/usr/bin/create-ca-certificates.sh
-#  export JAVA_HOME=/workspace/unitTests
-#
-#  run /workspace/resources/usr/bin/create_truststore.sh "${mockCaCertificates}"
-#
-#  assert_success
-#  assert_file_not_empty "${mockCaCertificates}"
-#  assert_file_contains "${mockCaCertificates}" "CERT FOR BASE"
-#  assert_file_contains "${mockCaCertificates}" "CERT FOR CONTENT1"
-#  assert_file_contains "${mockCaCertificates}" "CERT FOR CONTENT2"
-#  assert_line "-Djavax.net.ssl.trustStore=${mockCaCertificates} -Djavax.net.ssl.trustStorePassword=changeit"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "config --global certificate/server.crt"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config --default  --global certificate/additional/toc"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "3")" "config --global certificate/additional/toc"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "4")" "config --global certificate/additional/alias1"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "5")" "config --global certificate/additional/alias2"
-#  assert_equal "$(mock_get_call_num "${doguctl}")" "5"
-#  assert_equal "$(mock_get_call_num "${keytool}")" "3"
-#  actualCall="$(mock_get_call_args "${keytool}" "1")"
-#  echo "$actualCall" | grep -E -- "-keystore ${mockCaCertificates} -storepass changeit -alias ces -import -file .* -noprompt"
-#  actualCall="$(mock_get_call_args "${keytool}" "2")"
-#  echo "$actualCall" | grep -E -- "-keystore ${mockCaCertificates} -storepass changeit -alias alias1 -import -file .* -noprompt"
-#  actualCall="$(mock_get_call_args "${keytool}" "3")"
-#  echo "$actualCall" | grep -E -- "-keystore ${mockCaCertificates} -storepass changeit -alias alias2 -import -file .* -noprompt"
-#}
+@test "createSubversionCertificates() should do nothing when no additional certificates exist" {
+  assert_not_exist "${mockHome}/.subversion"
+  mock_set_status "${doguctl}" 0
+  mock_set_output "${doguctl}" "NV" 1
+  source /workspace/unitTests/usr/bin/create-ca-certificates.sh
+  source /workspace/resources/startup.sh
 
-#@test "importAdditionalCertificates() should do nothing on no additional certificates" {
-#  mock_set_status "${doguctl}" 0
-#  mock_set_output "${doguctl}" "" 1
-#  export JAVA_HOME=/workspace/unitTests
-#
-#  source /workspace/unitTests/usr/bin/create-ca-certificates.sh
-#  source /workspace/resources/usr/bin/create_truststore.sh
-#
-#  run importAdditionalCertificates
-#
-#  assert_success
-#  assert_file_empty "${mockCaCertificates}"
-#  refute_output --regex ".*"
-#  assert_equal "$(mock_get_call_num "${doguctl}")" "1"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "config --default  --global certificate/additional/toc"
-#}
-#
-#
-#@test "importAdditionalCertificates() should add additional certificates" {
-#  mock_set_status "${doguctl}" 0
-#  mock_set_output "${doguctl}" "alias1 alias2\n" 1
-#  mock_set_output "${doguctl}" "alias1 alias2\n" 2
-#  mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n" 3
-#  mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT2\n-----END CERTIFICATE-----\n" 4
-#  mock_set_side_effect "${keytool}" "echo 'CERT FOR CONTENT1' >> ${mockCaCertificates}" 1
-#  mock_set_side_effect "${keytool}" "echo 'CERT FOR CONTENT2' >> ${mockCaCertificates}" 2
-#
-#  source /workspace/unitTests/usr/bin/create-ca-certificates.sh
-#  source /workspace/resources/usr/bin/create_truststore.sh
-#  export STORE="${mockCaCertificates}"
-#  export JAVA_HOME=/workspace/unitTests
-#
-#  run importAdditionalCertificates
-#
-#  assert_success
-#  assert_file_not_empty "${mockCaCertificates}"
-#  assert_file_contains "${mockCaCertificates}" "CONTENT1"
-#  assert_file_contains "${mockCaCertificates}" "CONTENT2"
-#  refute_output --regex ".*"
-#  assert_equal "$(mock_get_call_num "${doguctl}")" "4"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "config --default  --global certificate/additional/toc"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config --global certificate/additional/toc"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "3")" "config --global certificate/additional/alias1"
-#  assert_equal "$(mock_get_call_args "${doguctl}" "4")" "config --global certificate/additional/alias2"
-#  assert_equal "$(mock_get_call_num "${keytool}")" "2"
-#  actualCall1="$(mock_get_call_args "${keytool}" "1")"
-#  echo "$actualCall1" | grep -E -- "-keystore ${mockCaCertificates} -storepass changeit -alias alias1 -import -file .* -noprompt"
-#  actualCall2="$(mock_get_call_args "${keytool}" "2")"
-#  echo "$actualCall2" | grep -E -- "-keystore ${mockCaCertificates} -storepass changeit -alias alias2 -import -file .* -noprompt"
-#}
+  run createSubversionCertificates "${mockHome}"
+
+  assert_success
+  assert_not_exist "${mockHome}/.subversion"
+  assert_equal "$(mock_get_call_num "${doguctl}")" "1"
+  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "config --default NV --global certificate/additional/toc"
+}
+
+@test "createSubversionCertificates() should split double-PEM keys and save them in .subversion" {
+  mock_set_status "${doguctl}" 0
+  mock_set_output "${doguctl}" "alias1\n" 1
+  mock_set_output "${doguctl}" "alias1\n" 2
+  mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT1\n-----END CERTIFICATE-----\n" 3
+  mock_set_side_effect "${svn}" "mkdir -p ${mockHome}/.subversion ; echo '[global]' > ${mockHome}/.subversion/servers"
+
+  source /workspace/unitTests/usr/bin/create-ca-certificates.sh
+  source /workspace/resources/startup.sh
+
+  run createSubversionCertificates "${mockHome}"
+
+  assert_success
+  assert_exist "${mockHome}/.subversion/servers"
+  assert_line --partial "Adding additional certificate for key alias1 to subversion store"
+  assert_exist "${mockHome}/.subversion/cert-alias1-00"
+  assert_exist "${mockHome}/.subversion/cert-alias1-01"
+  assert_file_contains "${mockHome}/.subversion/cert-alias1-00" "CERT FOR CONTENT1"
+  assert_file_contains "${mockHome}/.subversion/cert-alias1-01" "CA-CERT FOR CONTENT1"
+  assert_equal "$(mock_get_call_num "${doguctl}")" "3"
+  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "config --default NV --global certificate/additional/toc"
+  assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config --global certificate/additional/toc"
+  assert_equal "$(mock_get_call_args "${doguctl}" "3")" "config --global certificate/additional/alias1"
+  assert_equal "$(mock_get_call_num "${svn}")" "1"
+}
+
+@test "createSubversionCertificates() should skip defect certificate and split double-PEM keys and save them in .subversion" {
+  mock_set_status "${doguctl}" 0
+  mock_set_output "${doguctl}" "alias1 alias2\n" 1
+  mock_set_output "${doguctl}" "alias1 alias2\n" 2
+  mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT1\n---DEFECT\n" 3
+  mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT2\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT2\n-----END CERTIFICATE-----\n" 4
+  mock_set_side_effect "${svn}" "mkdir -p ${mockHome}/.subversion ; echo '[global]' > ${mockHome}/.subversion/servers"
+
+  source /workspace/unitTests/usr/bin/create-ca-certificates.sh
+  source /workspace/resources/startup.sh
+
+  run createSubversionCertificates "${mockHome}"
+
+  assert_success
+  assert_exist "${mockHome}/.subversion/servers"
+  refute_line --partial "Adding additional certificate for key alias1 to subversion store"
+  assert_line --partial "ERROR: Skip adding invalid additional certificate for key certificate/additional/alias1"
+  assert_line --partial "Adding additional certificate for key alias2 to subversion store"
+  assert_not_exist "${mockHome}/.subversion/cert-alias1-00"
+  assert_not_exist "${mockHome}/.subversion/cert-alias1-01"
+  assert_exist "${mockHome}/.subversion/cert-alias2-00"
+  assert_exist "${mockHome}/.subversion/cert-alias2-01"
+  assert_file_contains "${mockHome}/.subversion/cert-alias2-00" "CERT FOR CONTENT2"
+  assert_file_contains "${mockHome}/.subversion/cert-alias2-01" "CA-CERT FOR CONTENT2"
+  assert_equal "$(mock_get_call_num "${doguctl}")" "4"
+  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "config --default NV --global certificate/additional/toc"
+  assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config --global certificate/additional/toc"
+  assert_equal "$(mock_get_call_args "${doguctl}" "3")" "config --global certificate/additional/alias1"
+  assert_equal "$(mock_get_call_args "${doguctl}" "4")" "config --global certificate/additional/alias2"
+  assert_equal "$(mock_get_call_num "${svn}")" "1"
+}
+
+@test "checkCertCount() should return true for equal count of BEGIN and END CERTIFICATE lines" {
+  source /workspace/resources/startup.sh
+
+  run checkCertCount "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT1\n-----END CERTIFICATE-----\n"
+
+  assert_success
+}
+
+@test "checkCertCount() should return false for unequal count of BEGIN and END CERTIFICATE lines" {
+  source /workspace/resources/startup.sh
+
+  run checkCertCount "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n----BEGIN CERTIFICATE"
+
+  assert_failure
+}
+
+@test "countCertString() should return 2" {
+  source /workspace/resources/startup.sh
+
+  run countCertString BEGIN "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT1\n-----END CERTIFICATE-----\n"
+
+  assert_success
+  assert_output "2"
+
+  run countCertString BEGIN "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n"
+
+  assert_success
+  assert_output "1"
+}

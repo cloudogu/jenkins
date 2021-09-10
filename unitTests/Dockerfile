@@ -3,4 +3,4 @@ ARG BATS_TAG
 
 FROM ${BATS_BASE_IMAGE}:${BATS_TAG}
 
-RUN apk add make git bash
+RUN apk add coreutils make git bash

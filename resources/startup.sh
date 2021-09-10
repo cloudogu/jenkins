@@ -21,6 +21,7 @@ run_main() {
   # create ca store for git, mercurial and subversion
   create-ca-certificates.sh "${JENKINS_HOME_DIR}/ca-certificates.crt"
   createCurlCertificates "${JENKINS_HOME_DIR}"
+  createSubversionCertificates "${JENKINS_HOME_DIR}"
 
   # copy init scripts
 
@@ -93,6 +94,68 @@ run_main() {
 function createCurlCertificates() {
   homeDir="${1}"
   echo "cacert = ${homeDir}/ca-certificates.crt" > "${homeDir}/.curlrc"
+}
+
+function createSubversionCertificates() {
+  homeDir="${1}"
+  subversionConfigDir="${homeDir}/.subversion"
+
+  if ! existAdditionalCertificates ; then
+    return 0
+  fi
+
+  local additionalCertTOC
+  additionalCertTOC="$(doguctl config --global "${ADDITIONAL_CERTIFICATES_TOC}")"
+
+  initializeSubversionConfig
+
+  # note the deliberate leaving out of surrounding quotes because space is supposed to be the delimiter within the
+  # Table of Content entries.
+  for certAlias in ${additionalCertTOC} ; do
+    local cert
+    cert="$(doguctl config --global "${ADDITIONAL_CERTIFICATES_DIR_KEY}/${certAlias}")"
+
+    if ! checkCertCount "${cert}"; then
+      echo "ERROR: Skip adding invalid additional certificate for key ${ADDITIONAL_CERTIFICATES_DIR_KEY}/${certAlias} to subversion store: Unequal number of begin and end lines."
+      continue
+    fi
+
+    echo "Adding additional certificate for key ${certAlias} to subversion store..."
+
+    splitCertificates "${subversionConfigDir}" "${certAlias}" "${cert}"
+  done
+}
+
+function initializeSubversionConfig() {
+  # Have Subversion create a valid configuration. It does not matter if it fails.
+  svn status || true
+}
+
+function checkCertCount() {
+  content="${1}"
+  beginCount="$(countCertString BEGIN "${content}")"
+  endCount="$(countCertString END "${content}")"
+
+  if [[ "${beginCount}" != "${endCount}" ]]; then
+    return 1
+  fi
+
+  return 0
+}
+
+function countCertString() {
+  pattern="${1}"
+  content="${2}"
+  count="$(echo "${content}" | tr "-" "\n" | grep -c "${pattern}")"
+  echo "${count}"
+}
+
+function splitCertificates() {
+  subversionConfigDir="${1}"
+  certAlias="${2}"
+  certs="${3}"
+  # based on https://serverfault.com/questions/391396/how-to-split-a-pem-file
+  echo "${certs}" | csplit -z -f "${subversionConfigDir}/cert-${certAlias}-" - '/-----BEGIN CERTIFICATE-----/' '{*}'
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
