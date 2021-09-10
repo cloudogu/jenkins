@@ -3,8 +3,10 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+JENKINS_HOME_DIR="/var/lib/jenkins"
+
 run_main() {
-  INIT_SCRIPT_FOLDER="/var/lib/jenkins/init.groovy.d"
+  INIT_SCRIPT_FOLDER="${JENKINS_HOME_DIR}/init.groovy.d"
   # TODO rename resources to jenkins
   MAIN_INIT_SCRIPTS_FOLDER="/var/tmp/resources/init.groovy.d"
   CUSTOM_INIT_SCRIPTS_FOLDER="/var/lib/custom.init.groovy.d"
@@ -13,11 +15,12 @@ run_main() {
   doguctl state 'installing'
 
   # create truststore for java processes
-  TRUSTSTORE="/var/lib/jenkins/truststore.jks"
+  TRUSTSTORE="${JENKINS_HOME_DIR}/truststore.jks"
   create_truststore.sh "${TRUSTSTORE}" > /dev/null
 
   # create ca store for git, mercurial and subversion
-  create-ca-certificates.sh /var/lib/jenkins/ca-certificates.crt
+  create-ca-certificates.sh "${JENKINS_HOME_DIR}/ca-certificates.crt"
+  createCurlCertificates "${JENKINS_HOME_DIR}"
 
   # copy init scripts
 
@@ -37,7 +40,7 @@ run_main() {
 
   # set initial setting for slave-to-master-security
   # see https://wiki.jenkins-ci.org/display/JENKINS/Slave+To+Master+Access+Control
-  SLAVE_TO_MASTER_SECURITY="/var/lib/jenkins/secrets/slave-to-master-security-kill-switch"
+  SLAVE_TO_MASTER_SECURITY="${JENKINS_HOME_DIR}/secrets/slave-to-master-security-kill-switch"
   if [ ! -f "${SLAVE_TO_MASTER_SECURITY}" ]; then
     SECRETS_DIRECTORY=$(dirname "${SLAVE_TO_MASTER_SECURITY}")
     if [ ! -d "${SECRETS_DIRECTORY}" ]; then
@@ -48,7 +51,7 @@ run_main() {
 
   # Disable CLI over Remoting as advised with Jenkins LTS 2.46.2
   # see https://jenkins.io/blog/2017/04/26/security-advisory/
-  CLI_CONFIG_FILE="/var/lib/jenkins/jenkins.CLI.xml"
+  CLI_CONFIG_FILE="${JENKINS_HOME_DIR}/jenkins.CLI.xml"
   if [ ! -f "${CLI_CONFIG_FILE}" ]; then
     cp /var/tmp/resources/jenkins.CLI.xml "${CLI_CONFIG_FILE}"
     chmod 0644 "${CLI_CONFIG_FILE}"
@@ -56,8 +59,8 @@ run_main() {
 
   # Set maven truststore options in .mavenrc file so they won't get copied to slave machines
   if [[ ! -e /var/lib/jenkins/.mavenrc ]]; then
-    echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStore=${TRUSTSTORE}\"" > /var/lib/jenkins/.mavenrc
-    echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> /var/lib/jenkins/.mavenrc
+    echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStore=${TRUSTSTORE}\"" > "${JENKINS_HOME_DIR}/.mavenrc"
+    echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> "${JENKINS_HOME_DIR}/.mavenrc"
   fi
 
   # starting jenkins
@@ -85,6 +88,11 @@ run_main() {
       -XX:MinRAMPercentage="${MEMORY_LIMIT_MIN_PERCENTAGE}" \
       -jar /jenkins.war --prefix=/jenkins
   fi
+}
+
+function createCurlCertificates() {
+  homeDir="${1}"
+  echo "cacert = ${homeDir}/ca-certificates.crt" > "${homeDir}/.curlrc"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
