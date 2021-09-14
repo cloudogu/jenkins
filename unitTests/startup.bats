@@ -69,7 +69,6 @@ assert_file_not_contains() {
   assert_success
   assert_file_exist "${mockHome}/.curlrc"
   assert_file_contains "${mockHome}/.curlrc" "cacert = ${mockHome}/ca-certificates.crt"
-  cat "${mockHome}/.curlrc"
   grep -v "${testString}" "${mockHome}/.curlrc" || fail "Expected to not find 'Hello World'"
 }
 
@@ -108,7 +107,6 @@ assert_file_not_contains() {
   assert_exist "${mockHome}/.subversion/cert-alias1-01"
   assert_file_contains "${mockHome}/.subversion/cert-alias1-00" "CERT FOR CONTENT1"
   assert_file_contains "${mockHome}/.subversion/cert-alias1-01" "CA-CERT FOR CONTENT1"
-  cat "${mockSubversionServersConfig}"
   assert_file_contains "${mockSubversionServersConfig}" "[global]"
   assert_file_contains "${mockSubversionServersConfig}" "${mockHome}/.subversion/cert-alias1-00;${mockHome}/.subversion/cert-alias1-01;"
   assert_equal "$(mock_get_call_num "${doguctl}")" "3"
@@ -183,9 +181,11 @@ assert_file_not_contains() {
 @test "resetSubversionSSLConfig() should empty the key's existing values" {
   subversionServersConfig=$(mktemp)
   echo "[global]" > "${subversionServersConfig}"
-  echo "# commented line 1" >> "${subversionServersConfig}"
-  echo "# ssl-authority-files = /path/to/cert1.pem;/path/to/cert2.pem" >> "${subversionServersConfig}"
-  echo "# commented line 2" >> "${subversionServersConfig}"
+  {
+    echo "# commented line 1"
+    echo "# ssl-authority-files = /path/to/cert1.pem;/path/to/cert2.pem"
+    echo "# commented line 2"
+  } >> "${subversionServersConfig}"
   source /workspace/resources/startup.sh
 
   run resetSubversionSSLConfig "${subversionServersConfig}"
@@ -209,12 +209,11 @@ assert_file_not_contains() {
 
   source /workspace/resources/startup.sh
 
-  run addCertificatePathToSubversionSSLConfig "${subversionServersConfig}" "/path/to/.subversion" "alias1" "00"
+  run addCertificatePathToSubversionSSLConfig "${subversionServersConfig}" "/path/to/.subversion" "alias1" "2"
 
   assert_success
-  cat "${subversionServersConfig}"
   assert_file_contains "${subversionServersConfig}" "[global]"
   assert_file_contains "${subversionServersConfig}" "# commented line 1"
   assert_file_contains "${subversionServersConfig}" "# commented line 2"
-  assert_file_contains "${subversionServersConfig}" "ssl-authority-files = /path/to/cert1.pem;/path/to/cert2.pem;/path/to/.subversion/cert-alias1-00;"
+  assert_file_contains "${subversionServersConfig}" "ssl-authority-files = /path/to/cert1.pem;/path/to/cert2.pem;/path/to/.subversion/cert-alias1-00;/path/to/.subversion/cert-alias1-01;"
 }

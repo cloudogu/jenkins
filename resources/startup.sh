@@ -196,9 +196,16 @@ function addCertificatePathToSubversionSSLConfig() {
   local subversionConfigDir="${2}"
   local certificateAlias="${3}"
   local certificateCount="${4}"
-  local certificatePath="${subversionConfigDir}/cert-${certificateAlias}-${certificateCount}"
 
-  sed -i "s|\(ssl-authority-files =.\+\)|\1${certificatePath};|" "${subversionServerConfigFile}"
+  for zeroBasedCount in $(seq 0 "${certificateCount}"); do
+    if [[ ${zeroBasedCount} -eq ${certificateCount} ]]; then
+      return 0
+    fi
+
+    counter=$(printf "%02d" "${zeroBasedCount}")
+    local certificatePath="${subversionConfigDir}/cert-${certificateAlias}-${counter}"
+    sed -i "s|\(ssl-authority-files =.\+\)|\1${certificatePath};|" "${subversionServerConfigFile}"
+  done
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
