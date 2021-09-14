@@ -34,6 +34,19 @@ teardown() {
   rm -rf "${mockHome}"
 }
 
+assert_file_not_contains() {
+  local file="${1}"
+  local expectedPattern="${2}"
+
+  if ! grep -v "${expectedPattern}" "${file}"; then
+    local -r rem="$BATSLIB_FILE_PATH_REM"
+    local -r add="$BATSLIB_FILE_PATH_ADD"
+    batslib_print_kv_single 4 'path' "${file/$rem/$add}" \
+      | batslib_decorate "Expected to not find '${expectedPattern}'" \
+      | fail
+  fi
+}
+
 @test "createCurlCertificates() should create a curl config file if not existing" {
   assert_file_not_exist "${mockHome}/.curlrc"
   source /workspace/resources/startup.sh
@@ -76,11 +89,12 @@ teardown() {
 }
 
 @test "createSubversionCertificates() should split double-PEM keys and save them in .subversion" {
+  mockSubversionServersConfig="${mockHome}/.subversion/servers"
   mock_set_status "${doguctl}" 0
   mock_set_output "${doguctl}" "alias1\n" 1
   mock_set_output "${doguctl}" "alias1\n" 2
   mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT1\n-----END CERTIFICATE-----\n" 3
-  mock_set_side_effect "${svn}" "mkdir -p ${mockHome}/.subversion ; echo '[global]' > ${mockHome}/.subversion/servers"
+  mock_set_side_effect "${svn}" "mkdir -p ${mockHome}/.subversion ; echo '[global]' > ${mockSubversionServersConfig}; echo 'ssl-authority-files =' >> ${mockSubversionServersConfig}"
 
   source /workspace/unitTests/usr/bin/create-ca-certificates.sh
   source /workspace/resources/startup.sh
@@ -88,12 +102,15 @@ teardown() {
   run createSubversionCertificates "${mockHome}"
 
   assert_success
-  assert_exist "${mockHome}/.subversion/servers"
+  assert_exist "${mockSubversionServersConfig}"
   assert_line --partial "Adding additional certificate for key alias1 to subversion store"
   assert_exist "${mockHome}/.subversion/cert-alias1-00"
   assert_exist "${mockHome}/.subversion/cert-alias1-01"
   assert_file_contains "${mockHome}/.subversion/cert-alias1-00" "CERT FOR CONTENT1"
   assert_file_contains "${mockHome}/.subversion/cert-alias1-01" "CA-CERT FOR CONTENT1"
+  cat "${mockSubversionServersConfig}"
+  assert_file_contains "${mockSubversionServersConfig}" "[global]"
+  assert_file_contains "${mockSubversionServersConfig}" "${mockHome}/.subversion/cert-alias1-00;${mockHome}/.subversion/cert-alias1-01;"
   assert_equal "$(mock_get_call_num "${doguctl}")" "3"
   assert_equal "$(mock_get_call_args "${doguctl}" "1")" "config --default NV --global certificate/additional/toc"
   assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config --global certificate/additional/toc"
@@ -107,7 +124,7 @@ teardown() {
   mock_set_output "${doguctl}" "alias1 alias2\n" 2
   mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT1\n---DEFECT\n" 3
   mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT2\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT2\n-----END CERTIFICATE-----\n" 4
-  mock_set_side_effect "${svn}" "mkdir -p ${mockHome}/.subversion ; echo '[global]' > ${mockHome}/.subversion/servers"
+  mock_set_side_effect "${svn}" "mkdir -p ${mockHome}/.subversion ; echo '[global]' > ${mockHome}/.subversion/servers ; echo 'ssl-authority-files =' >> ${mockHome}/.subversion/servers"
 
   source /workspace/unitTests/usr/bin/create-ca-certificates.sh
   source /workspace/resources/startup.sh
@@ -161,4 +178,43 @@ teardown() {
 
   assert_success
   assert_output "1"
+}
+
+@test "resetSubversionSSLConfig() should empty the key's existing values" {
+  subversionServersConfig=$(mktemp)
+  echo "[global]" > "${subversionServersConfig}"
+  echo "# commented line 1" >> "${subversionServersConfig}"
+  echo "# ssl-authority-files = /path/to/cert1.pem;/path/to/cert2.pem" >> "${subversionServersConfig}"
+  echo "# commented line 2" >> "${subversionServersConfig}"
+  source /workspace/resources/startup.sh
+
+  run resetSubversionSSLConfig "${subversionServersConfig}"
+
+  assert_success
+  assert_file_contains "${subversionServersConfig}" "[global]"
+  assert_file_contains "${subversionServersConfig}" "# commented line 1"
+  assert_file_contains "${subversionServersConfig}" "# commented line 2"
+  assert_file_contains "${subversionServersConfig}" "ssl-authority-files ="
+  assert_file_not_contains "${subversionServersConfig}" "# ssl-authority-files"
+}
+
+@test "addCertificatePathToSubversionSSLConfig() should replace commented subversion cert line" {
+  subversionServersConfig=$(mktemp)
+  echo "[global]" > "${subversionServersConfig}"
+  {
+    echo "# commented line 1"
+    echo "ssl-authority-files = /path/to/cert1.pem;/path/to/cert2.pem;"
+    echo "# commented line 2"
+  } >> "${subversionServersConfig}"
+
+  source /workspace/resources/startup.sh
+
+  run addCertificatePathToSubversionSSLConfig "${subversionServersConfig}" "/path/to/.subversion" "alias1" "00"
+
+  assert_success
+  cat "${subversionServersConfig}"
+  assert_file_contains "${subversionServersConfig}" "[global]"
+  assert_file_contains "${subversionServersConfig}" "# commented line 1"
+  assert_file_contains "${subversionServersConfig}" "# commented line 2"
+  assert_file_contains "${subversionServersConfig}" "ssl-authority-files = /path/to/cert1.pem;/path/to/cert2.pem;/path/to/.subversion/cert-alias1-00;"
 }

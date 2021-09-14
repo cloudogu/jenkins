@@ -92,13 +92,14 @@ run_main() {
 }
 
 function createCurlCertificates() {
-  homeDir="${1}"
+  local homeDir="${1}"
   echo "cacert = ${homeDir}/ca-certificates.crt" > "${homeDir}/.curlrc"
 }
 
 function createSubversionCertificates() {
-  homeDir="${1}"
-  subversionConfigDir="${homeDir}/.subversion"
+  local homeDir="${1}"
+  local subversionConfigDir="${homeDir}/.subversion"
+  local subversionConfigFile="${subversionConfigDir}/servers"
 
   if ! existAdditionalCertificates ; then
     return 0
@@ -109,9 +110,12 @@ function createSubversionCertificates() {
 
   initializeSubversionConfig
 
+  resetSubversionSSLConfig "${subversionConfigFile}"
+
   # note the deliberate leaving out of surrounding quotes because space is supposed to be the delimiter within the
   # Table of Content entries.
   for certAlias in ${additionalCertTOC} ; do
+    local certCount
     local cert
     cert="$(doguctl config --global "${ADDITIONAL_CERTIFICATES_DIR_KEY}/${certAlias}")"
 
@@ -123,6 +127,9 @@ function createSubversionCertificates() {
     echo "Adding additional certificate for key ${certAlias} to subversion store..."
 
     splitCertificates "${subversionConfigDir}" "${certAlias}" "${cert}"
+
+    certCount="$(countCertString BEGIN "${cert}")"
+    addCertificatePathToSubversionSSLConfig "${subversionConfigFile}" "${subversionConfigDir}" "${certAlias}" "${certCount}"
   done
 }
 
@@ -132,11 +139,11 @@ function initializeSubversionConfig() {
 }
 
 function checkCertCount() {
-  content="${1}"
-  beginCount="$(countCertString BEGIN "${content}")"
+  local content="${1}"
+  certCount="$(countCertString BEGIN "${content}")"
   endCount="$(countCertString END "${content}")"
 
-  if [[ "${beginCount}" != "${endCount}" ]]; then
+  if [[ "${certCount}" != "${endCount}" ]]; then
     return 1
   fi
 
@@ -144,18 +151,54 @@ function checkCertCount() {
 }
 
 function countCertString() {
-  pattern="${1}"
-  content="${2}"
+  local pattern="${1}"
+  local content="${2}"
+  local count=0
+
   count="$(echo "${content}" | tr "-" "\n" | grep -c "${pattern}")"
   echo "${count}"
 }
 
 function splitCertificates() {
-  subversionConfigDir="${1}"
-  certAlias="${2}"
-  certs="${3}"
+  local subversionConfigDir="${1}"
+  local certAlias="${2}"
+  local certs="${3}"
+
   # based on https://serverfault.com/questions/391396/how-to-split-a-pem-file
   echo "${certs}" | csplit -z -f "${subversionConfigDir}/cert-${certAlias}-" - '/-----BEGIN CERTIFICATE-----/' '{*}'
+}
+
+function resetSubversionSSLConfig() {
+  subversionServerConfigFile="${1}"
+
+  echo "Resetting subversion SSL entry..."
+  assertSubversionSSLEntry "${subversionServerConfigFile}"
+  
+  sed -i 's|\(# \)\?ssl-authority-files.\+|ssl-authority-files = |' "${subversionServerConfigFile}"
+}
+
+function assertSubversionSSLEntry() {
+  echo "assertSubversionSSLEntry"
+
+  local subversionServerConfigFile="${1}"
+  local configEntryFound=0
+  cat "${subversionServerConfigFile}"
+
+  grep -q 'ssl-authority-files' "${subversionServerConfigFile}" || configEntryFound=$?
+  if [[ ${configEntryFound} -ne 0 ]]; then
+    echo "ERROR: Could not find entry 'ssl-authority-files' in ${subversionServerConfigFile}"
+    exit 1
+  fi
+}
+
+function addCertificatePathToSubversionSSLConfig() {
+  local subversionServerConfigFile="${1}"
+  local subversionConfigDir="${2}"
+  local certificateAlias="${3}"
+  local certificateCount="${4}"
+  local certificatePath="${subversionConfigDir}/cert-${certificateAlias}-${certificateCount}"
+
+  sed -i "s|\(ssl-authority-files =.\+\)|\1${certificatePath};|" "${subversionServerConfigFile}"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
