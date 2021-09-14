@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add support for additional SSL certificates to the Java truststore so that communication external services with self-signed certificates is no longer rejected (#94)
-- Add support for additional SSL certificate to curl (#94)
+- Add support for additional SSL certificate to curl and subversion (#94)
 
 ### Changed
 - Upgrade to Java base image 11.0.11-2
