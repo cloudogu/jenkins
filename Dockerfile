@@ -1,8 +1,8 @@
 # cesi/scm
-FROM registry.cloudogu.com/official/java:11.0.5-4
+FROM registry.cloudogu.com/official/java:11.0.11-2
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.289.2-1" \
+      VERSION="2.289.2-2" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -20,7 +20,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_I18N_APK="be3a55e6366a2ddaecf17203a7e71966757dca47a25ce34b5f3d6dd1e1efee55" \
     SHA256_JENKINS_WAR="6e5d17bb373a4167318082abaef483f280493cb216718e68771180955df52310" \
     # additional java version for legacy builds
-    ADDITIONAL_OPENJDK_VERSION="8.275.01-r0"
+    ADDITIONAL_OPENJDK_VERSION="8.282.08-r1"
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
