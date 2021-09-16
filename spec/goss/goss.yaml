@@ -139,7 +139,7 @@ package:
     installed: true
   mercurial:
     installed: true
-  openssh-client:
+  openssh-client-default:
     installed: true
   subversion:
     installed: true
