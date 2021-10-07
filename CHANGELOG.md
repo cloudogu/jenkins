@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.303.2-1] - 2021-10-07
+### Changed
+- Upgrade to Jenkins 2.303.2; #96
+
 ## [v2.289.2-2] - 2021-09-16
 ### Added
 - Add support for additional SSL certificates to the Java truststore so that communication external services with self-signed certificates is no longer rejected (#94)
