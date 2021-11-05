@@ -101,8 +101,11 @@ node('vagrant') {
 
                 stage('Integration Tests - After Upgrade') {
                     // Run integration tests again to verify that the upgrade was successful
-                    ecoSystem.runCypressIntegrationTests([enableVideo      : params.EnableVideoRecording,
-                                                          enableScreenshots: params.EnableScreenshotRecording])
+                    ecoSystem.runCypressIntegrationTests([
+                        cypressImage     : "cypress/included:8.7.0",
+                        enableVideo      : params.EnableVideoRecording,
+                        enableScreenshots: params.EnableScreenshotRecording])
+                    }
                 }
             }
 
