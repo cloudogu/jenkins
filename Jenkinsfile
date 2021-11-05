@@ -76,8 +76,9 @@ node('vagrant') {
                 ecoSystem.runCypressIntegrationTests([
                     cypressImage     : "cypress/included:8.7.0",
                     enableVideo      : params.EnableVideoRecording,
-                    enableScreenshots: params.EnableScreenshotRecording])
-                }
+                    enableScreenshots: params.EnableScreenshotRecording
+                ])
+            }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
                 stage('Upgrade dogu') {
@@ -104,8 +105,8 @@ node('vagrant') {
                     ecoSystem.runCypressIntegrationTests([
                         cypressImage     : "cypress/included:8.7.0",
                         enableVideo      : params.EnableVideoRecording,
-                        enableScreenshots: params.EnableScreenshotRecording])
-                    }
+                        enableScreenshots: params.EnableScreenshotRecording
+                    ])
                 }
             }
 
