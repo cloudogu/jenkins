@@ -72,10 +72,12 @@ node('vagrant') {
                 ecoSystem.verify("/dogu")
             }
 
-            stage('Integration Tests') {
-                ecoSystem.runCypressIntegrationTests([enableVideo      : params.EnableVideoRecording,
-                                                      enableScreenshots: params.EnableScreenshotRecording])
-            }
+            stage('Integration tests') {
+                ecoSystem.runCypressIntegrationTests([
+                    cypressImage     : "cypress/included:8.7.0",
+                    enableVideo      : params.EnableVideoRecording,
+                    enableScreenshots: params.EnableScreenshotRecording])
+                }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
                 stage('Upgrade dogu') {
