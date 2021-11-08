@@ -98,6 +98,11 @@ node('vagrant') {
 
                     // Wait for upgraded dogu to get healthy
                     ecoSystem.waitForDogu(doguName)
+                    // curl the dogu URL until the "Dogu is starting" page (status code 503) is gone
+                    // and the CAS login page is returned (status code 302)
+                    String externalIP = ecoSystem.externalIP
+                    echo "Waiting for https://$externalIP/$doguName to be reachable..."
+                    sh "while [ $(curl --insecure --silent --head https://$externalIP/$doguName | head -n 1 | cut -d$' ' -f2) -gt 399 ]; do sleep 1; done"
                 }
 
                 stage('Integration Tests - After Upgrade') {
