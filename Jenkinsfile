@@ -102,7 +102,13 @@ node('vagrant') {
                     // and the CAS login page is returned (status code 302)
                     String externalIP = ecoSystem.externalIP
                     echo "Waiting for https://$externalIP/$doguName to be reachable..."
-                    sh "while [ \$(curl --insecure --silent --head https://${externalIP}/${doguName} | head -n 1 | cut -d\$' ' -f2) -gt 399 ]; do sleep 1; done"
+                    for (i=0; i < 30; i++) {
+                        def response = sh(script: "curl --insecure --silent --head https://${externalIP}/${doguName} | head -n 1", returnStdout: true)
+                        if (response.contains("302")){
+                            break;
+                        }
+                        sleep 3
+                    }
                 }
 
                 stage('Integration Tests - After Upgrade') {
