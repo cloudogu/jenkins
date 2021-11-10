@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.303.3-1] - 2021-11-10
+### Changed
+- Upgrade to Jenkins 2.303.3; #98
+- Upgrade dogu.json format to v2
+- Upgrade to dogu-integration-test-lib 1.0.0 and Cypress 8.7.0
+
 ## [v2.303.2-1] - 2021-10-07
 ### Changed
 - Upgrade to Jenkins 2.303.2; #96

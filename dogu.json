@@ -1,6 +1,6 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.303.2-1",
+  "Version": "2.303.3-1",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
@@ -14,9 +14,18 @@
   "Url": "https://jenkins-ci.org",
   "Image": "registry.cloudogu.com/official/jenkins",
   "Dependencies": [
-    "cas",
-    "nginx",
-    "postfix"
+    {
+      "type": "dogu",
+      "name": "cas"
+    },
+    {
+      "type": "dogu",
+      "name": "nginx"
+    },
+    {
+      "type": "dogu",
+      "name": "postfix"
+    }
   ],
   "Volumes": [
     {
