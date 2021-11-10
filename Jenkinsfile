@@ -72,9 +72,12 @@ node('vagrant') {
                 ecoSystem.verify("/dogu")
             }
 
-            stage('Integration Tests') {
-                ecoSystem.runCypressIntegrationTests([enableVideo      : params.EnableVideoRecording,
-                                                      enableScreenshots: params.EnableScreenshotRecording])
+            stage('Integration tests') {
+                ecoSystem.runCypressIntegrationTests([
+                    cypressImage     : "cypress/included:8.7.0",
+                    enableVideo      : params.EnableVideoRecording,
+                    enableScreenshots: params.EnableScreenshotRecording
+                ])
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
@@ -95,12 +98,26 @@ node('vagrant') {
 
                     // Wait for upgraded dogu to get healthy
                     ecoSystem.waitForDogu(doguName)
+                    // curl the dogu URL until the "Dogu is starting" page (status code 503) is gone
+                    // and the CAS login page is returned (status code 302)
+                    String externalIP = ecoSystem.externalIP
+                    echo "Waiting for https://$externalIP/$doguName to be reachable..."
+                    for (i=0; i < 30; i++) {
+                        def response = sh(script: "curl --insecure --silent --head https://${externalIP}/${doguName} | head -n 1", returnStdout: true)
+                        if (response.contains("302")){
+                            break;
+                        }
+                        sleep 3
+                    }
                 }
 
                 stage('Integration Tests - After Upgrade') {
                     // Run integration tests again to verify that the upgrade was successful
-                    ecoSystem.runCypressIntegrationTests([enableVideo      : params.EnableVideoRecording,
-                                                          enableScreenshots: params.EnableScreenshotRecording])
+                    ecoSystem.runCypressIntegrationTests([
+                        cypressImage     : "cypress/included:8.7.0",
+                        enableVideo      : params.EnableVideoRecording,
+                        enableScreenshots: params.EnableScreenshotRecording
+                    ])
                 }
             }
 
