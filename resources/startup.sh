@@ -101,6 +101,15 @@ function createSubversionCertificates() {
   local subversionConfigDir="${homeDir}/.subversion"
   local subversionConfigFile="${subversionConfigDir}/servers"
 
+  BASE_CREATE_CERT_SKRIPT="/usr/bin/create-ca-certificates.sh"
+
+  sourcingExitCode=0
+  # shellcheck disable=SC1090
+  source "${BASE_CREATE_CERT_SKRIPT}" || sourcingExitCode=$?
+  if [[ ${sourcingExitCode} -ne 0 ]]; then
+    echo "ERROR: An error occurred while sourcing ${BASE_CREATE_CERT_SKRIPT}."
+  fi
+
   if ! existAdditionalCertificates ; then
     return 0
   fi

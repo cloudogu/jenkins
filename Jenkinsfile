@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@v1.48.0', 'github.com/cloudogu/dogu-build-lib@v1.4.1'])
+@Library(['github.com/cloudogu/ces-build-lib@v1.48.0', 'github.com/cloudogu/dogu-build-lib@v1.6.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -98,6 +98,7 @@ node('vagrant') {
 
                     // Wait for upgraded dogu to get healthy
                     ecoSystem.waitForDogu(doguName)
+                    // TODO: Replace this with "ecosystem.waitUntilAvailable(doguName)" from dogu-build-lib 1.5.0
                     // curl the dogu URL until the "Dogu is starting" page (status code 503) is gone
                     // and the CAS login page is returned (status code 302)
                     String externalIP = ecoSystem.externalIP

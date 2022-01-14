@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.319.2-1] - 2022-01-14
+### Changed
+- Upgrade to Jenkins 2.319.2 #101
+- Upgrade dogu-build-lib to 1.6.0
+
+### Fixed
+- Fix certificate creation for subversion at startup
+- Patch JDK to 8.302.08-r1 to fix the jenkins build
+
 ## [v2.303.3-1] - 2021-11-10
 ### Changed
 - Upgrade to Jenkins 2.303.3; #98
