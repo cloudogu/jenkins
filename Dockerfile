@@ -12,15 +12,15 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.303.3 \
+    JENKINS_VERSION=2.319.2 \
     # glibc for alpine version
     GLIBC_VERSION=2.33-r0 \
     SHA256_GLIB_APK="3ce2b708b17841bc5978da0fa337fcb90fec5907daa396585db68805754322e0" \
     SHA256_GLIB_BIN_APK="f862ce6d61b294859f3facd1dae347e7bc5e36714649a37d2a785e7d7a3af84e" \
     SHA256_GLIB_I18N_APK="be3a55e6366a2ddaecf17203a7e71966757dca47a25ce34b5f3d6dd1e1efee55" \
-    SHA256_JENKINS_WAR="8a6ae7367755b3f31a050faa945f7a3991abdb43d941c7294cac890c1e2779d8" \
+    SHA256_JENKINS_WAR="020c8db10469e20e22e68c81e7e83bf35ccb6a435b712c4b643851949e75a553" \
     # additional java version for legacy builds
-    ADDITIONAL_OPENJDK_VERSION="8.282.08-r1"
+    ADDITIONAL_OPENJDK_VERSION="8.302.08-r1"
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
