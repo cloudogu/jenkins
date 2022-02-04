@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Update to OpenJDK 11.0.14 (Base image: [v11.0.14-1](https://github.com/cloudogu/java/releases/tag/v11.0.14-1))
 
 ## [v2.319.2-1] - 2022-01-14
 ### Changed
