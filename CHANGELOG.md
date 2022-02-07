@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.319.2-2] - 2022-02-07
+### Changed
+- Update to OpenJDK 11.0.14 (Base image: [v11.0.14-1](https://github.com/cloudogu/java/releases/tag/v11.0.14-1))
+
 ## [v2.319.2-1] - 2022-01-14
 ### Changed
 - Upgrade to Jenkins 2.319.2 #101
