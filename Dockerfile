@@ -26,6 +26,8 @@ ENV JENKINS_HOME=/var/lib/jenkins \
 # If you bind mount a volume from host/volume from a data container,
 # ensure you use same uid
 RUN set -x \
+ && apk update \
+ && apk upgrade \
  && addgroup -S -g 1000 jenkins \
  && adduser -S -h "$JENKINS_HOME" -s /bin/bash -G jenkins -u 1000 jenkins \
  # install coreutils, ttf-dejavu, openssh and scm clients
