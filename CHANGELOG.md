@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Upgrade java base image to 11.0.14-3
+- Upgrade zlib to fix CVE-2018-25032; #108
 
 ## [v2.319.2-2] - 2022-02-07
 ### Changed
