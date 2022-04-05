@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.319.2-3] - 2022-04-05
+### Changed
+- Upgrade java base image to 11.0.14-3
+
+### Fixed
+- Upgrade zlib to fix CVE-2018-25032; #108
+
 ## [v2.319.2-2] - 2022-02-07
 ### Changed
 - Update to OpenJDK 11.0.14 (Base image: [v11.0.14-1](https://github.com/cloudogu/java/releases/tag/v11.0.14-1))
