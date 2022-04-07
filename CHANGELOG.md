@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.332.1-1] - 2022-04-07
+### Added
+- Install pipeline-stage-view plugin on Dogu start
+
+### Changed
+- Upgrade to Jenkins 2.332.1 #106
+
 ## [v2.319.2-3] - 2022-04-05
 ### Changed
 - Upgrade java base image to 11.0.14-3

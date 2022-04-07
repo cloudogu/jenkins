@@ -75,7 +75,8 @@ def plugins = [
   'credentials-binding',
   'ssh-slaves',
   'pipeline-github-lib',
-  'authorize-project'
+  'authorize-project',
+  'pipeline-stage-view'
 ];
 
 def additionalPluginPath = "config/jenkins/additional.plugins";
