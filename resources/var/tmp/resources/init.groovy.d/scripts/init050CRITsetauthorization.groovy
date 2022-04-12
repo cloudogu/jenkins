@@ -1,6 +1,7 @@
 import jenkins.model.*
 import hudson.security.*
 import groovy.json.JsonSlurper
+import org.jenkinsci.plugins.matrixauth.*
 
 // based on https://gist.github.com/xbeta/e5edcf239fcdbe3f1672
 
@@ -132,7 +133,7 @@ if (instance.isUseSecurity()) {
             authStrategy = new ProjectMatrixAuthorizationStrategy()
             // add permissions for "authenticated" users
             authenticated = buildNewAccessList('authenticated', getJenkinsAuthenticatedUserPermissions())
-            authenticated.each { p, u -> authStrategy.add(p, u) }
+            authenticated.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
         }
         // if the user changes the authorization-strategy the admin group will not be setup automatically
         if (authStrategy instanceof GlobalMatrixAuthorizationStrategy) {
@@ -140,14 +141,14 @@ if (instance.isUseSecurity()) {
                 println 'Setting initial auth strategy'
                 // Adding admin group with admin permissions
                 jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
-                jenkinsAdmin.each { p, u -> authStrategy.add(p, u) }
+                jenkinsAdmin.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
             } else if (adminGroupLast == adminGroup) {
                 println 'The admin group has not changed'
             } else {
                 println('The admin group has changed from "' + adminGroupLast + '" to "' + adminGroup + '"')
                 println 'Adding admin group "' + adminGroup + '" with admin permissions'
                 jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
-                jenkinsAdmin.each { p, u -> authStrategy.add(p, u) }
+                jenkinsAdmin.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
                 //println 'Granting normal user permissions to old admin group "' + adminGroupLast + '"'
                 println 'Removing old admin group "' + adminGroupLast + '" from auth strategy'
                 ProjectMatrixAuthorizationStrategy newAuthStrategy = removeGroupFromAuthStrategy(adminGroupLast, authStrategy)
