@@ -3,8 +3,6 @@ import hudson.security.*
 import groovy.json.JsonSlurper
 import org.jenkinsci.plugins.matrixauth.*
 
-// based on https://gist.github.com/xbeta/e5edcf239fcdbe3f1672
-
 final String ADMINGROUPKEY = 'config/_global/admin_group'
 final String ADMINGROUPLASTKEY = 'config/jenkins/admin_group_last'
 final String ETCD_CONFIGURED_KEY = 'config/jenkins/configured'
@@ -117,6 +115,19 @@ ProjectMatrixAuthorizationStrategy removeGroupFromAuthStrategy(String adminGroup
     return strategy
 }
 
+ProjectMatrixAuthorizationStrategy updateOldUserGroupEntries(String groupName, AuthorizationStrategy authStrategy) {
+    println('update user/group entries for "' + groupName + '"')
+    testEntry = new PermissionEntry(AuthorizationType.EITHER, groupName)
+    for (permission in authStrategy.getGrantedPermissionEntries()) {
+        if (permission.value.contains(testEntry)) {
+            println('change PermissionEntry.Type from "AuthorizationType.EITHER" to "AuthorizationType.GROUP" for group "' + groupName + '"')
+            currentValue = permission.value
+            currentValue.remove(testEntry)
+            currentValue.add(PermissionEntry.group(groupName))
+        }
+    }
+}
+
 Jenkins instance = Jenkins.get()
 String isConfigured = getValueFromEtcd(ETCD_CONFIGURED_KEY)
 String adminGroup = getValueFromEtcd(ADMINGROUPKEY)
@@ -134,6 +145,9 @@ if (instance.isUseSecurity()) {
             // add permissions for "authenticated" users
             authenticated = buildNewAccessList('authenticated', getJenkinsAuthenticatedUserPermissions())
             authenticated.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
+        } else if(authStrategy) {
+            updateOldUserGroupEntries(adminGroup, authStrategy)
+            updateOldUserGroupEntries('authenticated', authStrategy)
         }
         // if the user changes the authorization-strategy the admin group will not be setup automatically
         if (authStrategy instanceof GlobalMatrixAuthorizationStrategy) {
@@ -147,7 +161,7 @@ if (instance.isUseSecurity()) {
             } else {
                 println('The admin group has changed from "' + adminGroupLast + '" to "' + adminGroup + '"')
                 println 'Adding admin group "' + adminGroup + '" with admin permissions'
-                jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
+                LinkedHashMap jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
                 jenkinsAdmin.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
                 //println 'Granting normal user permissions to old admin group "' + adminGroupLast + '"'
                 println 'Removing old admin group "' + adminGroupLast + '" from auth strategy'
