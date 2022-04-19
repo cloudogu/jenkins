@@ -1,5 +1,6 @@
 import jenkins.model.*
 import hudson.security.*
+import hudson.util.VersionNumber
 import groovy.json.JsonSlurper
 import org.jenkinsci.plugins.matrixauth.*
 
@@ -116,14 +117,20 @@ ProjectMatrixAuthorizationStrategy removeGroupFromAuthStrategy(String adminGroup
 }
 
 ProjectMatrixAuthorizationStrategy updateOldUserGroupEntries(String groupName, AuthorizationStrategy authStrategy) {
-    println('update user/group entries for "' + groupName + '"')
-    testEntry = new PermissionEntry(AuthorizationType.EITHER, groupName)
-    for (permission in authStrategy.getGrantedPermissionEntries()) {
-        if (permission.value.contains(testEntry)) {
-            println('change PermissionEntry.Type from "AuthorizationType.EITHER" to "AuthorizationType.GROUP" for group "' + groupName + '"')
-            currentValue = permission.value
-            currentValue.remove(testEntry)
-            currentValue.add(PermissionEntry.group(groupName))
+    final MATRIXAUTHPLUGIN_BREAKINGVERSION = new VersionNumber("3.0")
+    matrixAuthPluign = Jenkins.get().pluginManager.activePlugins.find { it.shortName == 'matrix-auth' }
+    // The error with the old user group entries only appears in versions of the matrix-auth plugin > 3.0. Prior to that
+    // the following code will throw a runtime exception as the used classes are not part of the plugin yet.
+    if(matrixAuthPluign.getVersionNumber().isNewerThanOrEqualTo(MATRIXAUTHPLUGIN_BREAKINGVERSION)) {
+        println('update user/group entries for "' + groupName + '"')
+        testEntry = new PermissionEntry(AuthorizationType.EITHER, groupName)
+        for (permission in authStrategy.getGrantedPermissionEntries()) {
+            if (permission.value.contains(testEntry)) {
+                println('change PermissionEntry.Type from "AuthorizationType.EITHER" to "AuthorizationType.GROUP" for group "' + groupName + '"')
+                currentValue = permission.value
+                currentValue.remove(testEntry)
+                currentValue.add(PermissionEntry.group(groupName))
+            }
         }
     }
 }
