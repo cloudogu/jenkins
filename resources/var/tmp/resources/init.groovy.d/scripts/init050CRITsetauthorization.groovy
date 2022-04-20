@@ -1,6 +1,5 @@
 import jenkins.model.*
 import hudson.security.*
-import hudson.util.VersionNumber
 import groovy.json.JsonSlurper
 import org.jenkinsci.plugins.matrixauth.*
 
@@ -116,35 +115,16 @@ ProjectMatrixAuthorizationStrategy removeGroupFromAuthStrategy(String adminGroup
     return strategy
 }
 
-// The error with the old user group entries only appears in versions of the matrix-auth plugin > 3.0. Prior to that
-// no check is needed
-boolean isNewMatrixAuthPluginVersion() {
-    final MATRIXAUTHPLUGIN_BREAKINGVERSION = new VersionNumber("3.0")
-    matrixAuthPluign = Jenkins.get().pluginManager.activePlugins.find { it.shortName == 'matrix-auth' }
-    return matrixAuthPluign.getVersionNumber().isNewerThanOrEqualTo(MATRIXAUTHPLUGIN_BREAKINGVERSION)
-}
 
 ProjectMatrixAuthorizationStrategy updateOldUserGroupEntries(String groupName, AuthorizationStrategy authStrategy) {
-    if (isNewMatrixAuthPluginVersion()) {
-        println('update user/group entries for "' + groupName + '"')
-        /**
-         * It is fundamentally not a good idea to pull library code from a plugin. Especially if we have no control over
-         * what version of the plugin is installed. However, here it was done anyway.
-         * So the classes PermissionEntry and AuthorizationType are only available in version 3.0+ of the matrix-auth
-         * plugin. Therefore they now need to be loaded via reflection API. If they are referenced directly this ensures
-         * in instances with an old plugin that this script is no longer compilable.
-         */
-        testEntry = Class.forName("org.jenkinsci.plugins.matrixauth.PermissionEntry")
-                .getDeclaredConstructors(Class.forName("org.jenkinsci.plugins.matrixauth.AuthorizationType"), String.class)
-                .newInstance(Class.forName("org.jenkinsci.plugins.matrixauth.AuthorizationType").EITHER, groupName)
-        // testEntry = new PermissionEntry(AuthorizationType.EITHER, groupName)
-        for (permission in authStrategy.getGrantedPermissionEntries()) {
-            if (permission.value.contains(testEntry)) {
-                println('change PermissionEntry.Type from "AuthorizationType.EITHER" to "AuthorizationType.GROUP" for group "' + groupName + '"')
-                currentValue = permission.value
-                currentValue.remove(testEntry)
-                currentValue.add(PermissionEntry.group(groupName))
-            }
+    println('update user/group entries for "' + groupName + '"')
+    testEntry = new PermissionEntry(AuthorizationType.EITHER, groupName)
+    for (permission in authStrategy.getGrantedPermissionEntries()) {
+        if (permission.value.contains(testEntry)) {
+            println('change PermissionEntry.Type from "AuthorizationType.EITHER" to "AuthorizationType.GROUP" for group "' + groupName + '"')
+            currentValue = permission.value
+            currentValue.remove(testEntry)
+            currentValue.add(PermissionEntry.group(groupName))
         }
     }
 }
@@ -165,13 +145,8 @@ if (instance.isUseSecurity()) {
             authStrategy = new ProjectMatrixAuthorizationStrategy()
             // add permissions for "authenticated" users
             authenticated = buildNewAccessList('authenticated', getJenkinsAuthenticatedUserPermissions())
-            if (isNewMatrixAuthPluginVersion()) {
-                authenticated.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
-            } else {
-                authenticated.each { p, u -> authStrategy.add(p, u) }
-            }
-
-        } else if (authStrategy) {
+            authenticated.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
+        } else if(authStrategy) {
             updateOldUserGroupEntries(adminGroup, authStrategy)
             updateOldUserGroupEntries('authenticated', authStrategy)
         }
@@ -181,24 +156,14 @@ if (instance.isUseSecurity()) {
                 println 'Setting initial auth strategy'
                 // Adding admin group with admin permissions
                 jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
-
-                if (isNewMatrixAuthPluginVersion()) {
-                    jenkinsAdmin.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
-                } else {
-                    jenkinsAdmin.each { p, u -> authStrategy.add(p, u) }
-                }
+                jenkinsAdmin.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
             } else if (adminGroupLast == adminGroup) {
                 println 'The admin group has not changed'
             } else {
                 println('The admin group has changed from "' + adminGroupLast + '" to "' + adminGroup + '"')
                 println 'Adding admin group "' + adminGroup + '" with admin permissions'
-                if (isNewMatrixAuthPluginVersion()) {
-                    LinkedHashMap jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
-                    jenkinsAdmin.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
-                } else {
-                    jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
-                    jenkinsAdmin.each { p, u -> authStrategy.add(p, u) }
-                }
+                LinkedHashMap jenkinsAdmin = buildNewAccessList(adminGroup, getJenkinsAdministratorPermissions())
+                jenkinsAdmin.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
                 //println 'Granting normal user permissions to old admin group "' + adminGroupLast + '"'
                 println 'Removing old admin group "' + adminGroupLast + '" from auth strategy'
                 ProjectMatrixAuthorizationStrategy newAuthStrategy = removeGroupFromAuthStrategy(adminGroupLast, authStrategy)
