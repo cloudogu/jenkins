@@ -58,9 +58,16 @@ if (currentCasPlugin != null) {
 println "Checking Matrix-Auth-Plugin version ..."
 def currentMatrixAuthPlugin = jenkins.getPluginManager().getPlugin('matrix-auth');
 if (currentMatrixAuthPlugin != null) {
+    println "currentMatrixAuthPlugin version is: " +currentMatrixAuthPlugin.getVersion()
     if (!isVersionSufficient(currentMatrixAuthPlugin, MINIMAL_MATRIX_AUTH_PLUGIN_VERSION)) {
         println "Matrix-Auth-Plugin version " + currentMatrixAuthPlugin.getVersion() + " is lower than " + MINIMAL_MATRIX_AUTH_PLUGIN_VERSION + "; Upgrading plugin...";
         updateCenter.getPlugin('matrix-auth').deploy(true).get();
+        println "restarting jenkins after plugin upgrade ..."
+        jenkins.restart();
+        // needed as jenkins performs the restart in 5 seconds. Otherwise the other scripts will get called before the restart
+        sleep(5000) }
+    else{
+        println "Matrix-Auth-Plugin version is sufficent"
     }
 }
 else{
