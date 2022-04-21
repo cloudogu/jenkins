@@ -98,7 +98,7 @@ LinkedHashMap buildNewAccessList(String userOrGroup, String[] permissions) {
 }
 
 ProjectMatrixAuthorizationStrategy removeGroupFromAuthStrategy(String adminGroupLast, AuthorizationStrategy authStrategy) {
-    Map<Permission,Set<String>> permissionWithoutAdminGroupLast = new HashMap<Permission,Set<String>>(authStrategy.getGrantedPermissions())
+    Map<Permission, Set<String>> permissionWithoutAdminGroupLast = new HashMap<Permission, Set<String>>(authStrategy.getGrantedPermissions())
     for (permission in authStrategy.getGrantedPermissions()) {
         if (permission.value.contains(adminGroupLast)) {
             currentValue = permission.value
@@ -109,11 +109,12 @@ ProjectMatrixAuthorizationStrategy removeGroupFromAuthStrategy(String adminGroup
     ProjectMatrixAuthorizationStrategy strategy = new ProjectMatrixAuthorizationStrategy()
     permissionWithoutAdminGroupLast.each { key, value ->
         for (userOrGroup in value) {
-            strategy.add (key, userOrGroup)
+            strategy.add(key, userOrGroup)
         }
     }
     return strategy
 }
+
 
 ProjectMatrixAuthorizationStrategy updateOldUserGroupEntries(String groupName, AuthorizationStrategy authStrategy) {
     println('update user/group entries for "' + groupName + '"')

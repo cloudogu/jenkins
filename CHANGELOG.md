@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.332.1-3] - 2022-04-21
+### Fixed
+- Fixed an issue that would break the jenkins startup scripts if the version of the matrix-auth plugin was below 3.0  #113
+
 ## [v2.332.1-2] - 2022-04-19
 ### Changed
 - update initscript `init050CRITsetauthorization.groovy` to use the latest changes from the auth-matrix plugin (#111)
