@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.346.1-1] - 2022-06-27
+### Changed
+- Upgrade Jenkins to lts version 2.346.1 (#115)
+  - This will among other things fix CVE-2022-22950
+- Update openjdk8 version to 8.322.06-r0
+
 ## [v2.332.1-3] - 2022-04-21
 ### Fixed
 - Fixed an issue that would break the jenkins startup scripts if the version of the matrix-auth plugin was below 3.0  #113
