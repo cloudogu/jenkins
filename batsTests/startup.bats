@@ -76,7 +76,7 @@ assert_file_not_contains() {
   assert_not_exist "${mockHome}/.subversion"
   mock_set_status "${doguctl}" 0
   mock_set_output "${doguctl}" "NV" 1
-  source /workspace/unitTests/usr/bin/create-ca-certificates.sh
+  source /workspace/batsTests/usr/bin/create-ca-certificates.sh
   source /workspace/resources/startup.sh
 
   run createSubversionCertificates "${mockHome}"
@@ -95,7 +95,12 @@ assert_file_not_contains() {
   mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT1\n-----END CERTIFICATE-----\n" 3
   mock_set_side_effect "${svn}" "mkdir -p ${mockHome}/.subversion ; echo '[global]' > ${mockSubversionServersConfig}; echo 'ssl-authority-files =' >> ${mockSubversionServersConfig}"
 
-  source /workspace/unitTests/usr/bin/create-ca-certificates.sh
+  csplit (){
+    echo "CERT FOR CONTENT1" > "${mockHome}/.subversion/cert-alias1-00"
+    echo "CA-CERT FOR CONTENT1" > "${mockHome}/.subversion/cert-alias1-01"
+  }
+
+  source /workspace/batsTests/usr/bin/create-ca-certificates.sh
   source /workspace/resources/startup.sh
 
   run createSubversionCertificates "${mockHome}"
@@ -124,7 +129,12 @@ assert_file_not_contains() {
   mock_set_output "${doguctl}" "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT2\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT2\n-----END CERTIFICATE-----\n" 4
   mock_set_side_effect "${svn}" "mkdir -p ${mockHome}/.subversion ; echo '[global]' > ${mockHome}/.subversion/servers ; echo 'ssl-authority-files =' >> ${mockHome}/.subversion/servers"
 
-  source /workspace/unitTests/usr/bin/create-ca-certificates.sh
+  csplit (){
+    echo "CERT FOR CONTENT2" > "${mockHome}/.subversion/cert-alias2-00"
+    echo "CA-CERT FOR CONTENT2" > "${mockHome}/.subversion/cert-alias2-01"
+  }
+
+  source /workspace/batsTests/usr/bin/create-ca-certificates.sh
   source /workspace/resources/startup.sh
 
   run createSubversionCertificates "${mockHome}"
