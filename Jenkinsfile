@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@v1.48.0', 'github.com/cloudogu/dogu-build-lib@v1.6.0'])
+@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@v1.6.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -46,7 +46,10 @@ node('vagrant') {
                 }
             }
         }
-
+        stage('Check Markdown Links') {
+            Markdown markdown = new Markdown(this)
+            markdown.check()
+        }
         try {
             stage('Provision') {
                 ecoSystem.provision("/dogu")
