@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Upgrade to Jenkins 3.361.1 (#117)
+- Upgrade additional OpenJDK8 to 8.345.01-r0
+- Upgrade ces-build-lib to v1.56.0
+- Upgrade makefiles to version 7.0.1
+
+### Added
+- Markdown link check in Jenkinsfile
+- Bats stage in Jenkinsfile
 
 ## [v2.346.1-1] - 2022-06-27
 ### Changed

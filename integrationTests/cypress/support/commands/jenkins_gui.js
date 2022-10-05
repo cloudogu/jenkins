@@ -15,8 +15,8 @@ const createJenkinsApiKey = () => {
     cy.fixture("testuser_data").then((user) => {
         cy.visit("/jenkins/user/" + user.username + "/configure")
     })
-    cy.get("button").contains("Add new Token").click();
-    cy.get("button").contains("Generate").click();
+    cy.get("button").contains("Add new Token").click({force: true});
+    cy.get("button").contains("Generate").click({force: true});
     return cy.get("span[class='new-token-value visible']").invoke("text");
 };
 
