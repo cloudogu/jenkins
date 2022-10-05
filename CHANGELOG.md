@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.361.1-1] - 2022-10-05
+### Changed
+- Upgrade to Jenkins 3.361.1 (#117)
+- Upgrade additional OpenJDK8 to 8.345.01-r0
+- Upgrade ces-build-lib to v1.56.0
+- Upgrade makefiles to version 7.0.1
+
+### Added
+- Markdown link check in Jenkinsfile
+- Bats stage in Jenkinsfile
+
 ## [v2.346.1-1] - 2022-06-27
 ### Changed
 - Upgrade Jenkins to lts version 2.346.1 (#115)

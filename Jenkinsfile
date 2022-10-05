@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@v1.48.0', 'github.com/cloudogu/dogu-build-lib@v1.6.0'])
+@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@v1.6.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -45,6 +45,15 @@ node('vagrant') {
                     unstable('CHANGELOG.md should contain new change entries in the `[Unreleased]` section but none were found.')
                 }
             }
+        }
+
+        stage('Check Markdown Links') {
+            Markdown markdown = new Markdown(this)
+            markdown.check()
+        }
+
+        stage('Shell tests') {
+            executeShellTests()
         }
 
         try {
@@ -143,5 +152,22 @@ node('vagrant') {
                 ecoSystem.destroy()
             }
         }
+    }
+}
+
+def executeShellTests() {
+    def bats_base_image = "bats/bats"
+    def bats_custom_image = "cloudogu/bats"
+    def bats_tag = "1.2.1"
+
+    def batsImage = docker.build("${bats_custom_image}:${bats_tag}", "--build-arg=BATS_BASE_IMAGE=${bats_base_image} --build-arg=BATS_TAG=${bats_tag} ./build/make/bats")
+    try {
+        sh "mkdir -p target"
+
+        batsContainer = batsImage.inside("--entrypoint='' -v ${WORKSPACE}:/workspace") {
+            sh "make unit-test-shell-ci"
+        }
+    } finally {
+        junit allowEmptyResults: true, testResults: 'target/shell_test_reports/*.xml'
     }
 }
