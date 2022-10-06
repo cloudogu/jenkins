@@ -89,6 +89,20 @@ node('vagrant') {
                 ])
             }
 
+            stage('Test global admin group change') {
+                ecoSystem.vagrant.ssh "etcdctl set /config/_global/admin_group new_testing_admin_group"
+                ecoSystem.vagrant.ssh "docker restart $doguName"
+                ecoSystem.waitForDogu(doguName)
+                ecoSystem.waitUntilAvailable(doguName)
+                // TODO: Run only privileges-gui integration tests; Running all tests does not seem necessary
+                ecoSystem.runCypressIntegrationTests([
+                    cypressImage     : "cypress/included:8.7.0",
+                    enableVideo      : params.EnableVideoRecording,
+                    enableScreenshots: params.EnableScreenshotRecording
+                ])
+
+            }
+
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
                 stage('Upgrade dogu') {
                     // Remove new dogu that has been built and tested above
