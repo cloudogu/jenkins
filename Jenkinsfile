@@ -2,6 +2,7 @@
 @Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@v1.6.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
+import groovy.json.JsonSlurper
 
 node('vagrant') {
 
@@ -90,13 +91,23 @@ node('vagrant') {
             }
 
             stage('Test global admin group change') {
+                ip = ecoSystem.vagrant.externalIP
+                cypressConfigString = readFile(file: 'integrationTests/cypress.json')
+                cypressConfig = new JsonSlurper().parseText(cypressConfigString)
+                adminUsername = cypressConfig.env.AdminUsername
+                adminPassword = cypressConfig.env.AdminPassword
+                adminGroup = cypressConfig.env.AdminGroup
                 newAdminGroup = "newTestingAdminGroup"
-                // TODO: Create new admin group in user backend / usermgt
+                // Creating the new admin group in usermgt
+                sh 'curl -u ' + adminUsername + ':' + adminPassword + ' --insecure -X POST https://' + ip + '/usermgt/api/groups -H \'accept: */*\' -H \'Content-Type: application/json\' -d \'{"description": "New admin group for testing", "members": ["' + adminUsername + '"], "name": "' + newAdminGroup + '"}\''
                 ecoSystem.vagrant.ssh "etcdctl set /config/_global/admin_group $newAdminGroup"
-                ecoSystem.vagrant.ssh "docker restart jenkins"
+                ecoSystem.vagrant.ssh "docker restart $doguName"
                 ecoSystem.waitForDogu(doguName)
                 ecoSystem.waitUntilAvailable(doguName)
-                // TODO: Change admin group name in integration test configuration (cypress.json)
+                // Changing admin group name in integration test configuration (cypress.json)
+                cypressConfigString = cypressConfigString.replaceAll(adminGroup, newAdminGroup)
+                echo "Writing to cypress.json: $cypressConfigString"
+                writeFile(file: 'integrationTests/cypress.json', cypressConfigString)
                 ecoSystem.runCypressIntegrationTests([
                     cypressImage     : "cypress/included:8.7.0",
                     enableVideo      : params.EnableVideoRecording,
