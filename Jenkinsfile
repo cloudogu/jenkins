@@ -90,11 +90,13 @@ node('vagrant') {
             }
 
             stage('Test global admin group change') {
-                ecoSystem.vagrant.ssh "etcdctl set /config/_global/admin_group new_testing_admin_group"
-                ecoSystem.vagrant.ssh "docker restart $doguName"
+                newAdminGroup = "newTestingAdminGroup"
+                // TODO: Create new admin group in user backend / usermgt
+                ecoSystem.vagrant.ssh "etcdctl set /config/_global/admin_group $newAdminGroup"
+                ecoSystem.vagrant.ssh "docker restart jenkins"
                 ecoSystem.waitForDogu(doguName)
                 ecoSystem.waitUntilAvailable(doguName)
-                // TODO: Run only privileges-gui integration tests; Running all tests does not seem necessary
+                // TODO: Change admin group name in integration test configuration (cypress.json)
                 ecoSystem.runCypressIntegrationTests([
                     cypressImage     : "cypress/included:8.7.0",
                     enableVideo      : params.EnableVideoRecording,
