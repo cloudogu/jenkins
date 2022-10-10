@@ -91,29 +91,29 @@ node('vagrant') {
             }
 
             stage('Test global admin group change') {
-                ip = ecoSystem.vagrant.externalIP
-                cypressConfigString = readFile(file: 'integrationTests/cypress.json')
-                cypressConfig = new JsonSlurper().parseText(cypressConfigString)
-                adminUsername = cypressConfig.env.AdminUsername
-                adminPassword = cypressConfig.env.AdminPassword
-                adminGroup = cypressConfig.env.AdminGroup
-                newAdminGroup = "newTestingAdminGroup"
+                String ip = ecoSystem.externalIP
+                def cypressConfig = readJSON file: 'integrationTests/cypress.json'
+                String adminUsername = cypressConfig.env.AdminUsername
+                String adminPassword = cypressConfig.env.AdminPassword
+                String adminGroup = cypressConfig.env.AdminGroup
+                String newAdminGroup = "newTestingAdminGroup"
                 // Creating the new admin group in usermgt
                 sh 'curl -u ' + adminUsername + ':' + adminPassword + ' --insecure -X POST https://' + ip + '/usermgt/api/groups -H \'accept: */*\' -H \'Content-Type: application/json\' -d \'{"description": "New admin group for testing", "members": ["' + adminUsername + '"], "name": "' + newAdminGroup + '"}\''
                 ecoSystem.vagrant.ssh "etcdctl set /config/_global/admin_group $newAdminGroup"
-                ecoSystem.vagrant.ssh "docker restart $doguName"
+                echo "Restarting $doguName ..."
+                ecoSystem.vagrant.ssh "sudo docker restart $doguName"
                 ecoSystem.waitForDogu(doguName)
                 ecoSystem.waitUntilAvailable(doguName)
                 // Changing admin group name in integration test configuration (cypress.json)
+                String cypressConfigString = readFile(file: 'integrationTests/cypress.json')
                 cypressConfigString = cypressConfigString.replaceAll(adminGroup, newAdminGroup)
-                echo "Writing to cypress.json: $cypressConfigString"
-                writeFile(file: 'integrationTests/cypress.json', cypressConfigString)
+                writeFile(file: 'integrationTests/cypress.json', text: cypressConfigString)
+                echo "Running integrationtests with new admin group..."
                 ecoSystem.runCypressIntegrationTests([
                     cypressImage     : "cypress/included:8.7.0",
                     enableVideo      : params.EnableVideoRecording,
                     enableScreenshots: params.EnableScreenshotRecording
                 ])
-
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
