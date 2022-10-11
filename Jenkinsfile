@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@v1.6.0'])
+@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@ca81586c92c2360a79a4e955bba0e7b556f6a154'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import groovy.json.JsonSlurper
@@ -91,24 +91,8 @@ node('vagrant') {
             }
 
             stage('Test global admin group change') {
-                String ip = ecoSystem.externalIP
-                def cypressConfig = readJSON file: 'integrationTests/cypress.json'
-                String adminUsername = cypressConfig.env.AdminUsername
-                String adminPassword = cypressConfig.env.AdminPassword
-                String adminGroup = cypressConfig.env.AdminGroup
-                String newAdminGroup = "newTestingAdminGroup"
-                // Creating the new admin group in usermgt
-                sh 'curl -u ' + adminUsername + ':' + adminPassword + ' --insecure -X POST https://' + ip + '/usermgt/api/groups -H \'accept: */*\' -H \'Content-Type: application/json\' -d \'{"description": "New admin group for testing", "members": ["' + adminUsername + '"], "name": "' + newAdminGroup + '"}\''
-                ecoSystem.vagrant.ssh "etcdctl set /config/_global/admin_group $newAdminGroup"
-                echo "Restarting $doguName ..."
-                ecoSystem.vagrant.ssh "sudo docker restart $doguName"
-                ecoSystem.waitForDogu(doguName)
-                ecoSystem.waitUntilAvailable(doguName)
-                // Changing admin group name in integration test configuration (cypress.json)
-                String cypressConfigString = readFile(file: 'integrationTests/cypress.json')
-                cypressConfigString = cypressConfigString.replaceAll(adminGroup, newAdminGroup)
-                writeFile(file: 'integrationTests/cypress.json', text: cypressConfigString)
-                echo "Running integrationtests with new admin group..."
+                ecoSystem.prepareGlobalAdminGroupChangeTest(ecoSystem, doguName)
+                echo "Running integrationtests with new CES global admin group..."
                 ecoSystem.runCypressIntegrationTests([
                     cypressImage     : "cypress/included:8.7.0",
                     enableVideo      : params.EnableVideoRecording,
