@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@ca81586c92c2360a79a4e955bba0e7b556f6a154'])
+@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@4d77e0241256b96f3fd403e24baaa48a09aec6a5'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import groovy.json.JsonSlurper
@@ -91,7 +91,7 @@ node('vagrant') {
             }
 
             stage('Test global admin group change') {
-                ecoSystem.prepareGlobalAdminGroupChangeTest(ecoSystem, doguName)
+                ecoSystem.prepareGlobalAdminGroupChangeTest(doguName)
                 echo "Running integrationtests with new CES global admin group..."
                 ecoSystem.runCypressIntegrationTests([
                     cypressImage     : "cypress/included:8.7.0",
