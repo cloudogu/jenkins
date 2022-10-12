@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@4d77e0241256b96f3fd403e24baaa48a09aec6a5'])
+@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@8cc39d2f'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import groovy.json.JsonSlurper
@@ -83,21 +83,14 @@ node('vagrant') {
             }
 
             stage('Integration tests') {
-                ecoSystem.runCypressIntegrationTests([
-                    cypressImage     : "cypress/included:8.7.0",
-                    enableVideo      : params.EnableVideoRecording,
-                    enableScreenshots: params.EnableScreenshotRecording
-                ])
+                runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
             }
 
-            stage('Test global admin group change') {
-                ecoSystem.prepareGlobalAdminGroupChangeTest(doguName)
-                echo "Running integrationtests with new CES global admin group..."
-                ecoSystem.runCypressIntegrationTests([
-                    cypressImage     : "cypress/included:8.7.0",
-                    enableVideo      : params.EnableVideoRecording,
-                    enableScreenshots: params.EnableScreenshotRecording
-                ])
+            stage('Test: Change Global Admin Group') {
+                ecoSystem.changeGlobalAdminGroup("newAdminGroup")
+                // this waits until the dogu is up and running
+                ecosystem.restartDogu("jenkins")
+                runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
@@ -124,11 +117,7 @@ node('vagrant') {
 
                 stage('Integration Tests - After Upgrade') {
                     // Run integration tests again to verify that the upgrade was successful
-                    ecoSystem.runCypressIntegrationTests([
-                        cypressImage     : "cypress/included:8.7.0",
-                        enableVideo      : params.EnableVideoRecording,
-                        enableScreenshots: params.EnableScreenshotRecording
-                    ])
+                    runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
                 }
             }
 
@@ -153,6 +142,16 @@ node('vagrant') {
                 ecoSystem.destroy()
             }
         }
+    }
+}
+
+def runIntegrationTests(EcoSystem ecoSystem, boolean videoRecording, boolean screenshotRecording) {
+    stage('Integration tests') {
+        ecoSystem.runCypressIntegrationTests([
+            cypressImage     : "cypress/included:8.7.0",
+            enableVideo      : videoRecording,
+            enableScreenshots: screenshotRecording
+        ])
     }
 }
 
