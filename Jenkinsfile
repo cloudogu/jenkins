@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@9e8cec775cde172bf4a794930a98ae4832721f97'])
+@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@71106241a3cc016e79df9c6b6f213b2291f6e274'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import groovy.json.JsonSlurper
@@ -95,7 +95,13 @@ node('vagrant') {
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
-               ecoSystem.runDoguUpgradeTest(params, doguName)
+                stage('Upgrade dogu'){
+                    ecoSystem.upgradeFromPreviousRelease(params.OldDoguVersionForUpgradeTest, doguName)
+                }
+                stage('Integration Tests - After Upgrade'){
+                    // Run integration tests again to verify that the upgrade was successful
+                    runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
+                }
             }
 
             if (gitflow.isReleaseBranch()) {
