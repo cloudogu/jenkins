@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@2b4735ee'])
+@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@v1.7.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import groovy.json.JsonSlurper

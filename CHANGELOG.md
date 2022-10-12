@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- [#119] Upgrade `dogu-build-lib` to version ``.
+- [#119] Upgrade `dogu-build-lib` to version `1.7.0`.
 
 ### Fixed
 - [#119] Fix script to create authentication strategy. This resolves the problem that no user could log into the dogu
