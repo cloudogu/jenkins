@@ -89,7 +89,7 @@ node('vagrant') {
             stage('Test: Change Global Admin Group') {
                 ecoSystem.changeGlobalAdminGroup("newAdminGroup")
                 // this waits until the dogu is up and running
-                ecosystem.restartDogu("jenkins")
+                ecoSystem.restartDogu("jenkins")
                 runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
             }
 
@@ -146,13 +146,11 @@ node('vagrant') {
 }
 
 def runIntegrationTests(EcoSystem ecoSystem, boolean videoRecording, boolean screenshotRecording) {
-    stage('Integration tests') {
-        ecoSystem.runCypressIntegrationTests([
-            cypressImage     : "cypress/included:8.7.0",
-            enableVideo      : videoRecording,
-            enableScreenshots: screenshotRecording
-        ])
-    }
+    ecoSystem.runCypressIntegrationTests([
+        cypressImage     : "cypress/included:8.7.0",
+        enableVideo      : videoRecording,
+        enableScreenshots: screenshotRecording
+    ])
 }
 
 def executeShellTests() {
