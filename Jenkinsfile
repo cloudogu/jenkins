@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@8cc39d2f'])
+@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@2b4735ee'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import groovy.json.JsonSlurper
@@ -53,11 +53,12 @@ node('vagrant') {
             markdown.check()
         }
 
-        stage('Shell tests') {
-            executeShellTests()
-        }
-
         try {
+            stage('Bats Tests') {
+                Bats bats = new Bats(this, docker)
+                bats.checkAndExecuteTests()
+            }
+
             stage('Provision') {
                 ecoSystem.provision("/dogu")
             }
@@ -151,21 +152,4 @@ def runIntegrationTests(EcoSystem ecoSystem, boolean videoRecording, boolean scr
         enableVideo      : videoRecording,
         enableScreenshots: screenshotRecording
     ])
-}
-
-def executeShellTests() {
-    def bats_base_image = "bats/bats"
-    def bats_custom_image = "cloudogu/bats"
-    def bats_tag = "1.2.1"
-
-    def batsImage = docker.build("${bats_custom_image}:${bats_tag}", "--build-arg=BATS_BASE_IMAGE=${bats_base_image} --build-arg=BATS_TAG=${bats_tag} ./build/make/bats")
-    try {
-        sh "mkdir -p target"
-
-        batsContainer = batsImage.inside("--entrypoint='' -v ${WORKSPACE}:/workspace") {
-            sh "make unit-test-shell-ci"
-        }
-    } finally {
-        junit allowEmptyResults: true, testResults: 'target/shell_test_reports/*.xml'
-    }
 }
