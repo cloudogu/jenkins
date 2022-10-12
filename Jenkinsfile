@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@v1.7.0'])
+@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@9e8cec775cde172bf4a794930a98ae4832721f97'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 import groovy.json.JsonSlurper
@@ -95,31 +95,7 @@ node('vagrant') {
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
-                stage('Upgrade dogu') {
-                    // Remove new dogu that has been built and tested above
-                    ecoSystem.purgeDogu(doguName)
-
-                    if (params.OldDoguVersionForUpgradeTest != '' && !params.OldDoguVersionForUpgradeTest.contains('v')){
-                        println "Installing user defined version of dogu: " + params.OldDoguVersionForUpgradeTest
-                        ecoSystem.installDogu("official/" + doguName + " " + params.OldDoguVersionForUpgradeTest)
-                    } else {
-                        println "Installing latest released version of dogu..."
-                        ecoSystem.installDogu("official/" + doguName)
-                    }
-                    ecoSystem.startDogu(doguName)
-                    ecoSystem.waitForDogu(doguName)
-                    ecoSystem.upgradeDogu(ecoSystem)
-
-                    // Wait for upgraded dogu to get healthy
-                    ecoSystem.waitForDogu(doguName)
-                    echo "Waiting for $doguName to be reachable..."
-                    ecoSystem.waitUntilAvailable(doguName, 90)
-                }
-
-                stage('Integration Tests - After Upgrade') {
-                    // Run integration tests again to verify that the upgrade was successful
-                    runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
-                }
+               runDoguUpgradeTest(params, doguName)
             }
 
             if (gitflow.isReleaseBranch()) {
