@@ -4,7 +4,7 @@ import hudson.security.csrf.DefaultCrumbIssuer
 
 def getValueFromEtcd(String key){
   String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-  URL url = new URL("http://${ip}:4001/v2/keys/${key}");
+  URL url = new URL("http://[${ip}]:4001/v2/keys/${key}");
   def json = new JsonSlurper().parseText(url.text)
   return json.node.value
 }

@@ -3,6 +3,18 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+echo "                                     ./////,                    "
+echo "                                 ./////==//////*                "
+echo "                                ////.  ___   ////.              "
+echo "                         ,**,. ////  ,////A,  */// ,**,.        "
+echo "                    ,/////////////*  */////*  *////////////A    "
+echo "                   ////'        \VA.   '|'   .///'       '///*  "
+echo "                  *///  .*///*,         |         .*//*,   ///* "
+echo "                  (///  (//////)**--_./////_----*//////)   ///) "
+echo "                   V///   '°°°°      (/////)      °°°°'   ////  "
+echo "                    V/////(////////\. '°°°' ./////////(///(/'   "
+echo "                       'V/(/////////////////////////////V'      "
+
 JENKINS_HOME_DIR="/var/lib/jenkins"
 
 run_main() {
@@ -68,7 +80,6 @@ run_main() {
   if [[ "$(doguctl config "container_config/memory_limit" -d "empty")" == "empty" ]];  then
     echo "Starting Jenkins without memory limits..."
     java -Djava.awt.headless=true \
-      -Djava.net.preferIPv4Stack=true \
       -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
       -Djavax.net.ssl.trustStorePassword=changeit \
       -Djenkins.install.runSetupWizard=false \
@@ -80,7 +91,6 @@ run_main() {
     MEMORY_LIMIT_MIN_PERCENTAGE=$(doguctl config "container_config/java_min_ram_percentage")
     echo "Starting Jenkins with memory limits: MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}, MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE} ..."
     java -Djava.awt.headless=true \
-      -Djava.net.preferIPv4Stack=true \
       -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
       -Djavax.net.ssl.trustStorePassword=changeit \
       -Djenkins.install.runSetupWizard=false \
@@ -182,7 +192,7 @@ function resetSubversionSSLConfig() {
 
   echo "Resetting subversion SSL entry..."
   assertSubversionSSLEntry "${subversionServerConfigFile}"
-  
+
   sed -i 's|\(# \)\?ssl-authority-files.\+|ssl-authority-files = |' "${subversionServerConfigFile}"
 }
 
