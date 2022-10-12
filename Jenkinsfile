@@ -2,7 +2,6 @@
 @Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@9e8cec775cde172bf4a794930a98ae4832721f97'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
-import groovy.json.JsonSlurper
 
 node('vagrant') {
 
