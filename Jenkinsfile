@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.56.0', 'github.com/cloudogu/dogu-build-lib@v1.6.0'])
+@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@v1.7.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -52,11 +52,12 @@ node('vagrant') {
             markdown.check()
         }
 
-        stage('Shell tests') {
-            executeShellTests()
-        }
-
         try {
+            stage('Bats Tests') {
+                Bats bats = new Bats(this, docker)
+                bats.checkAndExecuteTests()
+            }
+
             stage('Provision') {
                 ecoSystem.provision("/dogu")
             }
@@ -82,11 +83,14 @@ node('vagrant') {
             }
 
             stage('Integration tests') {
-                ecoSystem.runCypressIntegrationTests([
-                    cypressImage     : "cypress/included:8.7.0",
-                    enableVideo      : params.EnableVideoRecording,
-                    enableScreenshots: params.EnableScreenshotRecording
-                ])
+                runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
+            }
+
+            stage('Test: Change Global Admin Group') {
+                ecoSystem.changeGlobalAdminGroup("newAdminGroup")
+                // this waits until the dogu is up and running
+                ecoSystem.restartDogu("jenkins")
+                runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
@@ -107,27 +111,13 @@ node('vagrant') {
 
                     // Wait for upgraded dogu to get healthy
                     ecoSystem.waitForDogu(doguName)
-                    // TODO: Replace this with "ecosystem.waitUntilAvailable(doguName)" from dogu-build-lib 1.5.0
-                    // curl the dogu URL until the "Dogu is starting" page (status code 503) is gone
-                    // and the CAS login page is returned (status code 302)
-                    String externalIP = ecoSystem.externalIP
-                    echo "Waiting for https://$externalIP/$doguName to be reachable..."
-                    for (i=0; i < 30; i++) {
-                        def response = sh(script: "curl --insecure --silent --head https://${externalIP}/${doguName} | head -n 1", returnStdout: true)
-                        if (response.contains("302")){
-                            break;
-                        }
-                        sleep 3
-                    }
+                    echo "Waiting for $doguName to be reachable..."
+                    ecoSystem.waitUntilAvailable(doguName, 90)
                 }
 
                 stage('Integration Tests - After Upgrade') {
                     // Run integration tests again to verify that the upgrade was successful
-                    ecoSystem.runCypressIntegrationTests([
-                        cypressImage     : "cypress/included:8.7.0",
-                        enableVideo      : params.EnableVideoRecording,
-                        enableScreenshots: params.EnableScreenshotRecording
-                    ])
+                    runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
                 }
             }
 
@@ -155,19 +145,10 @@ node('vagrant') {
     }
 }
 
-def executeShellTests() {
-    def bats_base_image = "bats/bats"
-    def bats_custom_image = "cloudogu/bats"
-    def bats_tag = "1.2.1"
-
-    def batsImage = docker.build("${bats_custom_image}:${bats_tag}", "--build-arg=BATS_BASE_IMAGE=${bats_base_image} --build-arg=BATS_TAG=${bats_tag} ./build/make/bats")
-    try {
-        sh "mkdir -p target"
-
-        batsContainer = batsImage.inside("--entrypoint='' -v ${WORKSPACE}:/workspace") {
-            sh "make unit-test-shell-ci"
-        }
-    } finally {
-        junit allowEmptyResults: true, testResults: 'target/shell_test_reports/*.xml'
-    }
+def runIntegrationTests(EcoSystem ecoSystem, boolean videoRecording, boolean screenshotRecording) {
+    ecoSystem.runCypressIntegrationTests([
+        cypressImage     : "cypress/included:8.7.0",
+        enableVideo      : videoRecording,
+        enableScreenshots: screenshotRecording
+    ])
 }
