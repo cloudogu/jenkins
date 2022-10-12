@@ -95,7 +95,7 @@ node('vagrant') {
             }
 
             if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
-               runDoguUpgradeTest(params, doguName)
+               ecoSystem.runDoguUpgradeTest(params, doguName)
             }
 
             if (gitflow.isReleaseBranch()) {
