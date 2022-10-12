@@ -5,12 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [v2.361.1-2] - 2022-10-12
 ### Changed
 - [#119] Upgrade `dogu-build-lib` to version `1.7.0`.
 
 ### Fixed
 - [#119] Fix script to create authentication strategy. This resolves the problem that no user could log into the dogu
-   after changing the admin group.
+   after changing the CES global admin group.
 
 ## [v2.361.1-1] - 2022-10-05
 ### Changed
