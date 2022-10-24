@@ -61,7 +61,7 @@ String[] getJenkinsAdministratorPermissions() {
 String getValueFromEtcd(String key) {
     String ip = new File('/etc/ces/node_master').getText('UTF-8').trim()
     try {
-        URL url = new URL("http://[${ip}]:4001/v2/keys/${key}")
+        URL url = new URL("http://${ip}:4001/v2/keys/${key}")
         def json = new JsonSlurper().parseText(url.text)
         return json.node.value
     } catch (FileNotFoundException exception) {
@@ -72,7 +72,7 @@ String getValueFromEtcd(String key) {
 
 void writeValueToEtcd(String key, String value) {
     String ip = new File('/etc/ces/node_master').getText('UTF-8').trim()
-    URL url = new URL("http://[${ip}]:4001/v2/keys/${key}")
+    URL url = new URL("http://${ip}:4001/v2/keys/${key}")
 
     def conn = url.openConnection()
     conn.setRequestMethod('PUT')

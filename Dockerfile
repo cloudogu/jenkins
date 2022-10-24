@@ -21,7 +21,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_JENKINS_WAR="08a72b43d570f785796a7f8b398d2d4865d20cdd985e524bc33b7f9cd5907eb3" \
     # additional java version for legacy builds
     ADDITIONAL_OPENJDK_VERSION="8.345.01-r0" \
-    JAVA_OPTS="-Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true"
+    JAVA_OPTS="-Djava.net.preferIPv4Stack=false -Djava.net.preferIPv4Addresses=false"
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
