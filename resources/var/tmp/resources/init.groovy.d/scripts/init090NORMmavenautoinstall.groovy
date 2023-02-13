@@ -15,7 +15,7 @@ import hudson.tools.*
 
 // the name M3 is chosen, because of the GitHub + Maven Pipeline sample
 def mavenName = "M3"
-def targetVersion = "3.8.6"
+def targetVersion = "3.8.1"
 
 List<hudson.tasks.Maven$MavenInstallation> getMavenInstallationsWithName(String name, List<hudson.tasks.Maven$MavenInstallation> installations){
     List<hudson.tasks.Maven$MavenInstallation> installationsWithName = []
