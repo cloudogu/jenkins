@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- Upgrade `M3` maven to 3.8.6; #125
+- Upgrade `M3` maven to 3.9.0; #125
 
 ## [v2.375.2-1] - 2023-01-17
 ### Changed
