@@ -5,6 +5,8 @@ import com.cloudogu.ces.dogubuildlib.*
 
 node('vagrant') {
 
+    String productionReleaseBranch = "main"
+
     String doguName = "jenkins"
     Git git = new Git(this, "cesmarvin")
     git.committerName = 'cesmarvin'
@@ -107,7 +109,7 @@ node('vagrant') {
                 String releaseVersion = git.getSimpleBranchName()
 
                 stage('Finish Release') {
-                    gitflow.finishRelease(releaseVersion)
+                    gitflow.finishRelease(releaseVersion, productionReleaseBranch)
                 }
 
                 stage('Push Dogu to registry') {
@@ -115,7 +117,7 @@ node('vagrant') {
                 }
 
                 stage ('Add Github-Release'){
-                    github.createReleaseWithChangelog(releaseVersion, changelog)
+                    github.createReleaseWithChangelog(releaseVersion, changelog, productionReleaseBranch)
                 }
             }
 
