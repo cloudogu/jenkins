@@ -1,9 +1,11 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.57.0', 'github.com/cloudogu/dogu-build-lib@v1.8.0'])
+@Library(['github.com/cloudogu/ces-build-lib@1.62.0', 'github.com/cloudogu/dogu-build-lib@v2.0.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
 node('vagrant') {
+
+    String productionReleaseBranch = "main"
 
     String doguName = "jenkins"
     Git git = new Git(this, "cesmarvin")
@@ -107,7 +109,7 @@ node('vagrant') {
                 String releaseVersion = git.getSimpleBranchName()
 
                 stage('Finish Release') {
-                    gitflow.finishRelease(releaseVersion)
+                    gitflow.finishRelease(releaseVersion, productionReleaseBranch)
                 }
 
                 stage('Push Dogu to registry') {
@@ -115,7 +117,7 @@ node('vagrant') {
                 }
 
                 stage ('Add Github-Release'){
-                    github.createReleaseWithChangelog(releaseVersion, changelog)
+                    github.createReleaseWithChangelog(releaseVersion, changelog, productionReleaseBranch)
                 }
             }
 
