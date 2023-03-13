@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v2.346.1-1] - 2022-06-27
 ### Changed
 - Upgrade Jenkins to lts version 2.346.1 (#115)
-  - This will among other things fix CVE-2022-22950
+  - This will fix CVE-2022-22950 and CVE-2022-22965 among other things (#110)
 - Update openjdk8 version to 8.322.06-r0
 
 ## [v2.332.1-3] - 2022-04-21
