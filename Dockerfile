@@ -20,7 +20,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_I18N_APK="be3a55e6366a2ddaecf17203a7e71966757dca47a25ce34b5f3d6dd1e1efee55" \
     SHA256_JENKINS_WAR="c132a1e00b685afc7996eba530be428a3279c649399417f9fa38fcbc0dbec027" \
     # additional java version for legacy builds
-    ADDITIONAL_OPENJDK_VERSION="8.345.01-r0"
+    ADDITIONAL_OPENJDK_VERSION="8.362.09-r1"
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,

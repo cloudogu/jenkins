@@ -64,6 +64,8 @@ run_main() {
     echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> "${JENKINS_HOME_DIR}/.mavenrc"
   fi
 
+  ADDITIONAL_ARGS="$(doguctl config additional_java_args)"
+
   # starting jenkins
   if [[ "$(doguctl config "container_config/memory_limit" -d "empty")" == "empty" ]];  then
     echo "Starting Jenkins without memory limits..."
@@ -72,6 +74,7 @@ run_main() {
       -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
       -Djavax.net.ssl.trustStorePassword=changeit \
       -Djenkins.install.runSetupWizard=false \
+      "${ADDITIONAL_ARGS}" \
       -Djava.awt.headless=true \
       -jar /jenkins.war --prefix=/jenkins
   else
@@ -84,6 +87,7 @@ run_main() {
       -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
       -Djavax.net.ssl.trustStorePassword=changeit \
       -Djenkins.install.runSetupWizard=false \
+      "${ADDITIONAL_ARGS}" \
       -Djava.awt.headless=true \
       -XX:MaxRAMPercentage="${MEMORY_LIMIT_MAX_PERCENTAGE}" \
       -XX:MinRAMPercentage="${MEMORY_LIMIT_MIN_PERCENTAGE}" \
