@@ -5,10 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Add trivy scan in Jenkins pipeline
+
 ### Changed
 - Upgrade to java base image 11.0.18-1
 - Upgrade additional OpenJDK8 to 8.362.09-r1
 - Upgrade glibc to 2.35-r1
+- Upgrade ces-build-lib to 1.64.2
+- Upgrade dogu-build-lib to 2.1.0
 
 ## [v2.387.1-1] - 2023-03-13
 ### Changed
