@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Upgrade to java base image 11.0.18-1
-- Upgrade additional OpenJDK8 to 8.362.09-r1
+- Upgrade additional OpenJDK8 to 8.372.07-r0
 - Upgrade glibc to 2.35-r1
 - Upgrade ces-build-lib to 1.64.2
 - Upgrade dogu-build-lib to 2.1.0
