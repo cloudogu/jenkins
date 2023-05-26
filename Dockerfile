@@ -12,13 +12,13 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.406 \
+    JENKINS_VERSION=2.387.1 \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
-    SHA256_JENKINS_WAR="9a1872f6a297961feeb34c62b8759878d1afeab09749766f6c909e59e73a6a04" \
+    SHA256_JENKINS_WAR="c132a1e00b685afc7996eba530be428a3279c649399417f9fa38fcbc0dbec027" \
     # additional java version for legacy builds
     ADDITIONAL_OPENJDK_VERSION="8.372.07-r0"
 
@@ -39,7 +39,7 @@ RUN set -o errexit \
  && apk add openjdk8="$ADDITIONAL_OPENJDK_VERSION" \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
- && curl -L https://mirrors.jenkins-ci.org/war/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \
+ && curl -L https://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \
  && echo "${SHA256_JENKINS_WAR} *jenkins.war" | sha256sum -c - \
  # set git system ca-certificates
  && git config --system http.sslCaInfo /var/lib/jenkins/ca-certificates.crt \
