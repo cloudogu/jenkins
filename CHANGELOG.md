@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Add missing additional OpenJDK11 11.0.19_p7-r0; #135
 
 ## [v2.387.1-3] - 2023-05-26
 ### Change
