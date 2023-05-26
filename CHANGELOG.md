@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Change
 - Upgraded to java base image 17.0.6-2; #133
+- Upgrade jenkins to 2.406; #133
 
 ## [v2.387.1-2] - 2023-05-08
 ### Added
