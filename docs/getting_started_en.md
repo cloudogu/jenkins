@@ -7,6 +7,5 @@ title: "Getting Started"
 ## Guides
 
 - [Installing the Jenkins dogu](operations/Install_Jenkins_en.md)
-- [Building with Java 8](operations/Building_with_Java8_en.md)
+- [Building with custom Java](operations/Building_with_custom_Java_en.md)
 - [Post initialization scripts](operations/Post_initialization_scripts_en.md)
-
