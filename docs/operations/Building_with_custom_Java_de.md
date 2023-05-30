@@ -4,13 +4,11 @@ title: "Bauen mit speziellen OpenJDK-Versionen"
 
 # Bauen mit speziellen OpenJDK-Versionen
 
-Seit Jenkins Dogu Version 2.361.1 ist die Standard-OpenJDK-Version 11 oder 17. Wenn Sie weiterhin ältere OpenJDK z.B. 8 oder 11 für Ihre Builds
-verwenden möchten, gehen Sie wie folgt vor.
+Seit Jenkins Dogu Version 2.361.1 ist die Standard-OpenJDK-Version 11 oder 17. Wenn Sie weiterhin ältere OpenJDK z.B. 8 oder 11 für Ihre Builds verwenden möchten, gehen Sie wie folgt vor.
 
 ## Projekt-Builds
 
-In Standard-Java-Build-Projekten können Sie das JDK einfach über die Projektkonfiguration in Jenkins ändern; wählen Sie
-einfach "OpenJDK-8" oder "OpenJDK-11" in der Kategorie "JDK".
+In Standard-Java-Build-Projekten können Sie das JDK einfach über die Projektkonfiguration in Jenkins ändern; wählen Sie einfach "OpenJDK-8" oder "OpenJDK-11" in der Kategorie "JDK".
 
 ## Pipeline-Builds
 

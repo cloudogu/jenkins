@@ -4,13 +4,11 @@ title: "Building with custom OpenJDK versions".
 
 # Building with custom OpenJDK versions
 
-Since Jenkins Dogu version 2.361.1, the default OpenJDK version is 11 or 17. If you still want to use older OpenJDK e.g. 8 or 11 for your builds
-do the following.
+Since Jenkins Dogu version 2.361.1, the default OpenJDK version is 11 or 17. If you still want to use older OpenJDK e.g. 8 or 11 for your builds do the following.
 
 ## Project builds
 
-In standard Java build projects, you can easily change the JDK via the project configuration in Jenkins; select
-"OpenJDK-8" or "OpenJDK-11" in the "JDK" category.
+In standard Java build projects, you can easily change the JDK via the project configuration in Jenkins; select "OpenJDK-8" or "OpenJDK-11" in the "JDK" category.
 
 ## Pipeline builds
 
@@ -69,8 +67,7 @@ Maven mvn = new MavenWrapper(this, javaHome)
 
 ### Maven in Docker
 
-Using the [ces-build-lib](https://github.com/cloudogu/ces-build-lib), you can easily build your Maven project in
-Docker:
+Using the [ces-build-lib](https://github.com/cloudogu/ces-build-lib), you can easily build your Maven project in Docker:
 
 ```
 Maven mvn = new MavenInDocker(this, "3.5.0-jdk-8")
