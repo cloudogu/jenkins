@@ -2,7 +2,7 @@
 FROM registry.cloudogu.com/official/java:17.0.6-2
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.387.1-3" \
+      VERSION="2.387.1-4" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -20,7 +20,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     SHA256_JENKINS_WAR="c132a1e00b685afc7996eba530be428a3279c649399417f9fa38fcbc0dbec027" \
     # additional java version for legacy builds
-    ADDITIONAL_OPENJDK_VERSION="8.372.07-r0"
+    ADDITIONAL_OPENJDK8_VERSION="8.372.07-r0" \
+    ADDITIONAL_OPENJDK11_VERSION="11.0.19_p7-r0"
+
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
@@ -36,7 +38,8 @@ RUN set -o errexit \
  # coreutils and ttf-dejavu is required because of java.awt.headless problem:
  # - https://wiki.jenkins.io/display/JENKINS/Jenkins+got+java.awt.headless+problem
  && apk add --no-cache coreutils ttf-dejavu openssh-client git subversion mercurial curl \
- && apk add openjdk8="$ADDITIONAL_OPENJDK_VERSION" \
+ && apk add openjdk8="$ADDITIONAL_OPENJDK8_VERSION" \
+ && apk add openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
  && curl -L https://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \
