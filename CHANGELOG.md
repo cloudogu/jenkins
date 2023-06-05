@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.387.1-5] - 2023-06-05
+### Changed
+- Use java 11 instead of 17 because of plugin incompatibility; #137
+
 ## [v2.387.1-4] - 2023-05-30
 ### Fixed
 - Add missing additional OpenJDK11 11.0.19_p7-r0; #135
