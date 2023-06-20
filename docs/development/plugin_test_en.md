@@ -98,7 +98,7 @@ These kinds of problems can only be detected by executing the specific code-bloc
 We did not find an appropriate method to test all used Jenkins-Plugins in a reasonable time frame.    
 
 Currently an upgrade to JAVA 17 is not advisable. Also the official 
-[Jenkins documentation](https://www.jenkins.io/doc/developer/tutorial/prepare/#download-and-install-a-jdk) recoomands using JAVA 11. 
+[Jenkins documentation](https://www.jenkins.io/doc/developer/tutorial/prepare/#download-and-install-a-jdk) recommends using JAVA 11. 
 
 ## Going forward
 To identify potentially problematic plugins a first step would be to check the minimal plugin requirements set by Jenkins (see this [blog-post](https://www.jenkins.io/blog/2022/12/14/require-java-11/)).
