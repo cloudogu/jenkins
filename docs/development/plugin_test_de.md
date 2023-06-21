@@ -47,7 +47,7 @@ println "Total number of plugins: ${plugins.size()}"
 
 ## Testen mit PCT (Plugin Compatibility Tester)
 
-Jenkins hat einen offiziellen Kompatibilitätstester: (https://github.com/jenkinsci/plugin-compat-tester)[https://github.com/jenkinsci/plugin-compat-tester]
+Jenkins hat einen offiziellen Kompatibilitätstester: [https://github.com/jenkinsci/plugin-compat-tester](https://github.com/jenkinsci/plugin-compat-tester)
 Dieser Tester kann alle in einer Jenkins WAR-Datei enthaltenen Plugins testen. Für jedes Plugin (`*.hpi`-Datei) werden die folgenden Schritte ausgeführt:
 * Extrahieren der `pom.xml` aus der `*.hpi`-Datei
 * Auschecken des entsprechenden Quellcode-Repositorys
