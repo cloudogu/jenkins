@@ -1,17 +1,17 @@
 # Plugin-Kompatibilität testen
 
-Im Rahmen Upgrades auf JAVA 17 für das Jenkins-Dogu wurden einige Probleme mit Jenkins-Plugins festgestellt.
+Im Rahmen Upgrades auf Java 17 für das Jenkins-Dogu wurden einige Probleme mit Jenkins-Plugins festgestellt.
 
 Das Jenkins-Dogu hat potenziell eine Menge Plugins installiert. Diese Plugins müssen mit der aktuellen Jenkins-Version
-und der zugrunde liegenden JAVA-Version (derzeit JAVA 11) kompatibel sein.
+und der zugrunde liegenden Java-Version (derzeit Java 11) kompatibel sein.
 
-Wenn ein Upgrade von Jenkins oder JAVA ansteht, sollten die Plugins mit der neuen Version getestet werden.
+Wenn ein Upgrade von Jenkins oder Java ansteht, sollten die Plugins mit der neuen Version getestet werden.
 
 ## Testen mit der Jenkins-CLI
 Die Jenkins-CLI hat die Möglichkeit, alle installierten Plugins aufzulisten und auch mit ihnen über ein Groovy-Skript zu interagieren.
 
-Die folgenden Befehle wurden innerhalb des Jenkins-Dogu-Docker-Containers ausgeführt.
-Es ist möglich, sie von einem anderen Host aus auszuführen, aber dann benötigt der CES ein gültiges SSL-Zertifikat. Ansonsten akzeptiert die Jenkins-CLI das Zertifikat nicht.
+Die folgenden Befehle werden innerhalb des Jenkins-Dogu-Docker-Containers ausgeführt.
+Es ist möglich, sie von einem anderen Host aus auszuführen, aber dann benötigt das CES ein gültiges SSL-Zertifikat. Andernfalls akzeptiert die Jenkins-CLI das Zertifikat nicht.
 
 ```shell
 # Laden des jenkins-cli JAR
@@ -68,10 +68,10 @@ java -jar pct.jar test-plugins --war "$(pwd)/jenkins-with-plugins.war" --working
 Das `pct.jar` kann mit `mvn clean package` aus dem pct-Repository erstellt werden.
 
 ### Probleme mit PCT
-Einige der Plugins sind ziemlich alt und möglicherweise veraltet. Der PCT hat  Probleme beim Testen dieser Plugins.
+Einige der Plugins sind ziemlich alt und möglicherweise veraltet. Der PCT hat Probleme beim Testen dieser Plugins.
 
 #### Unauthentifiziertes Git-Protokoll
-Die `pom.xml` könnte einen Verweis auf das Quellcode-Repository enthalten, das ein nicht authentifiziertes Git-Protokoll auf Port 9418 wie z.B. `git://github.com/jenkinsci/async-http-client-plugin.git` verwendet.
+Die `pom.xml` könnte einen Verweis auf ein Quellcode-Repository enthalten, das ein nicht authentifiziertes Git-Protokoll auf Port 9418 wie z.B. `git://github.com/jenkinsci/async-http-client-plugin.git` verwendet.
 Um dies zu beheben, muss die `pom.xml` innerhalb der `hpi`-Datei innerhalb der WAR-Datei bearbeitet werden. Das `git://`-Protokoll kann durch `https://` ersetzt werden.
 
 #### Blockierte Maven-Spiegel
@@ -92,13 +92,13 @@ Kommentieren Sie den Mirror-Block aus, der wie folgt aussieht:
 ## Fazit
 
 Zum Zeitpunkt des Schreibens (20.06.2023) waren beide Testmethoden nicht sehr nützlich / erfolgreich, da einige der Plugins, die derzeit verwendet werden, nicht getestet werden können.
-Außerdem konnten beide Methoden bekannte Fehler nicht identifizieren, wenn ein Plugin (async-http-client) Reflection verwendet, um einige Klassen zur Laufzeit zu laden, die in JAVA 17 fehlen.
+Außerdem konnten beide Methoden bekannte Fehler nicht identifizieren, wenn ein Plugin (async-http-client) Reflection verwendet, um einige Klassen zur Laufzeit zu laden, die in Java 17 fehlen.
 Diese Art von Problemen kann nur durch das Ausführen der spezifischen Code-Blöcke erkannt werden (entweder durch manuelles Testen oder durch gute Unit-Tests, die von dem Plugin bereitgestellt werden).
 
 Wir haben keine geeignete Methode gefunden, um alle verwendeten Jenkins-Plugins in einem vertretbaren Zeitrahmen zu testen.    
 
-Ein Upgrade auf JAVA 17 ist derzeit nicht ratsam. Auch die offizielle 
-[Jenkins-Dokumentation](https://www.jenkins.io/doc/developer/tutorial/prepare/#download-and-install-a-jdk) empfiehlt die Verwendung von JAVA 11. 
+Ein Upgrade auf Java 17 ist derzeit nicht ratsam. Auch die offizielle 
+[Jenkins-Dokumentation](https://www.jenkins.io/doc/developer/tutorial/prepare/#download-and-install-a-jdk) empfiehlt die Verwendung von Java 11. 
 
 ## Weiteres Vorgehen
 Um potenziell problematische Plugins zu identifizieren, wäre ein erster Schritt, die von Jenkins festgelegten minimalen Plugin-Anforderungen zu überprüfen (siehe [Blog-Post](https://www.jenkins.io/blog/2022/12/14/require-java-11/)).
@@ -107,6 +107,6 @@ Dieses Vorgehen könnte wie folgt aussehen:
 * Extrahieren der `pom.xml` aus der `hpi.file`
 * Überprüfung der Jenkins- und der Java-Version des Plugins
 
-Alternativ kann auch die Jenkins-CLI verwendet werden, die zwar ebenfalls Plugin-Informationen enthält, der aber die JAVA-Version des Plugins fehlt. 
+Alternativ kann auch die Jenkins-CLI verwendet werden, die zwar ebenfalls Plugin-Informationen enthält, der aber die Java-Version des Plugins fehlt. 
 
 > Zusätzlich bietet die Jenkins-Admin-UI Informationen über den Deprecation-Status und die Abhängigkeiten von Plugins.

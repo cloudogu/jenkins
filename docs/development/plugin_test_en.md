@@ -1,14 +1,14 @@
 # Test Plugin compatibility
 
-While investigating an upgrade to JAVA 17 for the Jenkins-Dogu, some problems with Jenkins-plugins have been noticed.
+While investigating an upgrade to Java 17 for the Jenkins-Dogu, some problems with Jenkins-plugins have been noticed.
 
-The Jenkins-Dogu potentially has a lot of plugins installed. These plugins need to compatible with the current Jenkins-Version
-and the underlying JAVA-Version (currently JAVA 11).
+The Jenkins-Dogu potentially has a lot of plugins installed. These plugins need to be compatible with the current Jenkins-Version
+and the underlying JAVA-Version (currently Java 11).
 
-When Jenkins- or JAVA needs to be upgrade the plugins should be tested with the new version. 
+When Jenkins- or Java needs to be upgrade the plugins should be tested with the new version. 
 
 ## Testing using the Jenkins-CLI
-The Jenkins-CLI has the ability to list all installed Plugins and also interact with them using a groovy-script.
+The Jenkins-CLI has the ability to list all installed plugins and also interact with them using a groovy-script.
 
 The following commands were executed inside the Jenkins-Dogu-Docker-Container. 
 It is possible to run them from another host, but then the CES needs a proper SSL-certificate. Otherwise, the Jenkins-CLI does not accept the certificate. 
@@ -68,7 +68,7 @@ java -jar pct.jar test-plugins --war "$(pwd)/jenkins-with-plugins.war" --working
 The `pct.jar` can be created using `mvn clean package` from the pct-repository.
 
 ### Problems using PCT
-Some of the plugins are quite old and maybe deprecated. The PCT has some problems testing these plugins
+Some of the plugins are quite old and maybe deprecated. The PCT has some problems testing these plugins.
 
 #### Unauthenticated Git protocol
 The `pom.xml` might contain a reference to the source-code-repository using an unauthenticated Git protocol on port 9418 like `git://github.com/jenkinsci/async-http-client-plugin.git`.
@@ -92,21 +92,21 @@ Comment out the mirror block the looks like this:
 ## Conclusion
 
 As time writing (20.06.2023) both test methods were not very useful / successful, because some of the plugins currently in use, can not be tested.
-Furthermore, both methods could not identify known errors, because one plugin (async-http-client) uses reflection to load some classes at runtime, which are missing in JAVA 17.
+Furthermore, both methods could not identify known errors, because one plugin (async-http-client) uses reflection to load some classes at runtime, which are missing in Java 17.
 These kinds of problems can only be detected by executing the specific code-blocks (either by manual testing or good unit-tests provided by th plugin).
 
 We did not find an appropriate method to test all used Jenkins-Plugins in a reasonable time frame.    
 
-Currently an upgrade to JAVA 17 is not advisable. Also the official 
-[Jenkins documentation](https://www.jenkins.io/doc/developer/tutorial/prepare/#download-and-install-a-jdk) recommends using JAVA 11. 
+Currently an upgrade to Java 17 is not advisable. Also the official 
+[Jenkins documentation](https://www.jenkins.io/doc/developer/tutorial/prepare/#download-and-install-a-jdk) recommends using Java 11. 
 
 ## Going forward
-To identify potentially problematic plugins a first step would be to check the minimal plugin requirements set by Jenkins (see this [blog-post](https://www.jenkins.io/blog/2022/12/14/require-java-11/)).
+To identify potentially problematic plugins, a first step would be to check the minimal plugin requirements set by Jenkins (see this [blog-post](https://www.jenkins.io/blog/2022/12/14/require-java-11/)).
 
 This procedure could look like this:
 * extract the `pom.xml` from the `hpi.file`
 * check the Jenkins- and the Java-Version of the plugin
 
-Alternatively the Jenkins-CLI can be used, which also contains plugin-information, but is missing the JAVA-Version of the plugin. 
+Alternatively the Jenkins-CLI can be used, which also contains plugin-information, but is missing the Java-Version of the plugin. 
 
 > Additionally the Jenkins-Admin-UI offers information about deprecation-status and dependencies of plugins.   
