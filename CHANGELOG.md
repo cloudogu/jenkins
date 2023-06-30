@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Upgrade to Jenkins 2.401.1; #139
+- Upgrade java base image to  11.0.19-1
+- Upgrade ces-build-lib to 1.65.0
 
 ## [v2.387.1-6] - 2023-06-27
 ### Added
