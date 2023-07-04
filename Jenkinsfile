@@ -101,6 +101,7 @@ node('vagrant') {
                 ecoSystem.changeGlobalAdminGroup("newAdminGroup")
                 // this waits until the dogu is up and running
                 ecoSystem.restartDogu("jenkins")
+                ecoSystem.waitForDogu("jenkins")
                 runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
             }
 
