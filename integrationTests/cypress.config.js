@@ -25,9 +25,9 @@ module.exports = defineConfig({
         "env": {
             "DoguName": "jenkins",
             "MaxLoginRetries": 3,
-            "AdminUsername": "ces-admin",
-            "AdminPassword": "ecosystem2016",
-            "AdminGroup": "CesAdministrators"
+            "AdminUsername": "admin",
+            "AdminPassword": "admin",
+            "AdminGroup": "admin"
         },
         videoCompression: false,
         specPattern: ["cypress/e2e/**/*.feature"],
