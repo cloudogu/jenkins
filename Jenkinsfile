@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@1.65.0', 'github.com/cloudogu/dogu-build-lib@v2.1.0'])
+@Library(['github.com/cloudogu/ces-build-lib@1.65.0', 'github.com/cloudogu/dogu-build-lib@098cf49ae85e744c7976861c3b3b69ccc89c806d'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -101,6 +101,7 @@ node('vagrant') {
                 ecoSystem.changeGlobalAdminGroup("newAdminGroup")
                 // this waits until the dogu is up and running
                 ecoSystem.restartDogu("jenkins")
+                ecoSystem.waitForDogu("jenkins")
                 runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
             }
 
@@ -140,7 +141,7 @@ node('vagrant') {
 
 def runIntegrationTests(EcoSystem ecoSystem, boolean videoRecording, boolean screenshotRecording) {
     ecoSystem.runCypressIntegrationTests([
-        cypressImage     : "cypress/included:8.7.0",
+        cypressImage     : "cypress/included:12.16.0",
         enableVideo      : videoRecording,
         enableScreenshots: screenshotRecording
     ])
