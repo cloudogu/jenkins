@@ -1,6 +1,6 @@
 const {
     Then
-} = require("cypress-cucumber-preprocessor/steps");
+} = require("@badeball/cypress-cucumber-preprocessor");
 
 let key;
 

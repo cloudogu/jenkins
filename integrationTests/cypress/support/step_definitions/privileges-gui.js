@@ -1,6 +1,6 @@
 const {
     Then
-} = require("cypress-cucumber-preprocessor/steps");
+} = require("@badeball/cypress-cucumber-preprocessor");
 
 Then(/^the user has administrator privileges in the dogu gui$/, function () {
     cy.isJenkinsAdminGui();
