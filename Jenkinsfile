@@ -52,16 +52,16 @@ node('vagrant') {
             }
         }
 
-//         stage('Check Markdown Links') {
-//             Markdown markdown = new Markdown(this)
-//             markdown.check()
-//         }
+        stage('Check Markdown Links') {
+            Markdown markdown = new Markdown(this)
+            markdown.check()
+        }
 
         try {
-//             stage('Bats Tests') {
-//                 Bats bats = new Bats(this, docker)
-//                 bats.checkAndExecuteTests()
-//             }
+            stage('Bats Tests') {
+                Bats bats = new Bats(this, docker)
+                bats.checkAndExecuteTests()
+            }
 
             stage('Provision') {
                 ecoSystem.provision("/dogu")
@@ -82,20 +82,20 @@ node('vagrant') {
             stage('Build') {
                 ecoSystem.build("/dogu")
             }
-//
-//             stage('Trivy scan') {
-//                 trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
-//                 trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
-//                 trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
-//             }
 
-//             stage('Verify') {
-//                 ecoSystem.verify("/dogu")
-//             }
+            stage('Trivy scan') {
+                trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
+                trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
+                trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
+            }
 
-//             stage('Integration tests') {
-//                 runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
-//             }
+            stage('Verify') {
+                ecoSystem.verify("/dogu")
+            }
+
+            stage('Integration tests') {
+                runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
+            }
 
             stage('Test: Change Global Admin Group') {
                 ecoSystem.changeGlobalAdminGroup("newAdminGroup")
