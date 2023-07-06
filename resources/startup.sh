@@ -94,6 +94,9 @@ run_main() {
     JENKINS_ARGS="${JENKINS_ARGS} -XX:MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE} -XX:MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE}"
   fi
 
+
+  # disable shellcheck her. This behaviour is intended
+  # shellcheck disable=SC2086
   java ${JENKINS_ARGS} -jar /jenkins.war --prefix=/jenkins
 }
 
