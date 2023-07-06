@@ -83,7 +83,7 @@ USER jenkins
 # for main web interface:
 EXPOSE 8080
 
-HEALTHCHECK CMD doguctl healthy jenkins || exit 1
+HEALTHCHECK --interval=5s CMD doguctl healthy jenkins || exit 1
 
 # start jenkins
 CMD ["/startup.sh"]
