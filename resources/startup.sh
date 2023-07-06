@@ -3,6 +3,18 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+echo "                                     ./////,                    "
+echo "                                 ./////==//////*                "
+echo "                                ////.  ___   ////.              "
+echo "                         ,**,. ////  ,////A,  */// ,**,.        "
+echo "                    ,/////////////*  */////*  *////////////A    "
+echo "                   ////'        \VA.   '|'   .///'       '///*  "
+echo "                  *///  .*///*,         |         .*//*,   ///* "
+echo "                  (///  (//////)**--_./////_----*//////)   ///) "
+echo "                   V///   '°°°°      (/////)      °°°°'   ////  "
+echo "                    V/////(////////\. '°°°' ./////////(///(/'   "
+echo "                       'V/(/////////////////////////////V'      "
+
 JENKINS_HOME_DIR="/var/lib/jenkins"
 
 run_main() {
@@ -64,35 +76,22 @@ run_main() {
     echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> "${JENKINS_HOME_DIR}/.mavenrc"
   fi
 
-  ADDITIONAL_ARGS="$(doguctl config additional_java_args)"
+  DEFAULT_JENKINS_ARGS="-Djava.awt.headless=true -Djavax.net.ssl.trustStore=${TRUSTSTORE} -Djavax.net.ssl.trustStorePassword=changeit -Djenkins.install.runSetupWizard=false -Djava.awt.headless=true"
+  ADDITIONAL_JENKINS_ARGS="$(doguctl config additional_java_args)"
 
   # starting jenkins
   if [[ "$(doguctl config "container_config/memory_limit" -d "empty")" == "empty" ]];  then
     echo "Starting Jenkins without memory limits..."
-    java -Djava.awt.headless=true \
-      -Djava.net.preferIPv4Stack=true \
-      -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
-      -Djavax.net.ssl.trustStorePassword=changeit \
-      -Djenkins.install.runSetupWizard=false \
-      "${ADDITIONAL_ARGS}" \
-      -Djava.awt.headless=true \
-      -jar /jenkins.war --prefix=/jenkins
+    JENKINS_ARGS="${DEFAULT_JENKINS_ARGS} ${ADDITIONAL_JENKINS_ARGS}"
   else
     # Retrieve configurable java limits from etcd, valid default values exist
     MEMORY_LIMIT_MAX_PERCENTAGE=$(doguctl config "container_config/java_max_ram_percentage")
     MEMORY_LIMIT_MIN_PERCENTAGE=$(doguctl config "container_config/java_min_ram_percentage")
     echo "Starting Jenkins with memory limits: MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}, MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE} ..."
-    java -Djava.awt.headless=true \
-      -Djava.net.preferIPv4Stack=true \
-      -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
-      -Djavax.net.ssl.trustStorePassword=changeit \
-      -Djenkins.install.runSetupWizard=false \
-      "${ADDITIONAL_ARGS}" \
-      -Djava.awt.headless=true \
-      -XX:MaxRAMPercentage="${MEMORY_LIMIT_MAX_PERCENTAGE}" \
-      -XX:MinRAMPercentage="${MEMORY_LIMIT_MIN_PERCENTAGE}" \
-      -jar /jenkins.war --prefix=/jenkins
+    JENKINS_ARGS="${DEFAULT_JENKINS_ARGS} ${ADDITIONAL_JENKINS_ARGS} -XX:MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE} -XX:MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE}"
   fi
+
+  java "${JENKINS_ARGS}" -jar /jenkins.war --prefix=/jenkins
 }
 
 function createCurlCertificates() {

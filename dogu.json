@@ -146,7 +146,7 @@
       "Name": "additional_java_args",
       "Description": "Additional args that are passed to the jenkins process.",
       "Optional": true,
-      "Default": ""
+      "Default": " "
     }
   ],
   "ExposedCommands": [
