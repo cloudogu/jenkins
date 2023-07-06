@@ -1,20 +1,18 @@
 ---
-title: "Bauen mit OpenJDK 8"
+title: "Bauen mit speziellen OpenJDK-Versionen"
 ---
 
-# Bauen mit OpenJDK 8
+# Bauen mit speziellen OpenJDK-Versionen
 
-Seit Jenkins Dogu Version 2.222.1-2 ist die Standard-OpenJDK-Version 11. Wenn Sie weiterhin OpenJDK 8 für Ihre Builds
-verwenden möchten, gehen Sie wie folgt vor.
+Seit Jenkins Dogu Version 2.361.1 ist die Standard-OpenJDK-Version 11 oder 17. Wenn Sie weiterhin ältere OpenJDK z.B. 8 oder 11 für Ihre Builds verwenden möchten, gehen Sie wie folgt vor.
 
 ## Projekt-Builds
 
-In Standard-Java-Build-Projekten können Sie das JDK einfach über die Projektkonfiguration in Jenkins ändern; wählen Sie
-einfach "OpenJDK-8" in der Kategorie "JDK".
+In Standard-Java-Build-Projekten können Sie das JDK einfach über die Projektkonfiguration in Jenkins ändern; wählen Sie einfach "OpenJDK-8" oder "OpenJDK-11" in der Kategorie "JDK".
 
 ## Pipeline-Builds
 
-Bei Pipeline-Builds müssen Sie Ihr Pipeline-Skript anpassen, um OpenJDK 8 zu verwenden.
+Bei Pipeline-Builds müssen Sie Ihr Pipeline-Skript anpassen, um OpenJDK 8 oder 11 zu verwenden.
 
 ### Deklarative Syntax
 
