@@ -6,11 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v2.401.1] - 2023-06-30
+## [v2.401.1-1] - 2023-07-10
 ### Changed
 - Upgrade to Jenkins 2.401.1; #139
 - Upgrade java base image to  11.0.19-1
 - Upgrade ces-build-lib to 1.65.0
+- Change dogu-build-lib-version to `v2.2.0`
 
 ## [v2.387.1-6] - 2023-06-27
 ### Added
