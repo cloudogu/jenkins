@@ -76,11 +76,17 @@ run_main() {
     echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> "${JENKINS_HOME_DIR}/.mavenrc"
   fi
 
-  JENKINS_ARGS=("-Djava.awt.headless=true" \
-  "-Djavax.net.ssl.trustStore=${TRUSTSTORE}"\
-  "-Djavax.net.ssl.trustStorePassword=changeit"\
-  "-Djenkins.install.runSetupWizard=false")
+  start_jenkins
+}
 
+function start_jenkins() {
+  JENKINS_ARGS=("-Djava.awt.headless=true" \
+    "-Djavax.net.ssl.trustStore=${TRUSTSTORE}"\
+    "-Djavax.net.ssl.trustStorePassword=changeit"\
+    "-Djenkins.install.runSetupWizard=false")
+
+  # Backslashes should not be escaped automatically
+  # shellcheck disable=SC2162
   read -a ADDITIONAL_JENKINS_ARGS <<< "$(doguctl config additional_java_args)"
 
   if [[ "${ADDITIONAL_JENKINS_ARGS[0]}" != "UNSET" ]];
