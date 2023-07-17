@@ -76,11 +76,19 @@ run_main() {
     echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> "${JENKINS_HOME_DIR}/.mavenrc"
   fi
 
-  JENKINS_ARGS="-Djava.awt.headless=true -Djavax.net.ssl.trustStore=${TRUSTSTORE} -Djavax.net.ssl.trustStorePassword=changeit -Djenkins.install.runSetupWizard=false"
-  ADDITIONAL_JENKINS_ARGS="$(doguctl config additional_java_args)"
-  if [[ "${ADDITIONAL_JENKINS_ARGS}" != "UNSET" ]];
+  JENKINS_ARGS=("-Djava.awt.headless=true" \
+  "-Djavax.net.ssl.trustStore=${TRUSTSTORE}"\
+  "-Djavax.net.ssl.trustStorePassword=changeit"\
+  "-Djenkins.install.runSetupWizard=false")
+
+  read -a ADDITIONAL_JENKINS_ARGS <<< "$(doguctl config additional_java_args)"
+
+  if [[ "${ADDITIONAL_JENKINS_ARGS[0]}" != "UNSET" ]];
   then
-    JENKINS_ARGS="${JENKINS_ARGS} ${ADDITIONAL_JENKINS_ARGS}"
+    for i in "${ADDITIONAL_JENKINS_ARGS[@]}"
+    do
+      JENKINS_ARGS+=("${i}")
+    done
   fi
 
   # starting jenkins
@@ -91,13 +99,13 @@ run_main() {
     MEMORY_LIMIT_MAX_PERCENTAGE=$(doguctl config "container_config/java_max_ram_percentage")
     MEMORY_LIMIT_MIN_PERCENTAGE=$(doguctl config "container_config/java_min_ram_percentage")
     echo "Starting Jenkins with memory limits: MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}, MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE} ..."
-    JENKINS_ARGS="${JENKINS_ARGS} -XX:MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE} -XX:MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE}"
+    JENKINS_ARGS+=("-XX:MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}")
+    JENKINS_ARGS+=("-XX:MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE}")
   fi
-
 
   # disable shellcheck her. This behaviour is intended
   # shellcheck disable=SC2086
-  java ${JENKINS_ARGS} -jar /jenkins.war --prefix=/jenkins
+  java "${JENKINS_ARGS[@]}" -jar /jenkins.war --prefix=/jenkins
 }
 
 function createCurlCertificates() {
