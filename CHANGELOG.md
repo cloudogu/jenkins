@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.401.1-2] - 2023-07-20
+### Changed
+- Update dogu-build-lib to latest version to v2.2.0 (#144)
+
+### Added
+- Add possibility to configure additional java flags (#129)
+
 ## [v2.401.1-1] - 2023-07-10
 ### Changed
 - Upgrade to Jenkins 2.401.1; #139
