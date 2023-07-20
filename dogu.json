@@ -141,6 +141,12 @@
       "Validation": {
         "Type": "BINARY_MEASUREMENT"
       }
+    },
+    {
+      "Name": "additional_java_args",
+      "Description": "Additional args that are passed to the jenkins process.",
+      "Optional": true,
+      "Default": "UNSET"
     }
   ],
   "ExposedCommands": [

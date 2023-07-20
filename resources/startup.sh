@@ -3,6 +3,18 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+echo "                                     ./////,                    "
+echo "                                 ./////==//////*                "
+echo "                                ////.  ___   ////.              "
+echo "                         ,**,. ////  ,////A,  */// ,**,.        "
+echo "                    ,/////////////*  */////*  *////////////A    "
+echo "                   ////'        \VA.   '|'   .///'       '///*  "
+echo "                  *///  .*///*,         |         .*//*,   ///* "
+echo "                  (///  (//////)**--_./////_----*//////)   ///) "
+echo "                   V///   '°°°°      (/////)      °°°°'   ////  "
+echo "                    V/////(////////\. '°°°' ./////////(///(/'   "
+echo "                       'V/(/////////////////////////////V'      "
+
 JENKINS_HOME_DIR="/var/lib/jenkins"
 
 run_main() {
@@ -64,31 +76,42 @@ run_main() {
     echo "MAVEN_OPTS=\"\$MAVEN_OPTS -Djavax.net.ssl.trustStorePassword=changeit\"" >> "${JENKINS_HOME_DIR}/.mavenrc"
   fi
 
+  start_jenkins
+}
+
+function start_jenkins() {
+  JENKINS_ARGS=("-Djava.awt.headless=true" \
+    "-Djavax.net.ssl.trustStore=${TRUSTSTORE}"\
+    "-Djavax.net.ssl.trustStorePassword=changeit"\
+    "-Djenkins.install.runSetupWizard=false")
+
+  # Backslashes should not be escaped automatically
+  # shellcheck disable=SC2162
+  read -a ADDITIONAL_JENKINS_ARGS <<< "$(doguctl config additional_java_args)"
+
+  if [[ "${ADDITIONAL_JENKINS_ARGS[0]}" != "UNSET" ]];
+  then
+    for i in "${ADDITIONAL_JENKINS_ARGS[@]}"
+    do
+      JENKINS_ARGS+=("${i}")
+    done
+  fi
+
   # starting jenkins
   if [[ "$(doguctl config "container_config/memory_limit" -d "empty")" == "empty" ]];  then
     echo "Starting Jenkins without memory limits..."
-    java -Djava.awt.headless=true \
-      -Djava.net.preferIPv4Stack=true \
-      -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
-      -Djavax.net.ssl.trustStorePassword=changeit \
-      -Djenkins.install.runSetupWizard=false \
-      -Djava.awt.headless=true \
-      -jar /jenkins.war --prefix=/jenkins
   else
     # Retrieve configurable java limits from etcd, valid default values exist
     MEMORY_LIMIT_MAX_PERCENTAGE=$(doguctl config "container_config/java_max_ram_percentage")
     MEMORY_LIMIT_MIN_PERCENTAGE=$(doguctl config "container_config/java_min_ram_percentage")
     echo "Starting Jenkins with memory limits: MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}, MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE} ..."
-    java -Djava.awt.headless=true \
-      -Djava.net.preferIPv4Stack=true \
-      -Djavax.net.ssl.trustStore="${TRUSTSTORE}" \
-      -Djavax.net.ssl.trustStorePassword=changeit \
-      -Djenkins.install.runSetupWizard=false \
-      -Djava.awt.headless=true \
-      -XX:MaxRAMPercentage="${MEMORY_LIMIT_MAX_PERCENTAGE}" \
-      -XX:MinRAMPercentage="${MEMORY_LIMIT_MIN_PERCENTAGE}" \
-      -jar /jenkins.war --prefix=/jenkins
+    JENKINS_ARGS+=("-XX:MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}")
+    JENKINS_ARGS+=("-XX:MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE}")
   fi
+
+  # disable shellcheck her. This behaviour is intended
+  # shellcheck disable=SC2086
+  java "${JENKINS_ARGS[@]}" -jar /jenkins.war --prefix=/jenkins
 }
 
 function createCurlCertificates() {

@@ -15,6 +15,11 @@ setup() {
   doguctl="$(mock_create)"
   export doguctl
   ln -s "${doguctl}" "${BATS_TMPDIR}/doguctl"
+
+  java="$(mock_create)"
+  export java
+  ln -s "${java}" "${BATS_TMPDIR}/java"
+
   svn="$(mock_create)"
   export svn
   ln -s "${svn}" "${BATS_TMPDIR}/svn"
@@ -29,6 +34,7 @@ setup() {
 
 teardown() {
   rm "${BATS_TMPDIR}/doguctl"
+  rm "${BATS_TMPDIR}/java"
   rm "${BATS_TMPDIR}/svn"
   rm "${mockCaCertificates}"
   rm -rf "${mockHome}"
@@ -164,6 +170,21 @@ assert_file_not_contains() {
   run checkCertCount "-----BEGIN CERTIFICATE-----\nCERT FOR CONTENT1\n-----END CERTIFICATE-----\n----BEGIN CERTIFICATE-----\nCA-CERT FOR CONTENT1\n-----END CERTIFICATE-----\n"
 
   assert_success
+}
+#
+@test "start_jenkins() should call java with correct args" {
+  source /workspace/resources/startup.sh
+
+  mock_set_status "${doguctl}" 0
+  mock_set_output "${doguctl}" "-Dtest=1 -Dtest1=\"test\ test\" -Dtest2=2" 1
+  mock_set_output "${doguctl}" "1" 2
+  mock_set_output "${doguctl}" "1" 3
+
+  export TRUSTSTORE=""
+  run start_jenkins
+
+  assert_success
+  assert_equal "$(mock_get_call_args "${java}" "1")" "-Djava.awt.headless=true -Djavax.net.ssl.trustStore= -Djavax.net.ssl.trustStorePassword=changeit -Djenkins.install.runSetupWizard=false -Dtest=1 -Dtest1=\"test test\" -Dtest2=2 -XX:MaxRAMPercentage=1 -XX:MinRAMPercentage= -jar /jenkins.war --prefix=/jenkins"
 }
 
 @test "checkCertCount() should return false for unequal count of BEGIN and END CERTIFICATE lines" {

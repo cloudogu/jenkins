@@ -12,13 +12,13 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.401.1 \
+    JENKINS_VERSION=2.401.2 \
+    SHA256_JENKINS_WAR="86bd8e0b2b51075c99b00d43603c2858440bf011ecd089a5c791d0c964d40682" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
-    SHA256_JENKINS_WAR="600b73eabf797852e39919541b84f7686ff601b97c77b44eb00843eb91c7dd6c" \
     # additional java version for legacy builds
     ADDITIONAL_OPENJDK8_VERSION="8.372.07-r0"
 
@@ -83,7 +83,7 @@ USER jenkins
 # for main web interface:
 EXPOSE 8080
 
-HEALTHCHECK CMD doguctl healthy jenkins || exit 1
+HEALTHCHECK --interval=5s CMD doguctl healthy jenkins || exit 1
 
 # start jenkins
 CMD ["/startup.sh"]
