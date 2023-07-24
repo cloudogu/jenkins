@@ -6,8 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.401.2-1] - 2023-07-24
+
+This release does not contain any changes! It just fixes the version after the upgrade to Jenkins 2.401.2.
+
 ## [v2.401.1-2] - 2023-07-20
 ### Changed
+- Upgrade to Jenkins 2.401.2 (#144)
 - Update dogu-build-lib to latest version to v2.2.0 (#144)
 
 ### Added
