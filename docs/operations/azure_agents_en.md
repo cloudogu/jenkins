@@ -308,4 +308,5 @@ node('docker') {
 ```
 
 - Add Jenkins credentials with the ID `registrycredentials` to store your registry credentials
-- On execution a new Azure VM should be deployed, connect to Jenkins and run the pipeline
+- Adapt the registry URL to your container image registry
+- On execution, a new Azure VM should be deployed, connect to Jenkins and run the pipeline
