@@ -288,8 +288,9 @@ node('docker') {
     }
 
     def docker = new Docker(this)
+    String REGISTRY_URL = ""
     stage('Docker Build') {
-        docker.withRegistry("https://my.registry.com", "registrycredentials") {
+        docker.withRegistry(REGISTRY_URL, "registrycredentials") {
             docker.build("testing/azuresonar:0.0.0")
             sh 'docker image ls'
         }
@@ -301,7 +302,7 @@ node('docker') {
     }
 
     stage('Docker Push') {
-        docker.withRegistry("https://my.registry.com", "registrycredentials") {
+        docker.withRegistry(REGISTRY_URL, "registrycredentials") {
             docker.image("testing/azuresonar:0.0.1").push()
         }
     }
@@ -309,6 +310,6 @@ node('docker') {
 
 ```
 
-- Adapt the registry URL ("https://my.registry.com") to your container image registry
+- Adapt the registry URL (REGISTRY_URL) to your container image registry
 - Add Jenkins credentials with the ID `registrycredentials` to store your container image registry credentials
 - Execute the pipeline. A new Azure VM should be deployed, connect to Jenkins and run the pipeline
