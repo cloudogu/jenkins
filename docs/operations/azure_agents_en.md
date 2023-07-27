@@ -270,7 +270,7 @@ Jenkins.getInstance().clouds.add(azureCloud)
 
 ## Testing with a Jenkins pipeline
 
-You can try if everything worked out correctly by using this test-pipeline:
+You can test if everything worked out correctly by using this test-pipeline:
 - Add a Jenkins Pipeline project
 - Use the following code for the pipeline:
 
