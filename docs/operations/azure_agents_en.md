@@ -204,6 +204,7 @@ String azureCredentialsSubscriptionID = ""
 String azureCredentialsClientID = ""
 String azureCredentialsClientSecret = ""
 String azureCredentialsTenantID = ""
+String azureResourceGroup = ""
 
 // Add azure credentials
 // See https://nickcharlton.net/posts/setting-jenkins-credentials-with-groovy.html
@@ -247,7 +248,7 @@ def azureTemplate = new AzureVMTemplateBuilder()
         .withVirtualMachineSize("Standard_DS3_v2")
         .withExistingStorageAccount("jenkinsagentstor")
         .addNewAdvancedImage()
-        .withCustomManagedImage("/subscriptions/93dbe1cb-8cce-42ab-a0bb-7b9759e50fc3/resourceGroups/ces-multinode_group/providers/Microsoft.Compute/images/cesJenkinsDockerAgent")
+        .withCustomManagedImage("/subscriptions/${azureCredentialsSubscriptionID}/resourceGroups/${azureResourceGroup}/providers/Microsoft.Compute/images/cesJenkinsDockerAgent")
         .withNetworkSecurityGroupName("Jenkins-Agents_NSG")
         .endAdvancedImage()
         .withAdminCredential(jenkinsAgentAdminCredentialsID)
