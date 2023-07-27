@@ -82,6 +82,7 @@ subscription_id = ""
   - Get the client ID, tenant ID and client secret via `az ad sp create-for-rbac --role Contributor --scopes /subscriptions/SUBSCRIPTION_ID --query "{ client_id: appId, client_secret: password, tenant_id: tenant }"`
     - Replace `SUBSCRIPTION_ID` with the subscription ID obtained in the step before
 
+- Install required plugins via `packer init .`
 - Build the VM image via `packer build .`
 - You will get a VM image in your Azure environment called `cesJenkinsDockerAgent`
 
