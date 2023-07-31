@@ -283,12 +283,11 @@ import com.cloudogu.ces.cesbuildlib.*
 node('docker') {
     stage('Clone Repository') {
         checkout scmGit(userRemoteConfigs: [
-            [url: 'https://github.com/ianmiell/simple-dockerfile/]
+            [url: 'https://github.com/ianmiell/simple-dockerfile/']
         ])
     }
 
     def docker = new Docker(this)
-    String REGISTRY_URL = ""
     stage('Docker Build') {
         docker.build("testing/azuretest:0.0.0")
         sh 'docker image ls'
@@ -300,6 +299,7 @@ node('docker') {
     }
 
     stage('Docker Push') {
+        String REGISTRY_URL = ""
         docker.withRegistry(REGISTRY_URL, "registrycredentials") {
             docker.image("testing/azuretest:0.0.1").push()
         }
