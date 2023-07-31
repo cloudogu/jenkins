@@ -283,27 +283,25 @@ import com.cloudogu.ces.cesbuildlib.*
 node('docker') {
     stage('Clone Repository') {
         checkout scmGit(userRemoteConfigs: [
-            [url: 'https://github.com/cloudogu/sonar']
+            [url: 'https://github.com/ianmiell/simple-dockerfile/]
         ])
     }
 
     def docker = new Docker(this)
     String REGISTRY_URL = ""
     stage('Docker Build') {
-        docker.withRegistry(REGISTRY_URL, "registrycredentials") {
-            docker.build("testing/azuresonar:0.0.0")
-            sh 'docker image ls'
-        }
+        docker.build("testing/azuretest:0.0.0")
+        sh 'docker image ls'
     }
 
     stage('Docker Tag') {
-        docker.image("testing/azuresonar:0.0.0").tag("0.0.1")
+        docker.image("testing/azuretest:0.0.0").tag("0.0.1")
         sh 'docker image ls'
     }
 
     stage('Docker Push') {
         docker.withRegistry(REGISTRY_URL, "registrycredentials") {
-            docker.image("testing/azuresonar:0.0.1").push()
+            docker.image("testing/azuretest:0.0.1").push()
         }
     }
 }
