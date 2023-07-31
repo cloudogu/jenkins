@@ -66,7 +66,7 @@ build {
 }
 ```
 
-- Adapt the `managed_image_resource_group_name` to a resource group in your Azure environment
+- Adapt `source.azure-arm.jenkins-agent.managed_image_resource_group_name` to a resource group in your Azure environment
 - Create the corresponding variables file, e.g. `azure-jenkins-agent-variables.auto.pkrvars.hcl`:
 
 ```hcl
