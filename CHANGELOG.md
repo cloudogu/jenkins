@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Allow the configuration of the log level for different loggers (#147)
+
+### Changed
+- Upgrade to Jenkins 2.401.3; #147
 
 ## [v2.401.2-1] - 2023-07-24
 
