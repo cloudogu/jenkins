@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.401.3-1] - 2023-07-31
+### Added
+- Allow the configuration of the log level for different loggers (#147)
+
+### Changed
+- Upgrade to Jenkins 2.401.3; #147
+
 ## [v2.401.2-1] - 2023-07-24
 
 This release does not contain any changes! It just fixes the version after the upgrade to Jenkins 2.401.2.

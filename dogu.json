@@ -1,6 +1,6 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.401.2-1",
+  "Version": "2.401.3-1",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
@@ -147,6 +147,21 @@
       "Description": "Additional args that are passed to the jenkins process.",
       "Optional": true,
       "Default": "UNSET"
+    },
+    {
+      "Name": "logging/root",
+      "Description": "Set the root log level to one of ERROR, WARN, INFO, DEBUG.",
+      "Optional": true,
+      "Default": "INFO",
+      "Validation": {
+        "Type": "ONE_OF",
+        "Values": [
+          "WARN",
+          "DEBUG",
+          "INFO",
+          "ERROR"
+        ]
+      }
     }
   ],
   "ExposedCommands": [
