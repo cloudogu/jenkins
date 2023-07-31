@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Azure agent setup documentation
+- Azure agent setup [documentation](docs/operations/azure_agents_en.md)
 
 ## [v2.401.2-1] - 2023-07-24
 
