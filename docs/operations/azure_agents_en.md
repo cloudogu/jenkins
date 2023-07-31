@@ -10,7 +10,7 @@ You also need access to your Kubernetes cluster via `kubectl`.
 
 ## Building an Azure image with Packer
 
-- Create a Packer template for the VM image like [azure-jenkins-agent.pkr.hcl](docs/operations/azure-jenkins-agent.pkr.hcl)
+- Create a Packer template for the VM image like [azure-jenkins-agent.pkr.hcl](azure-jenkins-agent.pkr.hcl)
    - Adapt `source.azure-arm.jenkins-agent.managed_image_resource_group_name` to a resource group in your Azure environment
 - Create the corresponding variables file, e.g. `azure-jenkins-agent-variables.auto.pkrvars.hcl`:
 
@@ -33,7 +33,7 @@ subscription_id = ""
 
 ## Installing Azure VM Agents plugin
 
-- Install the Azure VM Agents plugin (and, optionally, the Docker Pipeline plugin) with [init150NORMinstallAzurePlugins.groovy](docs/operations/init150NORMinstallAzurePlugins.groovy)
+- Install the Azure VM Agents plugin (and, optionally, the Docker Pipeline plugin) with [init150NORMinstallAzurePlugins.groovy](init150NORMinstallAzurePlugins.groovy)
 - You can run this script by adding it to the additional scripts directory in Jenkins or by executing it on the script console
   - Run script via the Jenkins additional scripts directory:
     - Get the Jenkins pod name via `JENKINSPODID=$(kubectl get pods --namespace ecosystem | grep jenkins | awk 'NR==1{print $1}')`
@@ -45,7 +45,7 @@ subscription_id = ""
 
 ## Configuring Azure Cloud in Jenkins
 
-- Use the script [init160NORMconfigureAzureCloud.groovy](docs/operations/init160NORMconfigureAzureCloud.groovy) to configure Azure agents in Jenkins
+- Use the script [init160NORMconfigureAzureCloud.groovy](init160NORMconfigureAzureCloud.groovy) to configure Azure agents in Jenkins
   - Insert the Azure credentials from the steps before
   - Make sure the resource group name is correct
 - Run the script via the Jenkins script console or via the additional scripts directory as described above
