@@ -1,5 +1,5 @@
 # cesi/scm
-FROM registry.cloudogu.com/official/java:11.0.19-1
+FROM registry.cloudogu.com/official/java:11.0.20-1
 
 LABEL NAME="official/jenkins" \
       VERSION="2.401.3-1" \
@@ -12,8 +12,8 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.401.3 \
-    SHA256_JENKINS_WAR="a798a0c5481a8ffb0320d9121f6cf49dc575c369028daae17a4dd398b69e000d" \
+    JENKINS_VERSION=2.414.2 \
+    SHA256_JENKINS_WAR="922bbf6269fddad614bb6540241ed0ce5523a4a5328229e15f5e7bb7ffd565b8" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
