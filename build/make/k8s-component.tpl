@@ -1,9 +1,10 @@
 apiVersion: k8s.cloudogu.com/v1
-kind: Dogu
+kind: Component
 metadata:
   name: NAME
   labels:
     app: ces
 spec:
-  name: NAMESPACE/NAME
+  name: NAME
+  namespace: NAMESPACE
   version: VERSION

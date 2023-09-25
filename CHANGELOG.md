@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.414.2-1] - 2023-09-25
+### Added
+- Azure agent setup [documentation](docs/operations/azure_agents_en.md)
+
+### Changed
+- Update Jenkins to 2.414.2 (#149)
+- Update makefiles to 8.4.0
+
 ## [v2.401.3-1] - 2023-07-31
 ### Added
 - Allow the configuration of the log level for different loggers (#147)
