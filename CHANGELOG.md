@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.414.3-1] - 2023-10-23
+### Changed
+- Upgrade Jenkins to 2.414.3 (#151)
+  - Fix CVE-2023-36478 and CVE-2023-44487
+
 ## [v2.414.2-1] - 2023-09-25
 ### Added
 - Azure agent setup [documentation](docs/operations/azure_agents_en.md)
