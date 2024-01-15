@@ -7,5 +7,5 @@ def monitor = instance.getExtensionList('hudson.model.AdministrativeMonitor').fi
 if (monitor != null) {
     monitor.disable(true)
 } else {
-    println("No administrative monitor found with ID 'monitorId'")
+    println("Administrative monitor not found.")
 }
