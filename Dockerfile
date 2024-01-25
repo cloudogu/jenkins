@@ -12,8 +12,8 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.414.3 \
-    SHA256_JENKINS_WAR="2d93254bc186df349bc4ad06b6b1dd757c493190f0558d111dbda9517a847b59" \
+    JENKINS_VERSION=2.426.3 \
+    SHA256_JENKINS_WAR="ab439243a6a07e2e78fe7c3408c59609f7be3bf268947ac214657af96abad106" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
