@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Upgrade Jenkins to 2.426.3; #154
+  - Fix CVE-2024-23897
 - Upgrade openjdk8 additional package to 8.392.08
 
 ## [v2.414.3-1] - 2023-10-23
