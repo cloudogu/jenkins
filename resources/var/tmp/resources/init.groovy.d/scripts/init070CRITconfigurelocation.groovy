@@ -10,6 +10,11 @@ def getValueFromEtcd(String key){
 	return json.node.value
 }
 
+def isInvalidEmail(email) {
+	def emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
+	return !(email =~ emailRegex)
+}
+
 def instance = Jenkins.getInstance();
 
 // configure jenkins location
@@ -28,7 +33,11 @@ if (configuredMailAddress != null && configuredMailAddress.length() > 0) {
 String fqdn = getValueFromEtcd("config/_global/fqdn");
 
 def location = JenkinsLocationConfiguration.get()
-location.setAdminAddress(emailAddress);
+
+if (isInvalidEmail(location.getAdminAddress())) {
+	location.setAdminAddress(emailAddress);
+}
+
 location.setUrl("https://${fqdn}/jenkins");
 location.save()
 

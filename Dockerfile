@@ -2,7 +2,7 @@
 FROM registry.cloudogu.com/official/java:11.0.20-1
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.426.3-1" \
+      VERSION="2.426.3-2" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
