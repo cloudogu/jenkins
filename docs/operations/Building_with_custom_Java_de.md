@@ -4,11 +4,12 @@ title: "Bauen mit speziellen OpenJDK-Versionen"
 
 # Bauen mit speziellen OpenJDK-Versionen
 
-Seit Jenkins Dogu Version 2.361.1 ist die Standard-OpenJDK-Version 11 oder 17. Wenn Sie weiterhin ältere OpenJDK z.B. 8 oder 11 für Ihre Builds verwenden möchten, gehen Sie wie folgt vor.
+Seit dem Jenkins Dogu Version 2.361.1 ist die Standard-OpenJDK-Version 11 oder 17. Wenn Sie weiterhin ältere OpenJDK z.B. 8 oder 11 für Ihre Builds verwenden möchten, gehen Sie wie folgt vor.
 
 ## Projekt-Builds
 
-In Standard-Java-Build-Projekten können Sie das JDK einfach über die Projektkonfiguration in Jenkins ändern; wählen Sie einfach "OpenJDK-8" oder "OpenJDK-11" in der Kategorie "JDK".
+Für Standard-Java-Build-Projekte können Sie das JDK einfach über die Projektkonfiguration in Jenkins ändern. Wählen Sie hierfürch einfach "OpenJDK-11" in der Kategorie "JDK". Java-Projekte für die JDK Version 8
+sollten auf Pipeline-Builds migriert werden.
 
 ## Pipeline-Builds
 
@@ -22,7 +23,7 @@ Beispiel
 ```
 stage("Java-Version abrufen"){
   tools {
-    jdk "OpenJDK-8"
+    jdk "OpenJDK-11"
   }
   steps{
     sh 'java -version'
@@ -37,9 +38,36 @@ verwenden, zum Beispiel:
 
 ```
 stage("Java-Version holen")
-  def java_home = tool 'OpenJDK-8'
+  def java_home = tool 'OpenJDK-11'
   steps{
     sh "'${java_home}/bin/java' -version"
+  }
+```
+
+### Besonderheiten für OpenJDK 8
+Bitte beachten Sie, dass bei Projekten, die OpenJDK 8 nutzen, zusätzlich die Umgebungsvariable "LD_LIBRARY_PATH" angepasst werden muss, damit
+die richtige JDK Version ausgewählt werden kann. Ändern Sie hierfür die obigen Beispiele wie folgt ab: 
+
+```
+stage("Java-Version 8 abrufen"){
+  tools {
+    jdk "OpenJDK-8"
+  }
+  steps{
+    withEnv(['LD_LIBRARY_PATH=""']) {
+        sh 'java -version'
+    }
+  }
+}
+```
+
+```
+stage("Java-Version 8 holen")
+  def java_home = tool 'OpenJDK-11'
+  steps{
+    withEnv(['LD_LIBRARY_PATH=""']) {
+        sh "'${java_home}/bin/java' -version"
+    }
   }
 ```
 
@@ -49,7 +77,7 @@ Sie haben auch die Möglichkeit, Docker für Ihre Builds zu verwenden, zum Beisp
 
 ```
 agent {
-  docker { image 'openjdk:8-jdk' }
+  docker { image 'openjdk:11-jdk' }
 }
 steps {
   sh 'java -version'
@@ -58,10 +86,10 @@ steps {
 
 ## Maven-Builds
 
-Um OpenJDK 8 in Ihren Maven-Builds zu verwenden, initialisieren Sie es auf folgende Weise:
+Um OpenJDK 11 in Ihren Maven-Builds zu verwenden, initialisieren Sie es auf folgende Weise:
 
 ```
-def javaHome = tool 'OpenJDK-8'
+def javaHome = tool 'OpenJDK-11'
 Maven mvn = new MavenWrapper(this, javaHome)
 ```
 
