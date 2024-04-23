@@ -9,9 +9,9 @@ This list serves as documentation of the compatibility of individual plugins tha
 | Mailer Plugin                     | 472.vf7c289a_4b_420  | y       | y           | y           | y           | n               |
 | CAS Plugin                        | 1.6.3                | y       | n           | n           | n           | y               |
 | Git                               | 5.2.1                | y       | n           | y           | y           | n               |
-| **Mercurial**                     | 1260.vdfb_723cdcc81  | y       | n           | n           | n           | n               |
+| Mercurial                         | 1260.vdfb_723cdcc81  | y       | n           | n           | n           | y               |
 | Subversion                        | 1256.vee91953217b_6  | y       | n           | y           | y           | n               |
-| **SCM Manager**                   | 1.9.2                | y       | y           | n           | n           | n               |
+| SCM Manager                       | 1.9.3                | y       | y           | y           | n           | n               |
 | Pipeline (Workflow Aggregator)    | 596.v8c21c963d92d    | y       | n           | y           | y           | n               |
 | Matrix Auth                       | 3.2.2                | y       | n           | y           | y           | n               |
 | Maven Plugin                      | 3.23                 | y       | n           | y           | n           | n               |
