@@ -10,7 +10,7 @@ static Map<String, String> getValuesFromEtcd(String key) {
         def json = new JsonSlurper().parseText(url.text);
         if (json.node.nodes == null) {
             println "no valid logging configuration found"
-            return Map.of();
+            return [:]
         }
         def logLevels = json.node.nodes.stream()
                 .filter({ node -> !node.key.isEmpty() && !parseLoggerName(node.key).isEmpty() && !node.value.isEmpty() })
@@ -19,7 +19,7 @@ static Map<String, String> getValuesFromEtcd(String key) {
     } catch (FileNotFoundException) {
         println "no valid logging configuration found"
     }
-    return Map.of();
+    return [:]
 }
 
 static String parseLoggerName(String registryPath) {

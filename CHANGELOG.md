@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Upgrade Jenkins to 2.440.3 (#160)
+- Use OpenJDK 17 as default JVM (#161)
+  - Update docs for "Building with custom OpenJDK versions" to respect
+  legacy builds with OpenJDK 8
 
 ## [v2.440.2-1] - 2024-03-25
 ### Changed

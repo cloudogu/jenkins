@@ -1,5 +1,5 @@
 # cesi/scm
-FROM registry.cloudogu.com/official/java:11.0.20-1
+FROM registry.cloudogu.com/official/java:17.0.10-1
 
 LABEL NAME="official/jenkins" \
       VERSION="2.440.2-1" \
@@ -12,15 +12,16 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.440.2 \
-    SHA256_JENKINS_WAR="8126628e9e2f8ee2f807d489ec0a6e37fc9f5d6ba84fa8f3718e7f3e2a27312e" \
+    JENKINS_VERSION=2.440.3 \
+    SHA256_JENKINS_WAR="f8d47dbfd59359551aead8388fa4ad7005eda7c47ce21c664c99610ca04ae367" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java version for legacy builds
-    ADDITIONAL_OPENJDK8_VERSION="8.392.08-r1"
+    ADDITIONAL_OPENJDK8_VERSION="8.402.06-r0" \
+    ADDITIONAL_OPENJDK11_VERSION="11.0.23_p9-r0"
 
 
 # Jenkins is ran with user `jenkins`, uid = 1000
@@ -38,6 +39,7 @@ RUN set -o errexit \
  # - https://wiki.jenkins.io/display/JENKINS/Jenkins+got+java.awt.headless+problem
  && apk add --no-cache coreutils ttf-dejavu openssh-client git subversion mercurial curl \
  && apk add openjdk8="$ADDITIONAL_OPENJDK8_VERSION" \
+ && apk add openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
  && curl -L https://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \

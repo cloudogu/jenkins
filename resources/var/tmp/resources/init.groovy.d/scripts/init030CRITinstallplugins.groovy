@@ -133,6 +133,8 @@ if (updateCenter.isRestartRequiredForCompletion()) {
     jenkins.restart();
 }
 
-if (!isVersionSufficient(currentCasPlugin, MINIMAL_CAS_PLUGIN_VERSION)) {
-    throw new Exception("Installed cas-plugin version " + currentCasPlugin.getVersion() + " is too old. It needs to be at least " + MINIMAL_CAS_PLUGIN_VERSION);
+if (currentCasPlugin != null) {
+    if (!isVersionSufficient(currentCasPlugin, MINIMAL_CAS_PLUGIN_VERSION)) {
+        throw new Exception("Installed cas-plugin version " + currentCasPlugin.getVersion() + " is too old. It needs to be at least " + MINIMAL_CAS_PLUGIN_VERSION);
+    }
 }

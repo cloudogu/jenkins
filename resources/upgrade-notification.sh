@@ -32,3 +32,10 @@ if [ "2.249.3-1" == "$(printf "%s\\n2.249.3-1" "${TO_VERSION}" | sort | head -n1
    printf "\nYou are upgrading the Jenkins dogu to version 2.249.3-1 or higher. DO NOT change the CES global admin group at the same time!"
    printf "\nIf you have changed the global admin group (via /config/_global/admin_group etcd key), restart the Jenkins dogu before upgrading it!"
 fi
+
+# print upgrade notice for jenkins based on java 17
+if [ "2.440.3-1" == "$(printf "%s\\n2.440.3-1" "${TO_VERSION}" | sort | head -n1)" ] && [ "2.440.3-1" != "$(printf "%s\\n2.440.3-1" "${FROM_VERSION}" | sort | head -n1)" ]; then
+   printf "\nYou are upgrading the Jenkins dogu to version 2.440.3-1 or higher. There have been changes to the installed jdk version. \\nSince 2.440.3-1, Jenkins is based on OpenJDK version 17. \nLegacy builds using the internal jdk of Jenkins must switch to the configured jdk \"OpenJDK-11\"."
+   printf "\nBe aware that the JVM on all agents must be updated to Java 17 as well."
+   printf "\nFor more information see %s \n\n" "https://www.jenkins.io/doc/book/platform-information/upgrade-java-to-17/#jvm-version-on-agents"
+fi
