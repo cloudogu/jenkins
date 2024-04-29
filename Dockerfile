@@ -21,7 +21,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java version for legacy builds
     ADDITIONAL_OPENJDK8_VERSION="8.402.06-r0" \
-    ADDITIONAL_OPENJDK11_VERSION="11.0.22_p7-r0"
+    ADDITIONAL_OPENJDK11_VERSION="11.0.23_p9-r0"
 
 
 # Jenkins is ran with user `jenkins`, uid = 1000
