@@ -6,6 +6,93 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.440.2-1] - 2024-03-25
+### Changed
+- Upgrade Jenkins to 2.440.2; #158
+
+## [v2.426.3-2] - 2024-03-13
+### Fixed
+- System admin email address will be overwritten with default value (#156)
+
+## [v2.426.3-1] - 2024-01-26
+### Changed
+- Upgrade Jenkins to 2.426.3; #154
+  - Fix CVE-2024-23897
+- Upgrade openjdk8 additional package to 8.392.08
+
+## [v2.414.3-1] - 2023-10-23
+### Changed
+- Upgrade Jenkins to 2.414.3 (#151)
+  - Fix CVE-2023-36478 and CVE-2023-44487
+
+## [v2.414.2-1] - 2023-09-25
+### Added
+- Azure agent setup [documentation](docs/operations/azure_agents_en.md)
+
+### Changed
+- Update Jenkins to 2.414.2 (#149)
+- Update makefiles to 8.4.0
+
+## [v2.401.3-1] - 2023-07-31
+### Added
+- Allow the configuration of the log level for different loggers (#147)
+
+### Changed
+- Upgrade to Jenkins 2.401.3; #147
+
+## [v2.401.2-1] - 2023-07-24
+
+This release does not contain any changes! It just fixes the version after the upgrade to Jenkins 2.401.2.
+
+## [v2.401.1-2] - 2023-07-20
+### Changed
+- Upgrade to Jenkins 2.401.2 (#144)
+- Update dogu-build-lib to latest version to v2.2.0 (#144)
+
+### Added
+- Add possibility to configure additional java flags (#129)
+
+## [v2.401.1-1] - 2023-07-10
+### Changed
+- Upgrade to Jenkins 2.401.1; #139
+- Upgrade java base image to  11.0.19-1
+- Upgrade ces-build-lib to 1.65.0
+- Change dogu-build-lib-version to `v2.2.0`
+
+## [v2.387.1-6] - 2023-06-27
+### Added
+- [#142] Configuration options for resource requirements
+- [#142] Defaults for CPU and memory requests
+
+## [v2.387.1-5] - 2023-06-05
+### Changed
+- Use java 11 instead of 17 because of plugin incompatibility; #137
+
+## [v2.387.1-4] - 2023-05-30
+### Fixed
+- Add missing additional OpenJDK11 11.0.19_p7-r0; #135
+
+## [v2.387.1-3] - 2023-05-26
+### Change
+- Upgraded to java base image 17.0.6-2; #133
+
+## [v2.387.1-2] - 2023-05-08
+### Added
+- Add trivy scan in Jenkins pipeline
+
+### Changed
+- Upgrade to java base image 11.0.18-1
+- Upgrade additional OpenJDK8 to 8.372.07-r0
+- Upgrade glibc to 2.35-r1
+- Upgrade ces-build-lib to 1.64.2
+- Upgrade dogu-build-lib to 2.1.0
+
+## [v2.387.1-1] - 2023-03-13
+### Changed
+- [#127] Upgrade Jenkins to `2.387.1`
+- Upgrade `ces-build-lib` to `1.62.0`
+- Upgrade `dogu-build-lib` to `v2.0.0`
+
 ## [v2.375.2-2] - 2023-02-17
 ### Changed
 - Upgrade `M3` maven to 3.9.0; #125
@@ -37,7 +124,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [v2.346.1-1] - 2022-06-27
 ### Changed
 - Upgrade Jenkins to lts version 2.346.1 (#115)
-  - This will among other things fix CVE-2022-22950
+  - This will fix CVE-2022-22950 and CVE-2022-22965 among other things (#110)
 - Update openjdk8 version to 8.322.06-r0
 
 ## [v2.332.1-3] - 2022-04-21

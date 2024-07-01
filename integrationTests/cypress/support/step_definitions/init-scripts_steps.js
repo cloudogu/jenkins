@@ -1,7 +1,7 @@
 const {
     When,
     Then
-} = require("cypress-cucumber-preprocessor/steps");
+} = require("@badeball/cypress-cucumber-preprocessor");
 
 When(/^the user navigates to tool configuration admin page$/, function () {
     cy.navigateToToolConfigAdminPage();
