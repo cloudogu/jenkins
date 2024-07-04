@@ -152,7 +152,7 @@ package:
   glibc-i18n:
     installed: true
 port:
-  tcp:8080:
+  tcp6:8080:
     listening: true
     ip:
     - 0.0.0.0
