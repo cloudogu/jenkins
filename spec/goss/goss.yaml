@@ -145,11 +145,7 @@ package:
     installed: true
   libstdc++:
     installed: true
-  glibc:
-    installed: true
-  glibc-bin:
-    installed: true
-  glibc-i18n:
+  gcompat:
     installed: true
 port:
   tcp6:8080:
