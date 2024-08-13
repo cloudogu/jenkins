@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - [#166] Upgrade OpenJDK to 11.0.24-1
 - Upgrade Alpine to 3.20.2-1
+- The previous glibc compatibility layer was changed to Alpine's `gcompat` library
+  - this change was made due to incompatibilities with the previous `sgerrand` glibc layer which is no more supported
+    for newer Alpine versions
 
 ### Security
 - [#166] close CVE-2024-41110

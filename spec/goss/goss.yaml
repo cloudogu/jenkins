@@ -128,7 +128,13 @@ file:
     contains:
     - disabledAdministrativeMonitors
     - <string>hudson.model.UpdateCenter$CoreUpdateMonitor</string>
-  /usr/glibc-compat/lib/libc.so:
+  /lib/libc.so.6:
+    exists: true
+    mode: "0644"
+    owner: root
+    group: root
+    filetype: file
+  /lib/libgcompat.so.0:
     exists: true
     mode: "0644"
     owner: root
