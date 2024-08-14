@@ -130,13 +130,13 @@ file:
     - <string>hudson.model.UpdateCenter$CoreUpdateMonitor</string>
   /lib/libc.so.6:
     exists: true
-    mode: "0644"
+    mode: "0777"
     owner: root
     group: root
     filetype: file
   /lib/libgcompat.so.0:
     exists: true
-    mode: "0644"
+    mode: "0755"
     owner: root
     group: root
     filetype: file
