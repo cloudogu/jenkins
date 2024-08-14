@@ -133,7 +133,7 @@ file:
     mode: "0777"
     owner: root
     group: root
-    filetype: file
+    filetype: symlink
   /lib/libgcompat.so.0:
     exists: true
     mode: "0755"
