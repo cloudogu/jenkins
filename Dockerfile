@@ -2,7 +2,7 @@
 FROM registry.cloudogu.com/official/java:17.0.10-1
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.440.2-1" \
+      VERSION="2.452.2-2" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -12,16 +12,15 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.440.3 \
-    SHA256_JENKINS_WAR="f8d47dbfd59359551aead8388fa4ad7005eda7c47ce21c664c99610ca04ae367" \
+    JENKINS_VERSION=2.452.2 \
+    SHA256_JENKINS_WAR="360efc8438db9a4ba20772981d4257cfe6837bf0c3fb8c8e9b2253d8ce6ba339" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java version for legacy builds
-    ADDITIONAL_OPENJDK8_VERSION="8.402.06-r0" \
-    ADDITIONAL_OPENJDK11_VERSION="11.0.23_p9-r0"
+    ADDITIONAL_OPENJDK8_VERSION="8.402.06-r0"
 
 
 # Jenkins is ran with user `jenkins`, uid = 1000
@@ -37,7 +36,7 @@ RUN set -o errexit \
  # install coreutils, ttf-dejavu, openssh and scm clients
  # coreutils and ttf-dejavu is required because of java.awt.headless problem:
  # - https://wiki.jenkins.io/display/JENKINS/Jenkins+got+java.awt.headless+problem
- && apk add --no-cache coreutils ttf-dejavu openssh-client git subversion mercurial curl \
+ && apk add --no-cache coreutils ttf-dejavu openssh-client git subversion mercurial curl gcompat \
  && apk add openjdk8="$ADDITIONAL_OPENJDK8_VERSION" \
  && apk add openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
  # could use ADD but this one does not check Last-Modified header
@@ -54,21 +53,15 @@ RUN set -o errexit \
  && printf "[global]\nssl-authority-files=/var/lib/jenkins/ca-certificates.crt\n" > /etc/subversion/server \
  # install glibc for alpine
  # make sure that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
- && apk add --no-cache libstdc++ \
- && curl -Lo /tmp/glibc.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk" \
- && echo "${SHA256_GLIB_APK} */tmp/glibc.apk" |sha256sum -c - \
- && apk add --no-cache --allow-untrusted /tmp/glibc.apk \
- && curl -Lo /tmp/glibc-bin.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-bin-${GLIBC_VERSION}.apk" \
- && echo "${SHA256_GLIB_BIN_APK} */tmp/glibc-bin.apk" |sha256sum -c - \
- && apk add --no-cache --allow-untrusted /tmp/glibc-bin.apk \
- && curl -Lo /tmp/glibc-i18n.apk "https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-i18n-${GLIBC_VERSION}.apk" \
- && echo "${SHA256_GLIB_I18N_APK} */tmp/glibc-i18n.apk" |sha256sum -c - \
- && apk add --no-cache --allow-untrusted /tmp/glibc-i18n.apk \
- # do not abort https://github.com/sgerrand/alpine-pkg-glibc/issues/5
- && (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true ) \
- && echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
- && /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib \
- # cleanup
+ && apk add --no-cache libstdc++ gcompat
+
+ RUN (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true )
+
+ RUN set -o errexit \
+  && set -o nounset \
+  && set -o pipefail \
+   echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
+  # cleanup
  && apk del curl \
  && rm -rf /tmp/* /var/cache/apk/*
 

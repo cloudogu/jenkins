@@ -11,6 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Update docs for "Building with custom OpenJDK versions" to respect
   legacy builds with OpenJDK 8
 
+## [v2.452.2-2] - 2024-08-15
+### Changed
+- [#166] Upgrade OpenJDK to 11.0.24-1
+- Upgrade Alpine to 3.20.2-1
+- The previous glibc compatibility layer was changed to Alpine's `gcompat` library
+  - this change was made due to incompatibilities with the previous `sgerrand` glibc layer which is no more supported
+    for newer Alpine versions
+
+### Security
+- [#166] close CVE-2024-41110
+
+## [v2.452.2-1] - 2024-07-10
+### Changed
+- Upgrade Jenkins to 2.452.2; #164
+
 ## [v2.440.2-1] - 2024-03-25
 ### Changed
 - Upgrade Jenkins to 2.440.2; #158

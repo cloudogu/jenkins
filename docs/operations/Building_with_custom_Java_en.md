@@ -1,5 +1,5 @@
 ---
-title: "Building with custom OpenJDK versions".
+title: "Building with custom OpenJDK versions"
 ---
 
 # Building with custom OpenJDK versions
