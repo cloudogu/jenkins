@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- Upgrade Jenkins to 2.440.3 (#160)
+- Upgrade Jenkins to 2.452.4
 - Use OpenJDK 17 as default JVM (#161)
   - Update docs for "Building with custom OpenJDK versions" to respect
   legacy builds with OpenJDK 8

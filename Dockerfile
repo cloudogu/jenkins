@@ -1,5 +1,5 @@
 # cesi/scm
-FROM registry.cloudogu.com/official/java:17.0.10-1
+FROM registry.cloudogu.com/official/java:17.0.12-1
 
 LABEL NAME="official/jenkins" \
       VERSION="2.452.2-2" \
@@ -12,15 +12,16 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
     # jenkins version
-    JENKINS_VERSION=2.452.2 \
-    SHA256_JENKINS_WAR="360efc8438db9a4ba20772981d4257cfe6837bf0c3fb8c8e9b2253d8ce6ba339" \
+    JENKINS_VERSION=2.452.4 \
+    SHA256_JENKINS_WAR="eddec1d771e04b009a7027facd02bb79762057b9a393c09ad62509e234a91ae9" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java version for legacy builds
-    ADDITIONAL_OPENJDK8_VERSION="8.402.06-r0"
+    ADDITIONAL_OPENJDK8_VERSION="8.402.06-r0" \
+    ADDITIONAL_OPENJDK11_VERSION="11.0.24_p8-r0"
 
 
 # Jenkins is ran with user `jenkins`, uid = 1000
