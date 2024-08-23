@@ -7,7 +7,7 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 ## Release 2.452.4-1
 * The Dogu now provides the Jenkins version 2.452.4. You can find the Jenkins release notes [here](https://https://www.jenkins.io/changelog-stable/2.452.4/).
 * The default JVM in Jenkins is now JDK17. JDK8 and JDK11 are still supported, for more information see [here](https://docs.cloudogu.com/en/docs/dogus/jenkins/operations/Building_with_custom_Java/).
-* The CVE [CVE-2024-43044](https://nvd.nist.gov/vuln/detail/CVE-2024-43044) will be fixed with this update
+* The CVE [CVE-2024-43044](https://nvd.nist.gov/vuln/detail/CVE-2024-43044) will be fixed with this update.
 
 ## Release 2.452.2-2
 * Fix of critical CVE-2024-41110 in library dependencies. This vulnerability could not be actively exploited, though.
