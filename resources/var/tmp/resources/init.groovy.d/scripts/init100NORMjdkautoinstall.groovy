@@ -8,6 +8,7 @@ def installedJDKs = JDK[];
 installedJDKs = desc.getInstallations();
 print 'Starting JDK configuration\n'
 
+String JDK_8_NAME = 'OpenJDK-8'
 String JDK_11_NAME = 'OpenJDK-11'
 String JDK_17_NAME = 'OpenJDK-17'
 // add more jdk-entries to the map to install multiple jdks by default
@@ -25,7 +26,7 @@ for (jdk in requestedJDKVersions) {
 for (jdk in installedJDKs) {
     print("Installed JDK configuration ${jdk.getName()}\n")
     // do not add requestedJDKVersions
-    if (!(jdk.getName().equals(JDK_11_NAME))) {
+    if (!(jdk.getName().equals(JDK_11_NAME)) && !(jdk.getName().equals(JDK_8_NAME))) {
         print("Keeping JDK configuration ${jdk.getName()}\n")
         installations.push(jdk)
     }
