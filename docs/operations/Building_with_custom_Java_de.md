@@ -4,16 +4,15 @@ title: "Bauen mit speziellen OpenJDK-Versionen"
 
 # Bauen mit speziellen OpenJDK-Versionen
 
-Seit dem Jenkins Dogu in Version 2.361.1 ist die Standard-OpenJDK-Version 11 oder 17. Wenn Sie weiterhin ältere OpenJDK z.B. 8 oder 11 für Ihre Builds verwenden möchten, gehen Sie wie folgt vor.
+Seit dem Jenkins Dogu in Version 2.361.1 ist die Standard-OpenJDK-Version 11 oder 17. Wenn Sie weiterhin ältere OpenJDK-Versionen z.B. 11 für Ihre Builds verwenden möchten, gehen Sie wie folgt vor.
 
 ## Projekt-Builds
 
-Für Standard-Java-Build-Projekte können Sie das JDK einfach über die Projektkonfiguration in Jenkins ändern. Wählen Sie hierfürch einfach "OpenJDK-11" in der Kategorie "JDK". Java-Projekte für die JDK Version 8
-sollten auf Pipeline-Builds migriert werden.
+Für Standard-Java-Build-Projekte können Sie das JDK einfach über die Projektkonfiguration in Jenkins ändern. Wählen Sie hierfürch einfach "OpenJDK-11" in der Kategorie "JDK".
 
 ## Pipeline-Builds
 
-Bei Pipeline-Builds müssen Sie Ihr Pipeline-Skript anpassen, um OpenJDK 8 oder 11 zu verwenden.
+Bei Pipeline-Builds müssen Sie Ihr Pipeline-Skript anpassen, um 11 zu verwenden.
 
 ### Deklarative Syntax
 
@@ -41,33 +40,6 @@ stage("Java-Version holen")
   def java_home = tool 'OpenJDK-11'
   steps{
     sh "'${java_home}/bin/java' -version"
-  }
-```
-
-### Besonderheiten für OpenJDK 8
-Bitte beachten Sie, dass bei Projekten, die OpenJDK 8 nutzen, zusätzlich die Umgebungsvariable "LD_LIBRARY_PATH" angepasst werden muss, damit
-die richtige JDK Version ausgewählt werden kann. Ändern Sie hierfür die obigen Beispiele wie folgt ab: 
-
-```
-stage("Java-Version 8 abrufen"){
-  tools {
-    jdk "OpenJDK-8"
-  }
-  steps{
-    withEnv(['LD_LIBRARY_PATH=""']) {
-        sh 'java -version'
-    }
-  }
-}
-```
-
-```
-stage("Java-Version 8 holen")
-  def java_home = tool 'OpenJDK-11'
-  steps{
-    withEnv(['LD_LIBRARY_PATH=""']) {
-        sh "'${java_home}/bin/java' -version"
-    }
   }
 ```
 
@@ -99,7 +71,7 @@ Unter Verwendung der [ces-build-lib](https://github.com/cloudogu/ces-build-lib) 
 Docker bauen:
 
 ```
-Maven mvn = new MavenInDocker(this, "3.5.0-jdk-8")
+Maven mvn = new MavenInDocker(this, "3.5.4-jdk-11")
 mvn ...
 ```
 
@@ -107,7 +79,7 @@ oder
 
 ```
 Maven mvn = new MavenWrapper(this)
-new Docker(this).image('openjdk:8-jdk').mountJenkinsUser().inside{
+new Docker(this).image('openjdk:11-jdk').mountJenkinsUser().inside{
   mvn ...
 }
 ```

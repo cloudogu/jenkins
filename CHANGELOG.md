@@ -8,8 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgrade Jenkins to 2.452.4
 - Use OpenJDK 17 as default JVM (#161)
-  - Update docs for "Building with custom OpenJDK versions" to respect
-  legacy builds with OpenJDK 8
+  - Update docs for "Building with custom OpenJDK versions"
+
+### Removed
+- OpenJDK 8 is no longer supported on jenkins controller node - please use dedicated agents to build legacy projects
+
+### Security
+- Fix CVE-2024-43044
 
 ## [v2.452.2-2] - 2024-08-15
 ### Changed
