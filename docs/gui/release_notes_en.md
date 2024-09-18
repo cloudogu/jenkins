@@ -4,6 +4,9 @@ Below you will find the release notes for the Jenkins Dogu.
 
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
+## Release 2.452.4-2
+- Relicense own code to AGPL-3-only
+
 ## Release 2.452.4-1
 * The Dogu now provides the Jenkins version 2.452.4. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog-stable/2.452.4/).
 * The default JVM in Jenkins is now JDK17. JDK8 and JDK11 are still supported, for more information see [here](https://docs.cloudogu.com/en/docs/dogus/jenkins/operations/Building_with_custom_Java/).
