@@ -4,6 +4,9 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
+## Release 2.452.4-2
+- Die Cloudogu-eigenen Quellen werden von der MIT-Lizenz auf die AGPL-3.0-only relizensiert.
+
 ## Release 2.452.4-1
 * Das Dogu bietet nun die Jenkins-Version 2.452.4 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.452.4/).
 * Die Standard JVM im Jenkins ist nun JDK17. JDK11 wird weiterhin unterstützt, mehr Informationen finden Sie [hier](https://docs.cloudogu.com/de/docs/dogus/jenkins/operations/Building_with_custom_Java/).
