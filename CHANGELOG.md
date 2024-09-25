@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v2.462.1-1] - 2024-09-24
+## [v2.462.2-1] - 2024-09-25
 ### Changed
-- Upgrade Jenkins to 2.462.1; #171
+- Upgrade Jenkins to 2.462.2; #171
 
 ## [v2.452.4-2] - 2024-09-18
 ### Changed
