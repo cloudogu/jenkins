@@ -7,18 +7,6 @@ final String ETCD_CONFIGURED_KEY = 'config/jenkins/configured'
 final String ADMINGROUPLASTKEY = 'config/jenkins/admin_group_last'
 
 
-String getValueFromEtcd(String key) {
-    String ip = new File('/etc/ces/node_master').getText('UTF-8').trim()
-    try {
-        URL url = new URL("http://${ip}:4001/v2/keys/${key}")
-        def json = new JsonSlurper().parseText(url.text)
-        return json.node.value
-    } catch (FileNotFoundException exception) {
-        println('Key ' + key + ' does not exist')
-        return ''
-    }
-}
-
 void writeValueToEtcd(String key, String value) {
     String ip = new File('/etc/ces/node_master').getText('UTF-8').trim()
     URL url = new URL("http://${ip}:4001/v2/keys/${key}")
