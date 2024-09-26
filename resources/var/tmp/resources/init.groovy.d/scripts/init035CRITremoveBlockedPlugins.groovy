@@ -1,11 +1,33 @@
 import jenkins.model.*
 import hudson.security.*
 import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
 import org.jenkinsci.plugins.matrixauth.*
 
 final String ETCD_CONFIGURED_KEY = 'config/jenkins/configured'
 final String ADMINGROUPLASTKEY = 'config/jenkins/admin_group_last'
 
+def keyExists(String key) {
+    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
+    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
+    try {
+        def json = new JsonSlurper().parseText(url.text)
+    } catch (FileNotFoundException) {
+        return false
+    }
+    return true
+}
+
+def getValueFromEtcd(String key) {
+    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
+    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
+    try {
+        def json = new JsonSlurper().parseText(url.text)
+        return json.node.value
+    } catch (FileNotFoundException) {
+        return false
+    }
+}
 
 void writeValueToEtcd(String key, String value) {
     String ip = new File('/etc/ces/node_master').getText('UTF-8').trim()
@@ -26,9 +48,20 @@ void writeValueToEtcd(String key, String value) {
     }
 }
 
-
+def blockedPluginPath = "config/jenkins/blocked.plugins";
 def blocklistPath = "/var/lib/jenkins/init.groovy.d/plugin-blocklist.json"
 def blocklistFile = new File(blocklistPath)
+
+
+if (keyExists(blockedPluginPath)) {
+    def blockListPlugins = getValueFromEtcd(blockedPluginPath)
+    def blockedJsonString = [plugins: "$blockListPlugins".split(",")]
+    def blockedJson = JsonOutput.toJson(blockedJsonString)
+    def blockedJsonObject = JsonOutput.prettyPrint(blockedJson)
+    blocklistFile.write(blockedJsonObject)
+    println("Overwritten standard blocklist with custom plugin blocklist")
+}
+
 def jenkins = Jenkins.instance;
 
 if (!blocklistFile.exists()) {
@@ -47,7 +80,7 @@ if (blocklist.plugins == null || blocklist.plugins.isEmpty()) {
 def restartJenkins = false
 
 blocklist.plugins.each { it ->
-    def pluginId = it.trim()
+    def pluginId = it.toString().trim()
     if (pluginId) {
         def plugin = jenkins.pluginManager.getPlugin(pluginId)
 
