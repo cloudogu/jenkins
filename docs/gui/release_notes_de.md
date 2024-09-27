@@ -6,7 +6,7 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## Release 2.452.4-3
 - Das Dogu bietet mit /var/lib/jenkins/init.groovy.d/plugin-blocklist.json eine Block-Liste für Plugins in Jenkins an.
-  - Versuche das Plugin zu installieren, resultieren in eine automatische Entfernung der Plugins in der Block-Liste
+  - Versuche Plugins aus der Block-Liste zu installieren, resultieren in einer automatischen Entfernung der Plugins beim Neustart
   - Diese Liste kann über den etcd-key blocked.plugins ebenfalls gepflegt werden, indem eine Komma getrennte Liste an PluginIds übergeben wird
 
 ## Release 2.452.4-2
