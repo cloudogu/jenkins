@@ -4,6 +4,11 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
+## Release 2.452.4-3
+- Das Dogu bietet mit /var/lib/jenkins/init.groovy.d/plugin-blocklist.json eine Block-Liste für Plugins in Jenkins an.
+  - Versuche Plugins aus der Block-Liste zu installieren, resultieren in einer automatischen Entfernung der Plugins beim Neustart
+  - Diese Liste kann über den etcd-key blocked.plugins ebenfalls gepflegt werden, indem eine Komma getrennte Liste an PluginIds übergeben wird
+
 ## Release 2.452.4-2
 - Die Cloudogu-eigenen Quellen werden von der MIT-Lizenz auf die AGPL-3.0-only relizensiert.
 
