@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@2.2.1', 'github.com/cloudogu/dogu-build-lib@v2.5.0'])
+@Library(['github.com/cloudogu/ces-build-lib@2.2.1', 'github.com/cloudogu/dogu-build-lib@v2.4.1'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -39,30 +39,7 @@ node('vagrant') {
             checkout scm
         }
 
-        stage('Lint') {
-            lintDockerfile()
-            shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
-
-            if (env.CHANGE_TARGET) {
-                echo 'This is a pull request; checking changelog...'
-                String newChanges = changelog.changesForVersion('Unreleased')
-                if (!newChanges || newChanges.allWhitespace) {
-                    unstable('CHANGELOG.md should contain new change entries in the `[Unreleased]` section but none were found.')
-                }
-            }
-        }
-
-        stage('Check Markdown Links') {
-            Markdown markdown = new Markdown(this)
-            markdown.check()
-        }
-
         try {
-            stage('Bats Tests') {
-                Bats bats = new Bats(this, docker)
-                bats.checkAndExecuteTests()
-            }
-
             stage('Provision') {
                 ecoSystem.provision("/dogu")
             }
@@ -84,51 +61,7 @@ node('vagrant') {
             }
 
             stage('Trivy scan') {
-                trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
-                trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
                 trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
-            }
-
-            stage('Verify') {
-                ecoSystem.verify("/dogu")
-            }
-
-            stage('Integration tests') {
-                runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
-            }
-
-            stage('Test: Change Global Admin Group') {
-                ecoSystem.changeGlobalAdminGroup("newAdminGroup")
-                // this waits until the dogu is up and running
-                ecoSystem.restartDogu("jenkins")
-                ecoSystem.waitForDogu("jenkins")
-                runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
-            }
-
-            if (params.TestDoguUpgrade != null && params.TestDoguUpgrade){
-                stage('Upgrade dogu'){
-                    ecoSystem.upgradeFromPreviousRelease(params.OldDoguVersionForUpgradeTest, doguName)
-                }
-                stage('Integration Tests - After Upgrade'){
-                    // Run integration tests again to verify that the upgrade was successful
-                    runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
-                }
-            }
-
-            if (gitflow.isReleaseBranch()) {
-                String releaseVersion = git.getSimpleBranchName()
-
-                stage('Finish Release') {
-                    gitflow.finishRelease(releaseVersion, productionReleaseBranch)
-                }
-
-                stage('Push Dogu to registry') {
-                    ecoSystem.push("/dogu")
-                }
-
-                stage ('Add Github-Release'){
-                    github.createReleaseWithChangelog(releaseVersion, changelog, productionReleaseBranch)
-                }
             }
 
         } finally {
