@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to Block-list plugins that should not be installed on the jenkins dogu
   - Block-listed plugins will be automatically removed when found to be installed on dogu start and restart
 
+### Changed
+- Upgrade Jenkins to 2.462.2; #171
+- Upgrade ces-build-lib to version 2.4.0
+- Upgrade dogu-build-lib to version 2.5.0
+
 ## [v2.452.4-2] - 2024-09-18
 ### Changed
 - Relicense to AGPL-3.0-only
