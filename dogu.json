@@ -1,6 +1,6 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.452.4-2",
+  "Version": "2.462.2-1",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
@@ -54,6 +54,11 @@
     {
       "Name": "additional.plugins",
       "Description": "Comma separated list of plugin names to install on start",
+      "Optional": true
+    },
+    {
+      "Name": "blocked.plugins",
+      "Description": "Comma separated list of plugin names to remove on start/restart",
       "Optional": true
     },
     {
