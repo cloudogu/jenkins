@@ -1,13 +1,14 @@
-import groovy.json.JsonSlurper;
 import java.util.stream.Collectors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-static Map<String, String> getValuesFromEtcd(String key) {
-    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+
+static Map<String, Level> getConfiguredLogLevels() {
     try {
-        def json = new JsonSlurper().parseText(url.text);
+        def json = ecoSystem.getDoguConfig("logging")
         if (json.node.nodes == null) {
             println "no valid logging configuration found"
             return [:]
@@ -16,7 +17,7 @@ static Map<String, String> getValuesFromEtcd(String key) {
                 .filter({ node -> !node.key.isEmpty() && !parseLoggerName(node.key).isEmpty() && !node.value.isEmpty() })
                 .collect(Collectors.toMap({ node -> parseLoggerName(node.key) }, { node -> getLogLevel(node.value) }));
         return logLevels;
-    } catch (FileNotFoundException) {
+    } catch (FileNotFoundException ignored) {
         println "no valid logging configuration found"
     }
     return [:]
@@ -48,7 +49,5 @@ static def setLogLevel(String logger, Level level){
     Logger.getLogger(loggerName).setLevel(level);
 }
 
-final String LOGGING_DIRECTORY_KEY = "config/jenkins/logging";
-
-Map<String, Level> configuredLogLevels = getValuesFromEtcd(LOGGING_DIRECTORY_KEY);
+Map<String, Level> configuredLogLevels = getConfiguredLogLevels();
 configuredLogLevels.forEach { logger, level -> println "set log level '${level}' for logger '${logger}'"; setLogLevel(logger, level); }

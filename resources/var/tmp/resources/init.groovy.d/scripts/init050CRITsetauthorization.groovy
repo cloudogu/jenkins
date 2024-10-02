@@ -3,9 +3,13 @@ import hudson.security.*
 import groovy.json.JsonSlurper
 import org.jenkinsci.plugins.matrixauth.*
 
-final String ADMINGROUPKEY = 'config/_global/admin_group'
-final String ADMINGROUPLASTKEY = 'config/jenkins/admin_group_last'
-final String ETCD_CONFIGURED_KEY = 'config/jenkins/configured'
+final String ADMIN_GROUP_GLOBAL_KEY = 'admin_group'
+final String ADMIN_GROUP_LAST_KEY = 'admin_group_last'
+final String CONFIGURED_KEY = 'configured'
+
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 String[] getJenkinsAuthenticatedUserPermissions() {
     return [
@@ -58,37 +62,6 @@ String[] getJenkinsAdministratorPermissions() {
     ]
 }
 
-String getValueFromEtcd(String key) {
-    String ip = new File('/etc/ces/node_master').getText('UTF-8').trim()
-    try {
-        URL url = new URL("http://${ip}:4001/v2/keys/${key}")
-        def json = new JsonSlurper().parseText(url.text)
-        return json.node.value
-    } catch (FileNotFoundException exception) {
-        println('Key ' + key + ' does not exist')
-        return ''
-    }
-}
-
-void writeValueToEtcd(String key, String value) {
-    String ip = new File('/etc/ces/node_master').getText('UTF-8').trim()
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}")
-
-    def conn = url.openConnection()
-    conn.setRequestMethod('PUT')
-    conn.setDoOutput(true)
-    conn.setRequestProperty('Content-Type', 'application/x-www-form-urlencoded')
-    OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream())
-    writer.write("value=${value}")
-    writer.flush()
-    writer.close()
-
-    def responseCode = conn.getResponseCode()
-    if (responseCode != 200 && responseCode != 201) {
-        throw new IllegalStateException('etcd returned invalid response code ' + responseCode)
-    }
-}
-
 LinkedHashMap buildNewAccessList(String userOrGroup, String[] permissions) {
     def newPermissionsMap = [:]
     permissions.each {
@@ -133,12 +106,12 @@ ProjectMatrixAuthorizationStrategy updateOldUserGroupEntries(String groupName, A
 }
 
 Jenkins instance = Jenkins.get()
-String isConfigured = getValueFromEtcd(ETCD_CONFIGURED_KEY)
-String adminGroup = getValueFromEtcd(ADMINGROUPKEY)
-String adminGroupLast = getValueFromEtcd(ADMINGROUPLASTKEY)
+String isConfigured = ecoSystem.getDoguConfig(CONFIGURED_KEY)
+String adminGroup = ecoSystem.getGlobalConfig(ADMIN_GROUP_GLOBAL_KEY)
+String adminGroupLast = ecoSystem.getDoguConfig(ADMIN_GROUP_LAST_KEY)
 if (adminGroup == '') {
-    println 'ERROR: There is no global admin group set in ' + ADMINGROUPKEY
-    throw new IllegalStateException('etcd key ' + ADMINGROUPKEY + ' missing')
+    println 'ERROR: There is no global admin group set in ' + ADMIN_GROUP_GLOBAL_KEY
+    throw new IllegalStateException('dogu config key ' + ADMIN_GROUP_GLOBAL_KEY + 'is missing')
 }
 if (instance.isUseSecurity()) {
     if (instance.pluginManager.activePlugins.find { it.shortName == 'matrix-auth' } != null) {
@@ -174,9 +147,9 @@ if (instance.isUseSecurity()) {
             }
             // Updating last admin group key with current admin group name
             try {
-                writeValueToEtcd(ADMINGROUPLASTKEY, adminGroup)
+                ecoSystem.setDoguConfig(ADMIN_GROUP_LAST_KEY, adminGroup)
             } catch (IllegalStateException exception) {
-                throw new IllegalStateException('Could not write last admin group key to etcd', exception)
+                throw new IllegalStateException('Could not write last admin group key to dogu config', exception)
             }
             // now set the strategy globally
             instance.setAuthorizationStrategy(authStrategy)

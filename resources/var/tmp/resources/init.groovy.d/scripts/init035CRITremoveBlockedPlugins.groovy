@@ -4,8 +4,12 @@ import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import org.jenkinsci.plugins.matrixauth.*
 
-final String ETCD_CONFIGURED_KEY = 'config/jenkins/configured'
-final String ADMINGROUPLASTKEY = 'config/jenkins/admin_group_last'
+final String ETCD_CONFIGURED_KEY = 'configured'
+final String ADMIN_GROUP_LAST_KEY = 'admin_group_last'
+
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 def keyExists(String key) {
     String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
@@ -18,43 +22,13 @@ def keyExists(String key) {
     return true
 }
 
-def getValueFromEtcd(String key) {
-    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-    try {
-        def json = new JsonSlurper().parseText(url.text)
-        return json.node.value
-    } catch (FileNotFoundException) {
-        return false
-    }
-}
-
-void writeValueToEtcd(String key, String value) {
-    String ip = new File('/etc/ces/node_master').getText('UTF-8').trim()
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}")
-
-    def conn = url.openConnection()
-    conn.setRequestMethod('PUT')
-    conn.setDoOutput(true)
-    conn.setRequestProperty('Content-Type', 'application/x-www-form-urlencoded')
-    OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream())
-    writer.write("value=${value}")
-    writer.flush()
-    writer.close()
-
-    def responseCode = conn.getResponseCode()
-    if (responseCode != 200 && responseCode != 201) {
-        throw new IllegalStateException('etcd returned invalid response code ' + responseCode)
-    }
-}
-
-def blockedPluginPath = "config/jenkins/blocked.plugins";
+def blockedPluginKey = "blocked.plugins";
 def blocklistPath = "/var/lib/jenkins/init.groovy.d/plugin-blocklist.json"
 def blocklistFile = new File(blocklistPath)
 
 
-if (keyExists(blockedPluginPath)) {
-    def blockListPlugins = getValueFromEtcd(blockedPluginPath)
+if (keyExists(blockedPluginKey)) {
+    def blockListPlugins = ecoSystem.getDoguConfig(blockedPluginKey)
     def blockedJsonString = [plugins: "$blockListPlugins".split(",")]
     def blockedJson = JsonOutput.toJson(blockedJsonString)
     def blockedJsonObject = JsonOutput.prettyPrint(blockedJson)
@@ -93,8 +67,8 @@ blocklist.plugins.each { it ->
             if(pluginId == "role-strategy") {
                 AuthorizationStrategy authStrategy = new ProjectMatrixAuthorizationStrategy()
                 Jenkins.get().setAuthorizationStrategy(authStrategy)
-                writeValueToEtcd(ETCD_CONFIGURED_KEY, "")
-                writeValueToEtcd(ADMINGROUPLASTKEY, "")
+                ecoSystem.setDoguConfig(ETCD_CONFIGURED_KEY, "")
+                ecoSystem.setDoguConfig(ADMIN_GROUP_LAST_KEY, "")
             }
         }
     }

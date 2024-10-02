@@ -1,6 +1,5 @@
 import hudson.model.*;
 import jenkins.model.*;
-import groovy.json.JsonSlurper;
 import hudson.util.VersionNumber
 import hudson.PluginWrapper
 
@@ -8,27 +7,9 @@ def jenkins = Jenkins.instance;
 def pluginManager = jenkins.pluginManager;
 def updateCenter = jenkins.updateCenter;
 
-def keyExists(String key) {
-    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-    try {
-        def json = new JsonSlurper().parseText(url.text)
-    } catch (FileNotFoundException) {
-        return false
-    }
-    return true
-}
-
-def getValueFromEtcd(String key) {
-    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-    try {
-        def json = new JsonSlurper().parseText(url.text)
-        return json.node.value
-    } catch (FileNotFoundException) {
-        return false
-    }
-}
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 // Make sure CAS-Plugin version is at least 1.5.0 to work with Jenkins 2.277.3 and following
 def MINIMAL_CAS_PLUGIN_VERSION = new VersionNumber("1.5.0")
@@ -93,13 +74,13 @@ def plugins = [
         'pipeline-stage-view'
 ];
 
-def additionalPluginPath = "config/jenkins/additional.plugins";
+def additionalPluginPath = "additional.plugins"
 
-if (keyExists(additionalPluginPath)) {
-    println("Install additional plugins");
-    def additionalPluginList = getValueFromEtcd(additionalPluginPath);
-    def additionalPlugins = additionalPluginList.split(',');
-    for (additionalPlugin in additionalPlugins) {
+if (ecoSystem.keyExists("dogu", additionalPluginPath)) {
+    println("Install additional plugins")
+    def additionalPluginList = ecoSystem.getDoguConfig(additionalPluginPath)
+    def additionalPlugins = additionalPluginList.split(',')
+    for (additionalPlugin in additionalPlugins)
         println("Add Plugin " + additionalPlugin)
         plugins.add(additionalPlugin)
     }
@@ -108,12 +89,12 @@ if (keyExists(additionalPluginPath)) {
 }
 
 // add sonar plugin to Jenkins if SonarQube is installed
-if (keyExists("dogu/sonar/current")) {
+if (ecoSystem.isInstalled("sonar")) {
     plugins.add('sonar');
 }
 
 // add Nexus platform plugin to Jenkins if IQ-server is installed
-if (keyExists("dogu/iqserver/current")) {
+if (ecoSystem.isInstalled("iqserver")) {
     plugins.add('nexus-jenkins-plugin');
 }
 

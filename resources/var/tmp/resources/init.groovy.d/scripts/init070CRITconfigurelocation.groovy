@@ -3,12 +3,9 @@ import groovy.json.JsonSlurper;
 
 // https://github.com/r-hub/rhub-jenkins/blob/master/docker-entrypoint.sh#L117
 
-def getValueFromEtcd(String key){
-	String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-	URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-	def json = new JsonSlurper().parseText(url.text)
-	return json.node.value
-}
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 def isInvalidEmail(email) {
 	def emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
@@ -21,16 +18,16 @@ def instance = Jenkins.getInstance();
 String emailAddress;
 String configuredMailAddress;
 try {
-	configuredMailAddress = getValueFromEtcd("config/_global/mail_address");
+	configuredMailAddress = ecoSystem.getGlobalConfig("mail_address");
 } catch (FileNotFoundException ex) {
   println "could not find mail_address configuration in registry"
 }
 if (configuredMailAddress != null && configuredMailAddress.length() > 0) {
 	emailAddress = configuredMailAddress;
 } else {
-	emailAddress = "jenkins@" + getValueFromEtcd("config/_global/domain");
+	emailAddress = "jenkins@" + ecoSystem.getGlobalConfig("domain");
 }
-String fqdn = getValueFromEtcd("config/_global/fqdn");
+String fqdn = ecoSystem.getGlobalConfig("fqdn");
 
 def location = JenkinsLocationConfiguration.get()
 

@@ -5,16 +5,13 @@ import hudson.slaves.EnvironmentVariablesNodeProperty.Entry;
 
 def jenkins = Jenkins.getInstance();
 
-def getValueFromEtcd(String key){
-  String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-  URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-  def json = new JsonSlurper().parseText(url.text)
-  return json.node.value
-}
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 def getJenkinsConfigurationState(String key){
   try {
-    return getValueFromEtcd(key).toString()
+    return ecoSystem.getDoguConfig(key).toString()
   } catch (FileNotFoundException ex) {
     return "false"
   }
@@ -23,7 +20,7 @@ def getJenkinsConfigurationState(String key){
 def opts = "-Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
 def found = false
 
-final ETCD_CONFIGURED_KEY = "config/jenkins/configured"
+final ETCD_CONFIGURED_KEY = "configured"
 boolean isConfigured = getJenkinsConfigurationState(ETCD_CONFIGURED_KEY).toBoolean()
 
 
