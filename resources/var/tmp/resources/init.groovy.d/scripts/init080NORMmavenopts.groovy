@@ -9,19 +9,12 @@ File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy"
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
-def getJenkinsConfigurationState(String key){
-  try {
-    return ecoSystem.getDoguConfig(key).toString()
-  } catch (FileNotFoundException ex) {
-    return "false"
-  }
-}
 // Additional truststore options are set in .mavenrc file
 def opts = "-Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
 def found = false
 
 final ETCD_CONFIGURED_KEY = "configured"
-boolean isConfigured = getJenkinsConfigurationState(ETCD_CONFIGURED_KEY).toBoolean()
+boolean isConfigured = ecoSystem.getDoguConfig(ETCD_CONFIGURED_KEY).toBoolean()
 
 
 if (!isConfigured) {

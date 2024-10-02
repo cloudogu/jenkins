@@ -80,7 +80,7 @@ if (ecoSystem.keyExists("dogu", additionalPluginPath)) {
     println("Install additional plugins")
     def additionalPluginList = ecoSystem.getDoguConfig(additionalPluginPath)
     def additionalPlugins = additionalPluginList.split(',')
-    for (additionalPlugin in additionalPlugins)
+    for (additionalPlugin in additionalPlugins) {
         println("Add Plugin " + additionalPlugin)
         plugins.add(additionalPlugin)
     }

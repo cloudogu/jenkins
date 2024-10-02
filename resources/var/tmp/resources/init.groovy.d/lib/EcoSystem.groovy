@@ -2,7 +2,7 @@ String getGlobalConfig(String key) {
     try {
         def value = sh("doguctl config --global --default DEFAULT_VALUE ${key}")
         println "reading global config value: '${key}' -> '${value}'"
-        return value == "DEFAULT_VALUE" ? null : value
+        return value == "DEFAULT_VALUE" ? '' : value
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -12,7 +12,7 @@ String getDoguConfig(String key) {
     try {
         def value = sh("doguctl config --default DEFAULT_VALUE ${key}")
         println "reading dogu config value: '${key}' -> '${value}'"
-        return value == "DEFAULT_VALUE" ? null : value
+        return value == "DEFAULT_VALUE" ? '' : value
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -40,9 +40,9 @@ void setDoguState(String state) {
 
 boolean keyExists(String scope, String key) {
     if(scope == "global") {
-        return getDoguConfig(key) != null
+        return getDoguConfig(key) != ''
     } else if(scope == "dogu") {
-        return getGlobalConfig(key) != null
+        return getGlobalConfig(key) != ''
     } else {
        return false  // incorrect scope
     }

@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 import java.util.stream.Collectors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -6,9 +8,9 @@ File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy"
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
-static Map<String, Level> getConfiguredLogLevels() {
+Map<String, String> getConfiguredLogLevels() {
     try {
-        def json = ecoSystem.getDoguConfig("logging")
+        def json = new JsonSlurper().parseText(ecoSystem.getDoguConfig("logging"))
         if (json.node.nodes == null) {
             println "no valid logging configuration found"
             return [:]
@@ -23,7 +25,7 @@ static Map<String, Level> getConfiguredLogLevels() {
     return [:]
 }
 
-static String parseLoggerName(String registryPath) {
+String parseLoggerName(String registryPath) {
     String[] registryPathParts = registryPath.split("/");
     if (registryPathParts.length > 1) {
         return registryPathParts[registryPathParts.length - 1]
@@ -31,7 +33,7 @@ static String parseLoggerName(String registryPath) {
     return "" // return empty string to indicate that this entry can be ignored
 }
 
-static Level getLogLevel(String logLevel) {
+Level getLogLevel(String logLevel) {
     switch (logLevel.toUpperCase()) {
         case "ERROR":
             return Level.SEVERE;
@@ -44,10 +46,12 @@ static Level getLogLevel(String logLevel) {
     }
 }
 
-static def setLogLevel(String logger, Level level){
+def setLogLevel(String logger, Level level) {
     String loggerName = logger == "root" ? "" : logger;
     Logger.getLogger(loggerName).setLevel(level);
 }
 
-Map<String, Level> configuredLogLevels = getConfiguredLogLevels();
-configuredLogLevels.forEach { logger, level -> println "set log level '${level}' for logger '${logger}'"; setLogLevel(logger, level); }
+if (ecoSystem.keyExists("logging")) {
+    Map<String, Level> configuredLogLevels = getConfiguredLogLevels();
+    configuredLogLevels.forEach { logger, level -> println "set log level '${level}' for logger '${logger}'"; setLogLevel(logger, level); }
+}
