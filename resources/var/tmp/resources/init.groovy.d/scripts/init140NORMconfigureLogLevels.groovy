@@ -10,7 +10,15 @@ ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 Map<String, String> getConfiguredLogLevels() {
     try {
-        def json = new JsonSlurper().parseText(ecoSystem.getDoguConfig("logging"))
+        def json = null
+        if (ecoSystem.isMultiNode) {
+            String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
+            URL url = new URL("http://${ip}:4001/v2/keys/${key}");
+            json = new JsonSlurper().parseText(url.text);
+        } else {
+            json = ecoSystem.sh("kubectl get configmap jenkins -o json | jq '.logging'")
+        }
+
         if (json.node.nodes == null) {
             println "no valid logging configuration found"
             return [:]
@@ -51,7 +59,5 @@ def setLogLevel(String logger, Level level) {
     Logger.getLogger(loggerName).setLevel(level);
 }
 
-if (ecoSystem.keyExists("logging")) {
-    Map<String, Level> configuredLogLevels = getConfiguredLogLevels();
-    configuredLogLevels.forEach { logger, level -> println "set log level '${level}' for logger '${logger}'"; setLogLevel(logger, level); }
-}
+Map<String, Level> configuredLogLevels = getConfiguredLogLevels();
+configuredLogLevels.forEach { logger, level -> println "set log level '${level}' for logger '${logger}'"; setLogLevel(logger, level); }
