@@ -101,7 +101,7 @@ function start_jenkins() {
   if [[ "$(doguctl config "container_config/memory_limit" -d "empty")" == "empty" ]];  then
     echo "Starting Jenkins without memory limits..."
   else
-    # Retrieve configurable java limits from etcd, valid default values exist
+    # Retrieve configurable java limits, valid default values exist
     MEMORY_LIMIT_MAX_PERCENTAGE=$(doguctl config "container_config/java_max_ram_percentage")
     MEMORY_LIMIT_MIN_PERCENTAGE=$(doguctl config "container_config/java_min_ram_percentage")
     echo "Starting Jenkins with memory limits: MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}, MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE} ..."

@@ -13,8 +13,8 @@ ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 def opts = "-Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
 def found = false
 
-final ETCD_CONFIGURED_KEY = "configured"
-boolean isConfigured = ecoSystem.getDoguConfig(ETCD_CONFIGURED_KEY).toBoolean()
+final CONFIGURED_KEY = "configured"
+boolean isConfigured = ecoSystem.getDoguConfig(CONFIGURED_KEY).toBoolean()
 
 
 if (!isConfigured) {

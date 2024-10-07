@@ -1,5 +1,5 @@
 package scripts
-// finish the jenkins installtion by setting state to ready in etcd
+// finish the jenkins installation by setting state to ready
 // the state health check will now mark jenkins as healthy
 
 File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")

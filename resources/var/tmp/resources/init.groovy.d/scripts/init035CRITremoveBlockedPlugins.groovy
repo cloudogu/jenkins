@@ -4,7 +4,7 @@ import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
 import org.jenkinsci.plugins.matrixauth.*
 
-final String ETCD_CONFIGURED_KEY = 'configured'
+final String CONFIGURED_KEY = 'configured'
 final String ADMIN_GROUP_LAST_KEY = 'admin_group_last'
 
 File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
@@ -67,7 +67,7 @@ blocklist.plugins.each { it ->
             if(pluginId == "role-strategy") {
                 AuthorizationStrategy authStrategy = new ProjectMatrixAuthorizationStrategy()
                 Jenkins.get().setAuthorizationStrategy(authStrategy)
-                ecoSystem.setDoguConfig(ETCD_CONFIGURED_KEY, "")
+                ecoSystem.setDoguConfig(CONFIGURED_KEY, "")
                 ecoSystem.setDoguConfig(ADMIN_GROUP_LAST_KEY, "")
             }
         }

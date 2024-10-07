@@ -1,4 +1,4 @@
-// Script to activate proxy settings in jenkins if set in etcd
+// Script to activate proxy settings
 
 import jenkins.model.*
 import groovy.transform.Field
@@ -8,18 +8,18 @@ Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClas
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 def instance = Jenkins.getInstance()
-boolean isProxyEnabledInEtcd = false
+boolean isProxyEnabled = false
 @Field boolean enableProxyInJenkins = false
 @Field String proxyName, noProxyHost, proxyUser, proxyPassword
 @Field int proxyPort
 
 try {
-    isProxyEnabledInEtcd = "true".equals(ecoSystem.getGlobalConfig("proxy/enabled"))
+    isProxyEnabled = "true".equals(ecoSystem.getGlobalConfig("proxy/enabled"))
 } catch (FileNotFoundException e) {
-    System.out.println("Etcd proxy configuration does not exist.")
+    System.out.println("proxy configuration does not exist.")
 }
 
-if (isProxyEnabledInEtcd) {
+if (isProxyEnabled) {
     enableProxy()
     setProxyServerSettings()
     setProxyAuthenticationSettings()
@@ -39,7 +39,7 @@ def setProxyServerSettings() {
         proxyName = ecoSystem.getGlobalConfig("proxy/server")
         proxyPort = Integer.parseInt(ecoSystem.getGlobalConfig("proxy/port"))
     } catch (FileNotFoundException e) {
-        System.out.println("Etcd proxy configuration is incomplete (server or port not found).")
+        System.out.println("proxy configuration is incomplete (server or port not found).")
         disableProxy();
     }
 }
@@ -50,7 +50,7 @@ def setProxyAuthenticationSettings() {
         proxyPassword = ecoSystem.getGlobalConfig("proxy/password")
         proxyUser = ecoSystem.getGlobalConfig("proxy/username")
     } catch (FileNotFoundException e) {
-        System.out.println("Etcd proxy authentication configuration is incomplete or not existent.")
+        System.out.println("proxy authentication configuration is incomplete or not existent.")
     }
 }
 

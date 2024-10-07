@@ -6,8 +6,8 @@ File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy"
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
-final ETCD_CONFIGURED_KEY = "configured"
-boolean isConfigured = ecoSystem.getDoguConfig(ETCD_CONFIGURED_KEY).toBoolean()
+final CONFIGURED_KEY = "configured"
+boolean isConfigured = ecoSystem.getDoguConfig(CONFIGURED_KEY).toBoolean()
 
 if (!isConfigured) {
     def jenkins = Jenkins.getInstance()

@@ -10,14 +10,8 @@ ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 Map<String, String> getConfiguredLogLevels() {
     try {
-        def json = null
-        if (ecoSystem.isMultiNode) {
-            String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-            URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-            json = new JsonSlurper().parseText(url.text);
-        } else {
-            json = ecoSystem.sh("kubectl get configmap jenkins -o json | jq '.logging'")
-        }
+        def json = "{}"
+        // TODO doguctl ls implementation required for script migration
 
         if (json.node.nodes == null) {
             println "no valid logging configuration found"
@@ -26,7 +20,7 @@ Map<String, String> getConfiguredLogLevels() {
         def logLevels = json.node.nodes.stream()
                 .filter({ node -> !node.key.isEmpty() && !parseLoggerName(node.key).isEmpty() && !node.value.isEmpty() })
                 .collect(Collectors.toMap({ node -> parseLoggerName(node.key) }, { node -> getLogLevel(node.value) }));
-        return logLevels;
+        return logLevels
     } catch (FileNotFoundException ignored) {
         println "no valid logging configuration found"
     }
@@ -34,7 +28,7 @@ Map<String, String> getConfiguredLogLevels() {
 }
 
 String parseLoggerName(String registryPath) {
-    String[] registryPathParts = registryPath.split("/");
+    String[] registryPathParts = registryPath.split("/")
     if (registryPathParts.length > 1) {
         return registryPathParts[registryPathParts.length - 1]
     }
@@ -55,9 +49,9 @@ Level getLogLevel(String logLevel) {
 }
 
 def setLogLevel(String logger, Level level) {
-    String loggerName = logger == "root" ? "" : logger;
-    Logger.getLogger(loggerName).setLevel(level);
+    String loggerName = logger == "root" ? "" : logger
+    Logger.getLogger(loggerName).setLevel(level)
 }
 
-Map<String, Level> configuredLogLevels = getConfiguredLogLevels();
-configuredLogLevels.forEach { logger, level -> println "set log level '${level}' for logger '${logger}'"; setLogLevel(logger, level); }
+Map<String, Level> configuredLogLevels = getConfiguredLogLevels()
+configuredLogLevels.forEach { logger, level -> println "set log level '${level}' for logger '${logger}'"; setLogLevel(logger, level) }
