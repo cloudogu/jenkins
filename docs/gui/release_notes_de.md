@@ -4,6 +4,9 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
+# Release 2.462.3-1
+* Das Dogu bietet nun die Jenkins-Version 2.462.3 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.462.3/).
+
 ## Release 2.462.2-1
 * Das Dogu bietet nun die Jenkins-Version 2.462.2 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.462.2/).
 * Das Dogu bietet mit /var/lib/jenkins/init.groovy.d/plugin-blocklist.json eine Block-Liste für Plugins in Jenkins an.
