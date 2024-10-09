@@ -1,11 +1,11 @@
-import hudson.model.*;
-import jenkins.model.*;
+import hudson.model.*
+import jenkins.model.*
 import hudson.util.VersionNumber
 import hudson.PluginWrapper
 
-def jenkins = Jenkins.instance;
-def pluginManager = jenkins.pluginManager;
-def updateCenter = jenkins.updateCenter;
+def jenkins = Jenkins.instance
+def pluginManager = jenkins.pluginManager
+def updateCenter = jenkins.updateCenter
 
 File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
@@ -21,30 +21,30 @@ boolean isVersionSufficient(PluginWrapper plugin, VersionNumber versionNumber) {
 }
 
 try {
-    pluginManager.doCheckUpdatesServer();
+    pluginManager.doCheckUpdatesServer()
 } catch (IOException ex) {
     println "Plugin update server unreachable"
     println ex
 }
 
 println "Checking CAS-Plugin version ..."
-def currentCasPlugin = jenkins.getPluginManager().getPlugin('cas-plugin');
+def currentCasPlugin = jenkins.getPluginManager().getPlugin('cas-plugin')
 if (currentCasPlugin != null) {
     if (!isVersionSufficient(currentCasPlugin, MINIMAL_CAS_PLUGIN_VERSION)) {
-        println "CAS-Plugin version " + currentCasPlugin.getVersion() + " is lower than " + MINIMAL_CAS_PLUGIN_VERSION + "; Upgrading plugin...";
-        updateCenter.getPlugin('cas-plugin').deploy(true).get();
+        println "CAS-Plugin version " + currentCasPlugin.getVersion() + " is lower than " + MINIMAL_CAS_PLUGIN_VERSION + "; Upgrading plugin..."
+        updateCenter.getPlugin('cas-plugin').deploy(true).get()
     }
 }
 
 println "Checking Matrix-Auth-Plugin version ..."
-def currentMatrixAuthPlugin = jenkins.getPluginManager().getPlugin('matrix-auth');
+def currentMatrixAuthPlugin = jenkins.getPluginManager().getPlugin('matrix-auth')
 if (currentMatrixAuthPlugin != null) {
     println "currentMatrixAuthPlugin version is: " +currentMatrixAuthPlugin.getVersion()
     if (!isVersionSufficient(currentMatrixAuthPlugin, MINIMAL_MATRIX_AUTH_PLUGIN_VERSION)) {
-        println "Matrix-Auth-Plugin version " + currentMatrixAuthPlugin.getVersion() + " is lower than " + MINIMAL_MATRIX_AUTH_PLUGIN_VERSION + "; Upgrading plugin...";
-        updateCenter.getPlugin('matrix-auth').deploy(true).get();
+        println "Matrix-Auth-Plugin version " + currentMatrixAuthPlugin.getVersion() + " is lower than " + MINIMAL_MATRIX_AUTH_PLUGIN_VERSION + "; Upgrading plugin..."
+        updateCenter.getPlugin('matrix-auth').deploy(true).get()
         println "restarting jenkins after plugin upgrade ..."
-        jenkins.restart();
+        jenkins.restart()
         // needed as jenkins performs the restart in 5 seconds. Otherwise the other scripts will get called before the restart
         sleep(5000) }
     else{
@@ -72,7 +72,7 @@ def plugins = [
         'pipeline-github-lib',
         'authorize-project',
         'pipeline-stage-view'
-];
+]
 
 def additionalPluginPath = "additional.plugins"
 
@@ -85,37 +85,37 @@ if (ecoSystem.keyExists("dogu", additionalPluginPath)) {
         plugins.add(additionalPlugin)
     }
 } else {
-    println("No additional plugins configured");
+    println("No additional plugins configured")
 }
 
 // add sonar plugin to Jenkins if SonarQube is installed
 if (ecoSystem.isInstalled("sonar")) {
-    plugins.add('sonar');
+    plugins.add('sonar')
 }
 
 // add Nexus platform plugin to Jenkins if IQ-server is installed
 if (ecoSystem.isInstalled("iqserver")) {
-    plugins.add('nexus-jenkins-plugin');
+    plugins.add('nexus-jenkins-plugin')
 }
 
-def availablePlugins = updateCenter.getAvailables();
+def availablePlugins = updateCenter.getAvailables()
 println "available plugins: " + availablePlugins.size()
 for (def shortName : plugins) {
-    def plugin = updateCenter.getPlugin(shortName);
+    def plugin = updateCenter.getPlugin(shortName)
     if (availablePlugins.contains(plugin)) {
-        println "install missing plugin " + shortName;
-        plugin.deploy(true).get();
+        println "install missing plugin " + shortName
+        plugin.deploy(true).get()
     } else {
         println "plugin not available or already installed : " + shortName
     }
 }
 
 if (updateCenter.isRestartRequiredForCompletion()) {
-    jenkins.restart();
+    jenkins.restart()
 }
 
 if (currentCasPlugin != null) {
     if (!isVersionSufficient(currentCasPlugin, MINIMAL_CAS_PLUGIN_VERSION)) {
-        throw new Exception("Installed cas-plugin version " + currentCasPlugin.getVersion() + " is too old. It needs to be at least " + MINIMAL_CAS_PLUGIN_VERSION);
+        throw new Exception("Installed cas-plugin version " + currentCasPlugin.getVersion() + " is too old. It needs to be at least " + MINIMAL_CAS_PLUGIN_VERSION)
     }
 }

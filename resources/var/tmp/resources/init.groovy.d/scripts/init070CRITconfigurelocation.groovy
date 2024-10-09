@@ -1,5 +1,4 @@
-import jenkins.model.*;
-import groovy.json.JsonSlurper;
+import jenkins.model.*
 
 // https://github.com/r-hub/rhub-jenkins/blob/master/docker-entrypoint.sh#L117
 
@@ -12,30 +11,30 @@ def isInvalidEmail(email) {
 	return !(email =~ emailRegex)
 }
 
-def instance = Jenkins.getInstance();
+def instance = Jenkins.getInstance()
 
 // configure jenkins location
-String emailAddress;
-String configuredMailAddress;
+String emailAddress
+String configuredMailAddress
 try {
-	configuredMailAddress = ecoSystem.getGlobalConfig("mail_address");
+	configuredMailAddress = ecoSystem.getGlobalConfig("mail_address")
 } catch (FileNotFoundException ex) {
   println "could not find mail_address configuration in registry"
 }
 if (configuredMailAddress != null && configuredMailAddress.length() > 0) {
-	emailAddress = configuredMailAddress;
+	emailAddress = configuredMailAddress
 } else {
-	emailAddress = "jenkins@" + ecoSystem.getGlobalConfig("domain");
+	emailAddress = "jenkins@" + ecoSystem.getGlobalConfig("domain")
 }
-String fqdn = ecoSystem.getGlobalConfig("fqdn");
+String fqdn = ecoSystem.getGlobalConfig("fqdn")
 
 def location = JenkinsLocationConfiguration.get()
 
 if (isInvalidEmail(location.getAdminAddress())) {
-	location.setAdminAddress(emailAddress);
+	location.setAdminAddress(emailAddress)
 }
 
-location.setUrl("https://${fqdn}/jenkins");
+location.setUrl("https://${fqdn}/jenkins")
 location.save()
 
-instance.save();
+instance.save()

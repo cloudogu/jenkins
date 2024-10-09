@@ -1,9 +1,8 @@
-import groovy.json.JsonSlurper
-import jenkins.model.*;
-import hudson.slaves.EnvironmentVariablesNodeProperty;
-import hudson.slaves.EnvironmentVariablesNodeProperty.Entry;
+import jenkins.model.*
+import hudson.slaves.EnvironmentVariablesNodeProperty
+import hudson.slaves.EnvironmentVariablesNodeProperty.Entry
 
-def jenkins = Jenkins.getInstance();
+def jenkins = Jenkins.getInstance()
 
 File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
@@ -27,10 +26,10 @@ if (!isConfigured) {
         }
     }
     if (!found) {
-        def envProp = new EnvironmentVariablesNodeProperty(new Entry("MAVEN_OPTS", opts));
-        globalNodeProperties.add(envProp);
+        def envProp = new EnvironmentVariablesNodeProperty(new Entry("MAVEN_OPTS", opts))
+        globalNodeProperties.add(envProp)
     }
 }
 
 
-jenkins.save();
+jenkins.save()

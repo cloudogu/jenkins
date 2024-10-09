@@ -12,8 +12,8 @@ Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClas
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
 def keyExists(String key) {
-    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
+    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim()
+    URL url = new URL("http://${ip}:4001/v2/keys/${key}")
     try {
         def json = new JsonSlurper().parseText(url.text)
     } catch (FileNotFoundException) {
@@ -22,7 +22,7 @@ def keyExists(String key) {
     return true
 }
 
-def blockedPluginKey = "blocked.plugins";
+def blockedPluginKey = "blocked.plugins"
 def blocklistPath = "/var/lib/jenkins/init.groovy.d/plugin-blocklist.json"
 def blocklistFile = new File(blocklistPath)
 
@@ -36,7 +36,7 @@ if (keyExists(blockedPluginKey)) {
     println("Overwritten standard blocklist with custom plugin blocklist")
 }
 
-def jenkins = Jenkins.instance;
+def jenkins = Jenkins.instance
 
 if (!blocklistFile.exists()) {
     println("Block-list not found: ${blocklistPath}")

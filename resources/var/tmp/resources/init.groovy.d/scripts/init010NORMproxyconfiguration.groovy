@@ -40,7 +40,7 @@ def setProxyServerSettings() {
         proxyPort = Integer.parseInt(ecoSystem.getGlobalConfig("proxy/port"))
     } catch (FileNotFoundException e) {
         System.out.println("proxy configuration is incomplete (server or port not found).")
-        disableProxy();
+        disableProxy()
     }
 }
 

@@ -101,7 +101,7 @@ switch (mavenInstallationsWithCorrectName.size()) {
         addMavenToInstallations(
             createMavenInstallation(mavenName, targetVersion)
         )
-        break;
+        break
     case 1:
         def nonTargetMavenInstallations = getNonTargetM3Installations(targetVersion, mavenInstallationsWithCorrectName[0])
         if(!nonTargetMavenInstallations.isEmpty()){
@@ -112,8 +112,8 @@ switch (mavenInstallationsWithCorrectName.size()) {
                     createMavenInstallation(mavenName, targetVersion)
             )
         }
-        break;
+        break
     default:
         println "There is more than one installation with the name $mavenName present. Doing nothing."
-        break;
+        break
 }
