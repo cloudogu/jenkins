@@ -27,6 +27,13 @@
       "name": "postfix"
     }
   ],
+  "ExposedPorts": [
+    {
+      "Type": "tcp",
+      "Host": 50000,
+      "Container": 50000
+    }
+  ],
   "Volumes": [
     {
       "Name": "data",
