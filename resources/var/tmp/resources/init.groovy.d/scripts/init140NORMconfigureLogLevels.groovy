@@ -3,7 +3,7 @@ package scripts
 import java.util.logging.Level
 import java.util.logging.Logger
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
@@ -12,7 +12,7 @@ Map<String, Level> getConfiguredLogLevels() {
         Map<String, Level> loggerLevelMap = new HashMap<>()
         loggingKeys = ecoSystem.sh("doguctl ls logging").split("\n")
         for(key in loggingKeys) {
-            logValue = ecoSystem.sh("doguctl config $key")
+            logValue = ecoSystem.getDoguConfig(key)
             logLevel = getLogLevel(logValue)
             logKey = key.replace("logging/", "")
             loggerLevelMap.put(logKey, logLevel)

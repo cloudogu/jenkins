@@ -27,6 +27,16 @@
       "name": "postfix"
     }
   ],
+  "OptionalDependencies": [
+    {
+      "type": "dogu",
+      "name": "sonar"
+    },
+    {
+      "type": "dogu",
+      "name": "nexus"
+    }
+  ],
   "Volumes": [
     {
       "Name": "data",

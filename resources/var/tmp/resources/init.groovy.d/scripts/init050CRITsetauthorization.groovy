@@ -1,13 +1,14 @@
+package scripts
+
 import jenkins.model.*
 import hudson.security.*
-import groovy.json.JsonSlurper
 import org.jenkinsci.plugins.matrixauth.*
 
 final String ADMIN_GROUP_GLOBAL_KEY = 'admin_group'
 final String ADMIN_GROUP_LAST_KEY = 'admin_group_last'
 final String CONFIGURED_KEY = 'configured'
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 

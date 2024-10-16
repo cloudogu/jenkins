@@ -1,3 +1,5 @@
+package scripts
+
 import jenkins.model.*
 import hudson.model.*
 import hudson.tools.*

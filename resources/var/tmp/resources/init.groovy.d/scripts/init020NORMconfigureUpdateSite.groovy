@@ -1,8 +1,10 @@
+package scripts
+
 import groovy.json.JsonSlurper
 import jenkins.model.*
 import hudson.model.*
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 

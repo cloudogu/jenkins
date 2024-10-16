@@ -1,3 +1,5 @@
+package scripts
+
 import jenkins.model.*
 import hudson.security.*
 import groovy.json.JsonSlurper
@@ -7,27 +9,16 @@ import org.jenkinsci.plugins.matrixauth.*
 final String CONFIGURED_KEY = 'configured'
 final String ADMIN_GROUP_LAST_KEY = 'admin_group_last'
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
-
-def keyExists(String key) {
-    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim()
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}")
-    try {
-        def json = new JsonSlurper().parseText(url.text)
-    } catch (FileNotFoundException) {
-        return false
-    }
-    return true
-}
 
 def blockedPluginKey = "blocked.plugins"
 def blocklistPath = "/var/lib/jenkins/init.groovy.d/plugin-blocklist.json"
 def blocklistFile = new File(blocklistPath)
 
 
-if (keyExists(blockedPluginKey)) {
+if (ecoSystem.keyExists("dogu", blockedPluginKey)) {
     def blockListPlugins = ecoSystem.getDoguConfig(blockedPluginKey)
     def blockedJsonString = [plugins: "$blockListPlugins".split(",")]
     def blockedJson = JsonOutput.toJson(blockedJsonString)

@@ -1,3 +1,5 @@
+package lib
+
 String getGlobalConfig(String key) {
     try {
         def value = sh("doguctl config --global --default DEFAULT_VALUE ${key}")
@@ -9,7 +11,7 @@ String getGlobalConfig(String key) {
 }
 
 String getDoguConfig(String key) {
-    try {
+    try
         def value = sh("doguctl config --default DEFAULT_VALUE ${key}")
         println "reading dogu config value: '${key}' -> '${value}'"
         return value == "DEFAULT_VALUE" ? '' : value
@@ -39,17 +41,17 @@ void setDoguState(String state) {
 }
 
 boolean keyExists(String scope, String key) {
-    if(scope == "global") {
-        return getDoguConfig(key) != ''
-    } else if(scope == "dogu") {
+    if (scope == "global") {
         return getGlobalConfig(key) != ''
+    } else if (scope == "dogu") {
+        return getDoguConfig(key) != ''
     } else {
-       return false  // incorrect scope
+        return false  // incorrect scope
     }
 }
 
 boolean isInstalled(String doguName) {
-    System.out.println "check if ${doguName} is installed"
+    println "check if ${doguName} is installed"
     return isMultinode() ? isInstalledMN(doguName) : isInstalledClassic(doguName)
 }
 
@@ -63,8 +65,8 @@ private static boolean isInstalledClassic(String doguName) {
     return url.openConnection().getResponseCode() == 200;
 }
 
-private static boolean isMultinode() {
-    return "true" == System.getenv("ECOSYSTEM_MULTINODE")
+private boolean isMultinode() {
+    return sh("doguctl multinode")
 }
 
 private String sh(String cmd) {

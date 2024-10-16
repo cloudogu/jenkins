@@ -1,3 +1,5 @@
+package scripts
+
 import jenkins.model.*
 
 // deprecated agent protocols

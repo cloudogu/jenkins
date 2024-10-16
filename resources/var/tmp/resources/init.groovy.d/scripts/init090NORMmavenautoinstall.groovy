@@ -1,3 +1,11 @@
+package scripts
+
+import jenkins.model.*
+import hudson.*
+import hudson.model.*
+import hudson.tasks.*
+import hudson.tools.*
+
 // creates a global tool installer for maven.
 
 // This script creates a maven installer with the name defined below
@@ -6,12 +14,6 @@
 
 // based on https://wiki.jenkins.io/display/JENKINS/Add+a+Maven+Installation%2C+Tool+Installation%2C+Modify+System+Config
 // more info https://github.com/glenjamin/jenkins-groovy-examples/blob/master/README.md
-
-import jenkins.model.*
-import hudson.*
-import hudson.model.*
-import hudson.tasks.*
-import hudson.tools.*
 
 // the name M3 is chosen, because of the GitHub + Maven Pipeline sample
 def mavenName = "M3"

@@ -1,9 +1,10 @@
+package scripts
 // Script to activate proxy settings
 
 import jenkins.model.*
 import groovy.transform.Field
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 
@@ -16,7 +17,7 @@ boolean isProxyEnabled = false
 try {
     isProxyEnabled = "true".equals(ecoSystem.getGlobalConfig("proxy/enabled"))
 } catch (FileNotFoundException e) {
-    System.out.println("proxy configuration does not exist.")
+    println("proxy configuration does not exist.")
 }
 
 if (isProxyEnabled) {
@@ -39,7 +40,7 @@ def setProxyServerSettings() {
         proxyName = ecoSystem.getGlobalConfig("proxy/server")
         proxyPort = Integer.parseInt(ecoSystem.getGlobalConfig("proxy/port"))
     } catch (FileNotFoundException e) {
-        System.out.println("proxy configuration is incomplete (server or port not found).")
+        println("proxy configuration is incomplete (server or port not found).")
         disableProxy()
     }
 }
@@ -50,7 +51,7 @@ def setProxyAuthenticationSettings() {
         proxyPassword = ecoSystem.getGlobalConfig("proxy/password")
         proxyUser = ecoSystem.getGlobalConfig("proxy/username")
     } catch (FileNotFoundException e) {
-        System.out.println("proxy authentication configuration is incomplete or not existent.")
+        println("proxy authentication configuration is incomplete or not existent.")
     }
 }
 

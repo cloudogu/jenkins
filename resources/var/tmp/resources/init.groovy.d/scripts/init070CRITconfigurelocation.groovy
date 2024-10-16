@@ -1,8 +1,10 @@
+package scripts
+
 import jenkins.model.*
 
 // https://github.com/r-hub/rhub-jenkins/blob/master/docker-entrypoint.sh#L117
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 

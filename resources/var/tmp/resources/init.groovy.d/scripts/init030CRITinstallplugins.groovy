@@ -1,3 +1,5 @@
+package scripts
+
 import hudson.model.*
 import jenkins.model.*
 import hudson.util.VersionNumber
@@ -7,7 +9,7 @@ def jenkins = Jenkins.instance
 def pluginManager = jenkins.pluginManager
 def updateCenter = jenkins.updateCenter
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/EcoSystem.groovy")
+File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
 Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
 ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
 

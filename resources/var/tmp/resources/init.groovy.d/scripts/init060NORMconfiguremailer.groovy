@@ -1,3 +1,5 @@
+package scripts
+
 import jenkins.model.*
 
 // based on https://github.com/r-hub/rhub-jenkins/blob/master/docker-entrypoint.sh#L87

@@ -1,3 +1,5 @@
+package scripts
+
 // this script will disable the administration monitor that shows up the new jenkins version
 // available message in the ui.
 
