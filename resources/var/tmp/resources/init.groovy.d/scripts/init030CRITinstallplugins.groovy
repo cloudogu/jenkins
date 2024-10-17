@@ -9,9 +9,14 @@ def jenkins = Jenkins.instance
 def pluginManager = jenkins.pluginManager
 def updateCenter = jenkins.updateCenter
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
-ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
+}
+
+doguctl = getDoguctlWrapper()
 
 // Make sure CAS-Plugin version is at least 1.5.0 to work with Jenkins 2.277.3 and following
 def MINIMAL_CAS_PLUGIN_VERSION = new VersionNumber("1.5.0")
@@ -78,9 +83,9 @@ def plugins = [
 
 def additionalPluginPath = "additional.plugins"
 
-if (ecoSystem.keyExists("dogu", additionalPluginPath)) {
+if (doguctl.keyExists("dogu", additionalPluginPath)) {
     println("Install additional plugins")
-    def additionalPluginList = ecoSystem.getDoguConfig(additionalPluginPath)
+    def additionalPluginList = doguctl.getDoguConfig(additionalPluginPath)
     def additionalPlugins = additionalPluginList.split(',')
     for (additionalPlugin in additionalPlugins) {
         println("Add Plugin " + additionalPlugin)
@@ -91,12 +96,12 @@ if (ecoSystem.keyExists("dogu", additionalPluginPath)) {
 }
 
 // add sonar plugin to Jenkins if SonarQube is installed
-if (ecoSystem.isInstalled("sonar")) {
+if (doguctl.isInstalled("sonar")) {
     plugins.add('sonar')
 }
 
 // add Nexus platform plugin to Jenkins if IQ-server is installed
-if (ecoSystem.isInstalled("iqserver")) {
+if (doguctl.isInstalled("iqserver")) {
     plugins.add('nexus-jenkins-plugin')
 }
 

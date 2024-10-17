@@ -4,13 +4,18 @@ import groovy.json.JsonSlurper
 import jenkins.model.*
 import hudson.model.*
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
-ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
+}
+
+doguctl = getDoguctlWrapper()
 
 def getUpdateSites() {
     def configKey = "updateSiteUrl"
-    def updateSites = ecoSystem.getDoguConfig(configKey)
+    def updateSites = doguctl.getDoguConfig(configKey)
     if (updateSites.length() > 0) {
         def sitePairs = new JsonSlurper().parseText(updateSites)
         return convertJsonToUpdateSites(sitePairs)

@@ -3,16 +3,21 @@ package scripts
 import java.util.logging.Level
 import java.util.logging.Logger
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
-ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
+}
+
+doguctl = getDoguctlWrapper()
 
 Map<String, Level> getConfiguredLogLevels() {
     try {
         Map<String, Level> loggerLevelMap = new HashMap<>()
-        loggingKeys = ecoSystem.sh("doguctl ls logging").split("\n")
+        loggingKeys = doguctl.sh("doguctl ls logging").split("\n")
         for(key in loggingKeys) {
-            logValue = ecoSystem.getDoguConfig(key)
+            logValue = doguctl.getDoguConfig(key)
             logLevel = getLogLevel(logValue)
             logKey = key.replace("logging/", "")
             loggerLevelMap.put(logKey, logLevel)

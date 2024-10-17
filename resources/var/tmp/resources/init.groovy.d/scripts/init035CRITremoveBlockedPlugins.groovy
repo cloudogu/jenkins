@@ -9,17 +9,22 @@ import org.jenkinsci.plugins.matrixauth.*
 final String CONFIGURED_KEY = 'configured'
 final String ADMIN_GROUP_LAST_KEY = 'admin_group_last'
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
-ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
-
 def blockedPluginKey = "blocked.plugins"
 def blocklistPath = "/var/lib/jenkins/init.groovy.d/plugin-blocklist.json"
 def blocklistFile = new File(blocklistPath)
 
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
+}
 
-if (ecoSystem.keyExists("dogu", blockedPluginKey)) {
-    def blockListPlugins = ecoSystem.getDoguConfig(blockedPluginKey)
+doguctl = getDoguctlWrapper()
+
+
+if (doguctl.keyExists("dogu", blockedPluginKey)) {
+    def blockListPlugins = doguctl.getDoguConfig(blockedPluginKey)
     def blockedJsonString = [plugins: "$blockListPlugins".split(",")]
     def blockedJson = JsonOutput.toJson(blockedJsonString)
     def blockedJsonObject = JsonOutput.prettyPrint(blockedJson)
@@ -58,8 +63,8 @@ blocklist.plugins.each { it ->
             if(pluginId == "role-strategy") {
                 AuthorizationStrategy authStrategy = new ProjectMatrixAuthorizationStrategy()
                 Jenkins.get().setAuthorizationStrategy(authStrategy)
-                ecoSystem.setDoguConfig(CONFIGURED_KEY, "")
-                ecoSystem.setDoguConfig(ADMIN_GROUP_LAST_KEY, "")
+                doguctl.setDoguConfig(CONFIGURED_KEY, "")
+                doguctl.setDoguConfig(ADMIN_GROUP_LAST_KEY, "")
             }
         }
     }

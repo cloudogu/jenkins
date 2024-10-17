@@ -8,10 +8,6 @@ final String ADMIN_GROUP_GLOBAL_KEY = 'admin_group'
 final String ADMIN_GROUP_LAST_KEY = 'admin_group_last'
 final String CONFIGURED_KEY = 'configured'
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
-ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
-
 String[] getJenkinsAuthenticatedUserPermissions() {
     return [
             'hudson.model.Hudson.Read',
@@ -107,9 +103,9 @@ ProjectMatrixAuthorizationStrategy updateOldUserGroupEntries(String groupName, A
 }
 
 Jenkins instance = Jenkins.get()
-String isConfigured = ecoSystem.getDoguConfig(CONFIGURED_KEY)
-String adminGroup = ecoSystem.getGlobalConfig(ADMIN_GROUP_GLOBAL_KEY)
-String adminGroupLast = ecoSystem.getDoguConfig(ADMIN_GROUP_LAST_KEY)
+String isConfigured = doguctl.getDoguConfig(CONFIGURED_KEY)
+String adminGroup = doguctl.getGlobalConfig(ADMIN_GROUP_GLOBAL_KEY)
+String adminGroupLast = doguctl.getDoguConfig(ADMIN_GROUP_LAST_KEY)
 if (adminGroup == '') {
     println 'ERROR: There is no global admin group set in ' + ADMIN_GROUP_GLOBAL_KEY
     throw new IllegalStateException('dogu config key ' + ADMIN_GROUP_GLOBAL_KEY + 'is missing')
@@ -148,7 +144,7 @@ if (instance.isUseSecurity()) {
             }
             // Updating last admin group key with current admin group name
             try {
-                ecoSystem.setDoguConfig(ADMIN_GROUP_LAST_KEY, adminGroup)
+                doguctl.setDoguConfig(ADMIN_GROUP_LAST_KEY, adminGroup)
             } catch (IllegalStateException exception) {
                 throw new IllegalStateException('Could not write last admin group key to dogu config', exception)
             }
@@ -157,4 +153,11 @@ if (instance.isUseSecurity()) {
             instance.save()
         }
     }
+}
+
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
 }

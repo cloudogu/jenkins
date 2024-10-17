@@ -5,11 +5,15 @@ import jenkins.model.*
 import org.jenkinsci.plugins.cas.CasSecurityRealm
 import org.jenkinsci.plugins.cas.protocols.Cas30Protocol
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
-ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
+}
 
-String fqdn = ecoSystem.getGlobalConfig("fqdn")
+doguctl = getDoguctlWrapper()
+String fqdn = doguctl.getGlobalConfig("fqdn")
 def protocol = new Cas30Protocol("groups,roles", "cn", "mail", true, false, "^https://${fqdn}/.*\$")
 def realm = new CasSecurityRealm("https://${fqdn}/cas", protocol, false, true, true)
 

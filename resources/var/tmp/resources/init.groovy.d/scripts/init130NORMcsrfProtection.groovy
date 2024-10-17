@@ -3,12 +3,17 @@ package scripts
 import jenkins.model.Jenkins
 import hudson.security.csrf.DefaultCrumbIssuer
 
-File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
-Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
-ecoSystem = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
+}
+
+doguctl = getDoguctlWrapper()
 
 final CONFIGURED_KEY = "configured"
-boolean isConfigured = ecoSystem.getDoguConfig(CONFIGURED_KEY).toBoolean()
+boolean isConfigured = doguctl.getDoguConfig(CONFIGURED_KEY).toBoolean()
 
 if (!isConfigured) {
     def jenkins = Jenkins.getInstance()

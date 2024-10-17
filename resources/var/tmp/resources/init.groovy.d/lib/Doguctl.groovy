@@ -11,7 +11,7 @@ String getGlobalConfig(String key) {
 }
 
 String getDoguConfig(String key) {
-    try
+    try {
         def value = sh("doguctl config --default DEFAULT_VALUE ${key}")
         println "reading dogu config value: '${key}' -> '${value}'"
         return value == "DEFAULT_VALUE" ? '' : value
