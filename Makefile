@@ -1,4 +1,4 @@
-MAKEFILES_VERSION=9.1.0
+MAKEFILES_VERSION=9.2.1
 
 .DEFAULT_GOAL:=dogu-release
 
@@ -8,6 +8,7 @@ include build/make/clean.mk
 include build/make/release.mk
 include build/make/bats.mk
 include build/make/version-sha.mk
+include build/make/k8s-dogu.mk
 
 JENKINS_VERSION=$(shell grep JENKINS_VERSION= Dockerfile | sed 's/.*JENKINS_VERSION=\([^ ]*\).*/\1/g')
 GLIBC_VERSION=$(shell grep GLIBC_VERSION= Dockerfile | sed 's/.*GLIBC_VERSION=\([^ ]*\).*/\1/g')

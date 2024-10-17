@@ -27,6 +27,16 @@
       "name": "postfix"
     }
   ],
+  "OptionalDependencies": [
+    {
+      "type": "dogu",
+      "name": "sonar"
+    },
+    {
+      "type": "dogu",
+      "name": "nexus"
+    }
+  ],
   "Volumes": [
     {
       "Name": "data",
@@ -48,6 +58,13 @@
       "Owner": "1000",
       "Group": "1000",
       "NeedsBackup": false
+    },
+    {
+      "Name": "localConfig",
+      "Path": "/var/ces/config",
+      "Owner": "1000",
+      "Group": "1000",
+      "NeedsBackup": true
     }
   ],
   "Configuration": [

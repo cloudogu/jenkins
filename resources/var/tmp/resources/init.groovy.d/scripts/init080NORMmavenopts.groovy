@@ -1,30 +1,26 @@
-import groovy.json.JsonSlurper
-import jenkins.model.*;
-import hudson.slaves.EnvironmentVariablesNodeProperty;
-import hudson.slaves.EnvironmentVariablesNodeProperty.Entry;
+package scripts
 
-def jenkins = Jenkins.getInstance();
+import jenkins.model.*
+import hudson.slaves.EnvironmentVariablesNodeProperty
+import hudson.slaves.EnvironmentVariablesNodeProperty.Entry
 
-def getValueFromEtcd(String key){
-  String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-  URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-  def json = new JsonSlurper().parseText(url.text)
-  return json.node.value
+def jenkins = Jenkins.getInstance()
+
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
 }
 
-def getJenkinsConfigurationState(String key){
-  try {
-    return getValueFromEtcd(key).toString()
-  } catch (FileNotFoundException ex) {
-    return "false"
-  }
-}
+doguctl = getDoguctlWrapper()
+
 // Additional truststore options are set in .mavenrc file
 def opts = "-Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
 def found = false
 
-final ETCD_CONFIGURED_KEY = "config/jenkins/configured"
-boolean isConfigured = getJenkinsConfigurationState(ETCD_CONFIGURED_KEY).toBoolean()
+final CONFIGURED_KEY = "configured"
+boolean isConfigured = doguctl.getDoguConfig(CONFIGURED_KEY).toBoolean()
 
 
 if (!isConfigured) {
@@ -37,10 +33,10 @@ if (!isConfigured) {
         }
     }
     if (!found) {
-        def envProp = new EnvironmentVariablesNodeProperty(new Entry("MAVEN_OPTS", opts));
-        globalNodeProperties.add(envProp);
+        def envProp = new EnvironmentVariablesNodeProperty(new Entry("MAVEN_OPTS", opts))
+        globalNodeProperties.add(envProp)
     }
 }
 
 
-jenkins.save();
+jenkins.save()
