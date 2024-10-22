@@ -37,6 +37,14 @@
       "name": "nexus"
     }
   ],
+  "ServiceAccounts": [
+    {
+      "Type": "cas",
+      "Params": [
+        "cas"
+      ]
+    }
+  ],
   "Volumes": [
     {
       "Name": "data",
