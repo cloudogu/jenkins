@@ -4,6 +4,10 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
+## Unreleased
+* Das Dogu bietet nun die Möglichkeit Port 50000 so freizuschalten, dass sich Worker Agents über diesen Port verbinden können.
+  * Weitere Infos zu den nötigen Konfigurationsschritten finden sich in [TCP_agent_listener_port_de.md](../operations/TCP_agent_listener_port_de.md).
+
 ## Release 2.462.2-1
 * Das Dogu bietet nun die Jenkins-Version 2.462.2 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.462.2/).
 * Das Dogu bietet mit /var/lib/jenkins/init.groovy.d/plugin-blocklist.json eine Block-Liste für Plugins in Jenkins an.
