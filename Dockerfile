@@ -15,9 +15,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SERVICE_8080_TAGS="webapp" \
     SERVICE_8080_NAME="jenkins" \
     # jenkins version
-    JENKINS_VERSION=2.462.2 \
+    JENKINS_VERSION=2.462.3 \
     # SHA as of https://updates.jenkins.io/download/war/ for JENKINS_VERSION
-    SHA256_JENKINS_WAR="0e4c94d3a4bd40576d6791c1264cda66e4468e37929e7c5cb3e56cfa50803474" \
+    SHA256_JENKINS_WAR="3e53b52a816405e3b10ad07f1c48cd0cb5cb3f893207ef7f9de28415806b93c1" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \

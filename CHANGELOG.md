@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Upgrade Jenkins to 2.462.3; #176
 - Export port 50000 for inbound agent usage; #178
 - Jenkins is no longer dependent on etcd and etcdctl, now can be managed fully with doguctl
 
