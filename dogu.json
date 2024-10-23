@@ -1,6 +1,6 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.462.2-1",
+  "Version": "2.462.3-1",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
@@ -27,6 +27,21 @@
       "name": "postfix"
     }
   ],
+  "ExposedPorts": [
+    {
+      "Type": "tcp",
+      "Host": 50000,
+      "Container": 50000
+    }
+  ],
+  "ServiceAccounts": [
+    {
+      "Type": "cas",
+      "Params": [
+        "cas"
+      ]
+    }
+  ],
   "Volumes": [
     {
       "Name": "data",
@@ -48,6 +63,13 @@
       "Owner": "1000",
       "Group": "1000",
       "NeedsBackup": false
+    },
+    {
+      "Name": "localConfig",
+      "Path": "/var/ces/config",
+      "Owner": "1000",
+      "Group": "1000",
+      "NeedsBackup": true
     }
   ],
   "Configuration": [

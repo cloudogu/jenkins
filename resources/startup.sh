@@ -51,6 +51,8 @@ run_main() {
     cp "${CUSTOM_INIT_SCRIPTS_FOLDER}"/* "${INIT_SCRIPT_FOLDER}"/scripts
   fi
 
+  # TODO: Rename master/slave in this section according to Jenkins Terminology
+  # See https://community.jenkins.io/t/jenkins-terminology-cleanup-initiative-coordination/180
   # set initial setting for slave-to-master-security
   # see https://wiki.jenkins-ci.org/display/JENKINS/Slave+To+Master+Access+Control
   SLAVE_TO_MASTER_SECURITY="${JENKINS_HOME_DIR}/secrets/slave-to-master-security-kill-switch"
@@ -101,7 +103,7 @@ function start_jenkins() {
   if [[ "$(doguctl config "container_config/memory_limit" -d "empty")" == "empty" ]];  then
     echo "Starting Jenkins without memory limits..."
   else
-    # Retrieve configurable java limits from etcd, valid default values exist
+    # Retrieve configurable java limits, valid default values exist
     MEMORY_LIMIT_MAX_PERCENTAGE=$(doguctl config "container_config/java_max_ram_percentage")
     MEMORY_LIMIT_MIN_PERCENTAGE=$(doguctl config "container_config/java_min_ram_percentage")
     echo "Starting Jenkins with memory limits: MaxRAMPercentage=${MEMORY_LIMIT_MAX_PERCENTAGE}, MinRAMPercentage=${MEMORY_LIMIT_MIN_PERCENTAGE} ..."

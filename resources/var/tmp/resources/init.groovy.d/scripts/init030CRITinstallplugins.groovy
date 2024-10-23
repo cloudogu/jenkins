@@ -1,34 +1,22 @@
-import hudson.model.*;
-import jenkins.model.*;
-import groovy.json.JsonSlurper;
+package scripts
+
+import hudson.model.*
+import jenkins.model.*
 import hudson.util.VersionNumber
 import hudson.PluginWrapper
 
-def jenkins = Jenkins.instance;
-def pluginManager = jenkins.pluginManager;
-def updateCenter = jenkins.updateCenter;
+def jenkins = Jenkins.instance
+def pluginManager = jenkins.pluginManager
+def updateCenter = jenkins.updateCenter
 
-def keyExists(String key) {
-    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-    try {
-        def json = new JsonSlurper().parseText(url.text)
-    } catch (FileNotFoundException) {
-        return false
-    }
-    return true
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
 }
 
-def getValueFromEtcd(String key) {
-    String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-    URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-    try {
-        def json = new JsonSlurper().parseText(url.text)
-        return json.node.value
-    } catch (FileNotFoundException) {
-        return false
-    }
-}
+doguctl = getDoguctlWrapper()
 
 // Make sure CAS-Plugin version is at least 1.5.0 to work with Jenkins 2.277.3 and following
 def MINIMAL_CAS_PLUGIN_VERSION = new VersionNumber("1.5.0")
@@ -40,30 +28,30 @@ boolean isVersionSufficient(PluginWrapper plugin, VersionNumber versionNumber) {
 }
 
 try {
-    pluginManager.doCheckUpdatesServer();
+    pluginManager.doCheckUpdatesServer()
 } catch (IOException ex) {
     println "Plugin update server unreachable"
     println ex
 }
 
 println "Checking CAS-Plugin version ..."
-def currentCasPlugin = jenkins.getPluginManager().getPlugin('cas-plugin');
+def currentCasPlugin = jenkins.getPluginManager().getPlugin('cas-plugin')
 if (currentCasPlugin != null) {
     if (!isVersionSufficient(currentCasPlugin, MINIMAL_CAS_PLUGIN_VERSION)) {
-        println "CAS-Plugin version " + currentCasPlugin.getVersion() + " is lower than " + MINIMAL_CAS_PLUGIN_VERSION + "; Upgrading plugin...";
-        updateCenter.getPlugin('cas-plugin').deploy(true).get();
+        println "CAS-Plugin version " + currentCasPlugin.getVersion() + " is lower than " + MINIMAL_CAS_PLUGIN_VERSION + "; Upgrading plugin..."
+        updateCenter.getPlugin('cas-plugin').deploy(true).get()
     }
 }
 
 println "Checking Matrix-Auth-Plugin version ..."
-def currentMatrixAuthPlugin = jenkins.getPluginManager().getPlugin('matrix-auth');
+def currentMatrixAuthPlugin = jenkins.getPluginManager().getPlugin('matrix-auth')
 if (currentMatrixAuthPlugin != null) {
     println "currentMatrixAuthPlugin version is: " +currentMatrixAuthPlugin.getVersion()
     if (!isVersionSufficient(currentMatrixAuthPlugin, MINIMAL_MATRIX_AUTH_PLUGIN_VERSION)) {
-        println "Matrix-Auth-Plugin version " + currentMatrixAuthPlugin.getVersion() + " is lower than " + MINIMAL_MATRIX_AUTH_PLUGIN_VERSION + "; Upgrading plugin...";
-        updateCenter.getPlugin('matrix-auth').deploy(true).get();
+        println "Matrix-Auth-Plugin version " + currentMatrixAuthPlugin.getVersion() + " is lower than " + MINIMAL_MATRIX_AUTH_PLUGIN_VERSION + "; Upgrading plugin..."
+        updateCenter.getPlugin('matrix-auth').deploy(true).get()
         println "restarting jenkins after plugin upgrade ..."
-        jenkins.restart();
+        jenkins.restart()
         // needed as jenkins performs the restart in 5 seconds. Otherwise the other scripts will get called before the restart
         sleep(5000) }
     else{
@@ -91,50 +79,40 @@ def plugins = [
         'pipeline-github-lib',
         'authorize-project',
         'pipeline-stage-view'
-];
+]
 
-def additionalPluginPath = "config/jenkins/additional.plugins";
+def additionalPluginPath = "additional.plugins"
 
-if (keyExists(additionalPluginPath)) {
-    println("Install additional plugins");
-    def additionalPluginList = getValueFromEtcd(additionalPluginPath);
-    def additionalPlugins = additionalPluginList.split(',');
+if (doguctl.keyExists("dogu", additionalPluginPath)) {
+    println("Install additional plugins")
+    def additionalPluginList = doguctl.getDoguConfig(additionalPluginPath)
+    def additionalPlugins = additionalPluginList.split(',')
     for (additionalPlugin in additionalPlugins) {
         println("Add Plugin " + additionalPlugin)
         plugins.add(additionalPlugin)
     }
 } else {
-    println("No additional plugins configured");
+    println("No additional plugins configured")
 }
 
-// add sonar plugin to Jenkins if SonarQube is installed
-if (keyExists("dogu/sonar/current")) {
-    plugins.add('sonar');
-}
-
-// add Nexus platform plugin to Jenkins if IQ-server is installed
-if (keyExists("dogu/iqserver/current")) {
-    plugins.add('nexus-jenkins-plugin');
-}
-
-def availablePlugins = updateCenter.getAvailables();
+def availablePlugins = updateCenter.getAvailables()
 println "available plugins: " + availablePlugins.size()
 for (def shortName : plugins) {
-    def plugin = updateCenter.getPlugin(shortName);
+    def plugin = updateCenter.getPlugin(shortName)
     if (availablePlugins.contains(plugin)) {
-        println "install missing plugin " + shortName;
-        plugin.deploy(true).get();
+        println "install missing plugin " + shortName
+        plugin.deploy(true).get()
     } else {
         println "plugin not available or already installed : " + shortName
     }
 }
 
 if (updateCenter.isRestartRequiredForCompletion()) {
-    jenkins.restart();
+    jenkins.restart()
 }
 
 if (currentCasPlugin != null) {
     if (!isVersionSufficient(currentCasPlugin, MINIMAL_CAS_PLUGIN_VERSION)) {
-        throw new Exception("Installed cas-plugin version " + currentCasPlugin.getVersion() + " is too old. It needs to be at least " + MINIMAL_CAS_PLUGIN_VERSION);
+        throw new Exception("Installed cas-plugin version " + currentCasPlugin.getVersion() + " is too old. It needs to be at least " + MINIMAL_CAS_PLUGIN_VERSION)
     }
 }
