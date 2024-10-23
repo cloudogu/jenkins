@@ -11,6 +11,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     WORKSPACE_TMP=/tmp \
     # mark as webapp for nginx
     SERVICE_TAGS=webapp \
+    # Only mark port 8080 as webapp
+    SERVICE_8080_TAGS="webapp" \
+    SERVICE_8080_NAME="jenkins" \
     # jenkins version
     JENKINS_VERSION=2.462.2 \
     # SHA as of https://updates.jenkins.io/download/war/ for JENKINS_VERSION
@@ -76,7 +79,7 @@ COPY ./resources /
 USER jenkins
 
 # for main web interface:
-EXPOSE 8080
+EXPOSE 8080 50000
 
 HEALTHCHECK --interval=5s CMD doguctl healthy jenkins || exit 1
 

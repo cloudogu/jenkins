@@ -51,6 +51,8 @@ run_main() {
     cp "${CUSTOM_INIT_SCRIPTS_FOLDER}"/* "${INIT_SCRIPT_FOLDER}"/scripts
   fi
 
+  # TODO: Rename master/slave in this section according to Jenkins Terminology
+  # See https://community.jenkins.io/t/jenkins-terminology-cleanup-initiative-coordination/180
   # set initial setting for slave-to-master-security
   # see https://wiki.jenkins-ci.org/display/JENKINS/Slave+To+Master+Access+Control
   SLAVE_TO_MASTER_SECURITY="${JENKINS_HOME_DIR}/secrets/slave-to-master-security-kill-switch"

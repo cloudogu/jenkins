@@ -27,14 +27,11 @@
       "name": "postfix"
     }
   ],
-  "OptionalDependencies": [
+  "ExposedPorts": [
     {
-      "type": "dogu",
-      "name": "sonar"
-    },
-    {
-      "type": "dogu",
-      "name": "nexus"
+      "Type": "tcp",
+      "Host": 50000,
+      "Container": 50000
     }
   ],
   "ServiceAccounts": [
