@@ -1,24 +1,19 @@
-import groovy.json.JsonSlurper
+package scripts
+
 import jenkins.model.Jenkins
 import hudson.security.csrf.DefaultCrumbIssuer
 
-def getValueFromEtcd(String key){
-  String ip = new File("/etc/ces/node_master").getText("UTF-8").trim();
-  URL url = new URL("http://${ip}:4001/v2/keys/${key}");
-  def json = new JsonSlurper().parseText(url.text)
-  return json.node.value
+def getDoguctlWrapper() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    doguctlWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return doguctlWrapper
 }
 
-def getJenkinsConfigurationState(String key){
-  try {
-    return getValueFromEtcd(key).toString()
-  } catch (FileNotFoundException ex) {
-    return "false"
-  }
-}
+doguctl = getDoguctlWrapper()
 
-final ETCD_CONFIGURED_KEY = "config/jenkins/configured"
-boolean isConfigured = getJenkinsConfigurationState(ETCD_CONFIGURED_KEY).toBoolean()
+final CONFIGURED_KEY = "configured"
+boolean isConfigured = doguctl.getDoguConfig(CONFIGURED_KEY).toBoolean()
 
 if (!isConfigured) {
     def jenkins = Jenkins.getInstance()
