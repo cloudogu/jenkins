@@ -95,16 +95,6 @@ if (doguctl.keyExists("dogu", additionalPluginPath)) {
     println("No additional plugins configured")
 }
 
-// add sonar plugin to Jenkins if SonarQube is installed
-if (doguctl.isInstalled("sonar")) {
-    plugins.add('sonar')
-}
-
-// add Nexus platform plugin to Jenkins if IQ-server is installed
-if (doguctl.isInstalled("iqserver")) {
-    plugins.add('nexus-jenkins-plugin')
-}
-
 def availablePlugins = updateCenter.getAvailables()
 println "available plugins: " + availablePlugins.size()
 for (def shortName : plugins) {
