@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@v2.5.0'])
+@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@f15d2a6e82e73d269f88428619c1888e59555617'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -39,30 +39,7 @@ node('vagrant') {
             checkout scm
         }
 
-        stage('Lint') {
-            lintDockerfile()
-            shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
-
-            if (env.CHANGE_TARGET) {
-                echo 'This is a pull request; checking changelog...'
-                String newChanges = changelog.changesForVersion('Unreleased')
-                if (!newChanges || newChanges.allWhitespace) {
-                    unstable('CHANGELOG.md should contain new change entries in the `[Unreleased]` section but none were found.')
-                }
-            }
-        }
-
-        stage('Check Markdown Links') {
-            Markdown markdown = new Markdown(this)
-            markdown.check()
-        }
-
         try {
-            stage('Bats Tests') {
-                Bats bats = new Bats(this, docker)
-                bats.checkAndExecuteTests()
-            }
-
             stage('Provision') {
                 ecoSystem.provision("/dogu")
             }
@@ -84,13 +61,11 @@ node('vagrant') {
             }
 
             stage('Trivy scan') {
+		ecoSystem.saveImage("/dogu")
+		error("DEBUGGING: END HERE")
                 trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
                 trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
                 trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
-            }
-
-            stage('Verify') {
-                ecoSystem.verify("/dogu")
             }
 
             stage('Integration tests') {
