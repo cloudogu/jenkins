@@ -68,7 +68,7 @@ node('vagrant') {
 		sh "docker load -i savedImage.tar"
 		sh "docker image ls"
 		def trivyConfig = [
-			imageName      : importedImageName,
+			imageName      : importedImageName + ":" + importedImageVersion,
 			trivyVersion: "0.57.0",
 			additionalFlags: ''
 		]
