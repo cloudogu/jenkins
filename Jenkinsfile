@@ -72,7 +72,8 @@ node('vagrant') {
 			imageName      : importedImageName,
 			additionalFlags: ''
 		]
-
+		trivyConfig.additionalFlags += ' --db-repository public.ecr.aws/aquasecurity/trivy-db'
+		trivyConfig.additionalFlags += ' --java-db-repository public.ecr.aws/aquasecurity/trivy-java-db'
 		findVulnerabilitiesWithTrivy(trivyConfig)
 		error("DEBUGGING: END HERE")
                 //trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
