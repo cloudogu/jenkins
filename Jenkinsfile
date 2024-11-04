@@ -74,7 +74,15 @@ node('vagrant') {
 		]
 		trivyConfig.additionalFlags += ' --db-repository public.ecr.aws/aquasecurity/trivy-db'
 		trivyConfig.additionalFlags += ' --java-db-repository public.ecr.aws/aquasecurity/trivy-java-db'
-		findVulnerabilitiesWithTrivy(trivyConfig)
+		def vulns = findVulnerabilitiesWithTrivy(trivyConfig)
+		String fileName = "vulnstest"
+		if (vulns.size() > 0) {
+			writeFile(file: ".trivy/${fileName}.json", encoding: "UTF-8", text: readFile(file: '.trivy/trivyOutput.json', encoding: "UTF-8"))
+			archiveArtifacts artifacts: ".trivy/${fileName}.json"
+			unstable "Found  ${vulns.size()} vulnerabilities in image. See ${fileName}.json"
+		} else {
+			error("THERE ARE NO VULNS???? I DONT BELIEVE YOU!")
+		}
 		error("DEBUGGING: END HERE")
                 //trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
                 //trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
