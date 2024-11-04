@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@775b5b44e278ca6e64afd09824670508e89084eb'])
+@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@5e2f83d62abe0f91f9c2f62709a56cfc6e8bd115'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -62,6 +62,8 @@ node('vagrant') {
 
             stage('Trivy scan') {
 		ecoSystem.saveImage("/dogu")
+		ecoSystem.copyImageToHost("/dogu")
+		sh "ls -la"
 		error("DEBUGGING: END HERE")
                 trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
                 trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
