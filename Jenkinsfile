@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@5e2f83d62abe0f91f9c2f62709a56cfc6e8bd115'])
+@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@b3a8bcf4642b00cc7b7a823ef39cd9fb55d8d4c9'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -64,6 +64,10 @@ node('vagrant') {
 		ecoSystem.saveImage("/dogu")
 		ecoSystem.copyImageToHost("/dogu")
 		sh "ls -la"
+		String importedImageName = "registry.cloudogu.com/official/jenkins"
+		String importedImageVersion = "2.462.3-1"
+		sh "docker load -i savedImage.tar"
+		sh "docker image ls"
 		error("DEBUGGING: END HERE")
                 trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
                 trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
