@@ -63,13 +63,13 @@ node('vagrant') {
             stage('Trivy scan') {
 		ecoSystem.saveImage("/dogu")
 		ecoSystem.copyImageToHost("/dogu")
-		sh "ls -la"
 		String importedImageName = "registry.cloudogu.com/official/jenkins"
 		String importedImageVersion = "2.462.3-1"
 		sh "docker load -i savedImage.tar"
 		sh "docker image ls"
 		def trivyConfig = [
 			imageName      : importedImageName,
+			trivyVersion: "0.57.0",
 			additionalFlags: ''
 		]
 		trivyConfig.additionalFlags += ' --db-repository public.ecr.aws/aquasecurity/trivy-db'
