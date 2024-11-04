@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@b3a8bcf4642b00cc7b7a823ef39cd9fb55d8d4c9'])
+@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@8087a93a2abbe3b3bf6cda9635716f46d5ad9821'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -68,10 +68,16 @@ node('vagrant') {
 		String importedImageVersion = "2.462.3-1"
 		sh "docker load -i savedImage.tar"
 		sh "docker image ls"
+		def trivyConfig = [
+			imageName      : importedImageName,
+			additionalFlags: ''
+		]
+
+		findVulnerabilitiesWithTrivy(trivyConfig)
 		error("DEBUGGING: END HERE")
-                trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
-                trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
-                trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
+                //trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
+                //trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
+                //trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
             }
 
             stage('Integration tests') {
