@@ -66,6 +66,7 @@ node('vagrant') {
 		String importedImageName = "registry.cloudogu.com/official/jenkins"
 		String importedImageVersion = "2.462.3-1"
 		sh "docker load -i savedImage.tar"
+		// TODO: Remove the tar to save space on the Jenkins worker!
 		sh "docker image ls"
 		def trivyConfig = [
 			imageName      : importedImageName + ":" + importedImageVersion,
@@ -83,6 +84,7 @@ node('vagrant') {
 		} else {
 			error("THERE ARE NO VULNS???? I DONT BELIEVE YOU!")
 		}
+		// TODO: Remove the imported image from docker to save space on the Jenkins worker
 		error("DEBUGGING: END HERE")
                 //trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
                 //trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
