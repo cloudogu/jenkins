@@ -1,6 +1,7 @@
 package scripts
 // Script to activate proxy settings
 
+import jenkins.model.*
 import groovy.transform.Field
 
 def getDoguctlWrapper() {
