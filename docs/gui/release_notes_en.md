@@ -4,6 +4,10 @@ Below you will find the release notes for the Jenkins Dogu.
 
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
+## [Unreleased]
+* Fixed a bug where the entries from the Dogu configuration for updateSiteUrl were not applied to Jenkins.
+* The OpenJDK11 version in Jenkins has been updated.
+
 ## 2.462.3-1
 * The Dogu now provides the Jenkins version 2.462.3. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog-stable/2.462.3/).
 * The Dogu is now capable to use port 50000 for inbound agent connections.
