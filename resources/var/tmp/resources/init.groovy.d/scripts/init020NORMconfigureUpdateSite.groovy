@@ -15,7 +15,13 @@ doguctl = getDoguctlWrapper()
 def getUpdateSites() {
     List<hudson.model.UpdateSite> updateSites = []
 
-    def updateSiteKeys = doguctl.sh("doguctl ls updateSiteUrl").split("\n")
+    def listResult = doguctl.sh("doguctl ls updateSiteUrl")
+    if (listResult.contains("could not print values for key updateSiteUrl")) {
+        println("No updateSite urls set, skip step...")
+        return updateSites
+    }
+
+    def updateSiteKeys = listResult.split("\n")
     for(key in updateSiteKeys) {
         updateSiteValue = doguctl.getDoguConfig(key)
         updateSiteKey = key.replace("updateSiteUrl/", "")
