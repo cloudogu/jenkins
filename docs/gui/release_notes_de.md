@@ -6,6 +6,7 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 * Es wurde ein Bugfix behoben, bei dem die Einträge aus der Dogu-Konfiguration für updateSiteUrl nicht in Jenkins übernommen wurden.
+* Es wurde ein Bugfix behoben, bei dem mehrere Einträge für JDK 17 in den Jenkins Tools bestanden.
 * Die OpenJDK11 Version in Jenkins wurde geupdated.
 
 ## 2.462.3-1

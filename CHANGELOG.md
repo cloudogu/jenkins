@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Fix reading dogu config for key updateSiteUrl; #180
   - entries are now applied in Jenkins
+- Fix multiple JDK 17 version in Jenkins tools; #182
 
 ### Changed
 - Update OpenJDK11 version in Jenkins tools
