@@ -30,6 +30,15 @@ void setDoguConfig(String key, String value) {
     }
 }
 
+void removeDoguConfig(String key) {
+    try {
+        println "removing dogu config key '${key}'"
+        sh("doguctl config --rm ${key}")
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+}
+
 void setDoguState(String state) {
     try {
         println "setting dogu state to ${state}'"

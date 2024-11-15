@@ -19,20 +19,23 @@ def requestedJDKVersions = [ (JDK_17_NAME): 'java-17-openjdk', (JDK_11_NAME): 'j
 // the installations consists of all already installed jdks and all jdks defined in requestedJDKVersions
 def installations = []
 
+println ("Requested JDK versions: ${Arrays.toString(requestedJDKVersions)}")
+
 for (jdk in requestedJDKVersions) {
     def installation = new JDK(jdk.key, "/usr/lib/jvm/${jdk.value}")
-    print("Implementing/Keeping JDK configuration ${jdk.key}\n")
     installations.push(installation)
 }
 
+println ("Installed JDK versions: ${Arrays.toString(installedJDKs)}")
+
 for (jdk in installedJDKs) {
-    print("Installed JDK configuration ${jdk.getName()}\n")
-    // do not add requestedJDKVersions
-    if (!(jdk.getName().equals(JDK_11_NAME)) && !(jdk.getName().equals(JDK_8_NAME))) {
-        print("Keeping JDK configuration ${jdk.getName()}\n")
+    // add JDKs manually added to jenkins
+    if (!(jdk.getName().equals(JDK_17_NAME)) && !(jdk.getName().equals(JDK_11_NAME)) && !(jdk.getName().equals(JDK_8_NAME))) {
         installations.push(jdk)
     }
 }
+
+println ("JDK versions to be used in tools: ${Arrays.toString(installations)}")
 
 // add all installations and save them
 desc.setInstallations(installations.toArray(new JDK[0]))
