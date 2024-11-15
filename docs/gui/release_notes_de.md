@@ -4,7 +4,7 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
-## [Unreleased]
+## 2.462.3-2
 * Es wurde ein Bugfix behoben, bei dem die Einträge aus der Dogu-Konfiguration für updateSiteUrl nicht in Jenkins übernommen wurden.
 * Es wurde ein Bugfix behoben, bei dem mehrere Einträge für JDK 17 in den Jenkins Tools bestanden.
 * Die OpenJDK11 Version in Jenkins wurde geupdated.
