@@ -2,16 +2,12 @@ package scripts
 
 import jenkins.model.*
 import hudson.security.*
-import groovy.json.JsonSlurper
-import groovy.json.JsonOutput
 import org.jenkinsci.plugins.matrixauth.*
 
 final String CONFIGURED_KEY = 'configured'
 final String ADMIN_GROUP_LAST_KEY = 'admin_group_last'
 
 def blockedPluginKey = "blocked.plugins"
-def blocklistPath = "/var/lib/jenkins/init.groovy.d/plugin-blocklist.json"
-def blocklistFile = new File(blocklistPath)
 
 def getDoguctlWrapper() {
     File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
@@ -22,37 +18,24 @@ def getDoguctlWrapper() {
 
 doguctl = getDoguctlWrapper()
 
-
-if (doguctl.keyExists("dogu", blockedPluginKey)) {
-    def blockListPlugins = doguctl.getDoguConfig(blockedPluginKey)
-    def blockedJsonString = [plugins: "$blockListPlugins".split(",")]
-    def blockedJson = JsonOutput.toJson(blockedJsonString)
-    def blockedJsonObject = JsonOutput.prettyPrint(blockedJson)
-    blocklistFile.write(blockedJsonObject)
-    println("Overwritten standard blocklist with custom plugin blocklist")
-}
+def blockedPluginsString = doguctl.getDoguConfig(blockedPluginKey)
+def blockedPluginList = blockedPluginsString ? blockedPluginsString.split(",") : []
 
 def jenkins = Jenkins.instance
 
-if (!blocklistFile.exists()) {
-    println("Block-list not found: ${blocklistPath}")
-    return
-}
-
-def jsonSlurper = new JsonSlurper()
-def blocklist = jsonSlurper.parse(blocklistFile)
-
-if (blocklist.plugins == null || blocklist.plugins.isEmpty()) {
+if (blockedPluginList.size() == 0) {
     println("Block-list contains no plugins")
     return
 }
 
 def restartJenkins = false
 
-blocklist.plugins.each { it ->
+blockedPluginList.each { it ->
     def pluginId = it.toString().trim()
     if (pluginId) {
         def plugin = jenkins.pluginManager.getPlugin(pluginId)
+
+        println("check plugin: ${pluginId}")
 
         if (plugin != null) {
             println("removing plugin: ${pluginId}. The ${pluginId} plugin is blocked and may be incompatible with other plugins")
@@ -63,8 +46,8 @@ blocklist.plugins.each { it ->
             if(pluginId == "role-strategy") {
                 AuthorizationStrategy authStrategy = new ProjectMatrixAuthorizationStrategy()
                 Jenkins.get().setAuthorizationStrategy(authStrategy)
-                doguctl.setDoguConfig(CONFIGURED_KEY, "")
-                doguctl.setDoguConfig(ADMIN_GROUP_LAST_KEY, "")
+                doguctl.removeDoguConfig(CONFIGURED_KEY)
+                doguctl.removeDoguConfig(ADMIN_GROUP_LAST_KEY)
             }
         }
     }

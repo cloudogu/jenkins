@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Update OpenJDK11 version in Jenkins tools
+- Remove plugin-blocklist.json as it can be configured directly via dogu config
 
 ## [v2.462.3-1] - 2024-10-23
 ### Changed
