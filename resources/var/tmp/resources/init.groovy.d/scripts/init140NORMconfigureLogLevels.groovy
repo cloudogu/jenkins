@@ -13,21 +13,24 @@ def getDoguctlWrapper() {
 doguctl = getDoguctlWrapper()
 
 Map<String, Level> getConfiguredLogLevels() {
-    try {
-        Map<String, Level> loggerLevelMap = new HashMap<>()
-        loggingKeys = doguctl.sh("doguctl ls logging").split("\n")
-        for(key in loggingKeys) {
-            logValue = doguctl.getDoguConfig(key)
-            logLevel = getLogLevel(logValue)
-            logKey = key.replace("logging/", "")
-            loggerLevelMap.put(logKey, logLevel)
-        }
 
+    Map<String, Level> loggerLevelMap = new HashMap<>()
+
+    def listResult = doguctl.sh("doguctl ls logging")
+    if (listResult.contains("could not print values for key logging")) {
+        println("No loggers are set, skip step...")
         return loggerLevelMap
-    } catch (FileNotFoundException ignored) {
-        println "no valid logging configuration found"
     }
-    return [:]
+
+    loggingKeys = listResult.split("\n")
+    for (key in loggingKeys) {
+        logValue = doguctl.getDoguConfig(key)
+        logLevel = getLogLevel(logValue)
+        logKey = key.replace("logging/", "")
+        loggerLevelMap.put(logKey, logLevel)
+    }
+
+    return loggerLevelMap
 }
 
 Level getLogLevel(String logLevel) {

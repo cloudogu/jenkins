@@ -1,6 +1,5 @@
 package scripts
 
-import groovy.json.JsonSlurper
 import jenkins.model.*
 import hudson.model.*
 
@@ -14,22 +13,20 @@ def getDoguctlWrapper() {
 doguctl = getDoguctlWrapper()
 
 def getUpdateSites() {
-    def configKey = "updateSiteUrl"
-    def updateSites = doguctl.getDoguConfig(configKey)
-    if (updateSites.length() > 0) {
-        def sitePairs = new JsonSlurper().parseText(updateSites)
-        return convertJsonToUpdateSites(sitePairs)
-    } else {
-        println "could not find update site configuration in registry"
-        return new ArrayList<hudson.model.UpdateSite>()
-    }
-}
-
-def convertJsonToUpdateSites(Map<String, String> jsonSites) {
     List<hudson.model.UpdateSite> updateSites = []
-    jsonSites.each { key, value ->
-        println "found update site: ${key} ${value}"
-        updateSites.add(new hudson.model.UpdateSite(key, value))
+
+    def listResult = doguctl.sh("doguctl ls updateSiteUrl")
+    if (listResult.contains("could not print values for key updateSiteUrl")) {
+        println("No updateSite urls set, skip step...")
+        return updateSites
+    }
+
+    def updateSiteKeys = listResult.split("\n")
+    for(key in updateSiteKeys) {
+        updateSiteValue = doguctl.getDoguConfig(key)
+        updateSiteKey = key.replace("updateSiteUrl/", "")
+        println "found update site: ${updateSiteKey} ${updateSiteValue}"
+        updateSites.add(new hudson.model.UpdateSite(updateSiteKey, updateSiteValue))
     }
 
     return updateSites
