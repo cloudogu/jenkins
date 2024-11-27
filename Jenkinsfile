@@ -61,10 +61,10 @@ node('vagrant') {
 
             stage('Trivy scan') {
 		ecoSystem.copyDoguImageToJenkinsWorker("/dogu")
-		String importedImage = ecoSystem.getDoguImage("/dogu")
+		// TODO: Remove this debugging line
 		sh "docker image ls"
 		Trivy trivy = new Trivy(this)
-		trivy.scanImage(importedImage, TrivySeverityLevel.ALL, TrivyScanStrategy.UNSTABLE)
+		trivy.scanDogu()
 		trivy.saveFormattedTrivyReport(TrivyScanFormat.TABLE)
 		trivy.saveFormattedTrivyReport(TrivyScanFormat.JSON)
 		trivy.saveFormattedTrivyReport(TrivyScanFormat.HTML)
