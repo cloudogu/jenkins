@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@8087a93a2abbe3b3bf6cda9635716f46d5ad9821'])
+@Library(['github.com/cloudogu/ces-build-lib@feature/136_trivy_integration', 'github.com/cloudogu/dogu-build-lib@feature/58_export_images'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -61,34 +61,19 @@ node('vagrant') {
             }
 
             stage('Trivy scan') {
-		ecoSystem.saveImage("/dogu")
-		ecoSystem.copyImageToHost("/dogu")
+		ecoSystem.copyDoguImageToJenkinsWorker("/dogu")
 		String importedImageName = "registry.cloudogu.com/official/jenkins"
 		String importedImageVersion = "2.462.3-1"
 		sh "docker load -i savedImage.tar"
 		// TODO: Remove the tar to save space on the Jenkins worker!
 		sh "docker image ls"
-		def trivyConfig = [
-			imageName      : importedImageName + ":" + importedImageVersion,
-			trivyVersion: "0.57.0",
-			additionalFlags: ''
-		]
-		trivyConfig.additionalFlags += ' --db-repository public.ecr.aws/aquasecurity/trivy-db'
-		trivyConfig.additionalFlags += ' --java-db-repository public.ecr.aws/aquasecurity/trivy-java-db'
-		def vulns = findVulnerabilitiesWithTrivy(trivyConfig)
-		String fileName = "vulnstest"
-		if (vulns.size() > 0) {
-			writeFile(file: ".trivy/${fileName}.json", encoding: "UTF-8", text: readFile(file: '.trivy/trivyOutput.json', encoding: "UTF-8"))
-			archiveArtifacts artifacts: ".trivy/${fileName}.json"
-			unstable "Found  ${vulns.size()} vulnerabilities in image. See ${fileName}.json"
-		} else {
-			error("THERE ARE NO VULNS???? I DONT BELIEVE YOU!")
-		}
+		Trivy trivy = new Trivy(this)
+		trivy.scanImage(importedImageName + ":" + importedImageVersion)
+		trivy.saveFormattedTrivyReport(TrivyScanFormat.TABLE)
+		trivy.saveFormattedTrivyReport(TrivyScanFormat.JSON)
+		trivy.saveFormattedTrivyReport(TrivyScanFormat.HTML)
 		// TODO: Remove the imported image from docker to save space on the Jenkins worker
 		error("DEBUGGING: END HERE")
-                //trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
-                //trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
-                //trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
             }
 
             stage('Integration tests') {
