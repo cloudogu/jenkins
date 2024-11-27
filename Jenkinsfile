@@ -69,6 +69,9 @@ node('vagrant') {
 		trivy.saveFormattedTrivyReport(TrivyScanFormat.JSON)
 		trivy.saveFormattedTrivyReport(TrivyScanFormat.HTML)
 		// TODO: Remove the imported image from docker to save space on the Jenkins worker
+            }
+
+            stage('STOP THE PRESSES') {
 		error("DEBUGGING: END HERE")
             }
 
