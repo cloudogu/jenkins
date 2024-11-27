@@ -61,13 +61,10 @@ node('vagrant') {
 
             stage('Trivy scan') {
 		ecoSystem.copyDoguImageToJenkinsWorker("/dogu")
-		String importedImageName = "registry.cloudogu.com/official/jenkins"
-		String importedImageVersion = "2.462.3-1"
-		sh "docker load -i savedImage.tar"
-		// TODO: Remove the tar to save space on the Jenkins worker!
+		String importedImage = ecoSystem.getDoguImage("/dogu")
 		sh "docker image ls"
 		Trivy trivy = new Trivy(this)
-		trivy.scanImage(importedImageName + ":" + importedImageVersion)
+		trivy.scanImage(importedImage, TrivySeverityLevel.ALL, TrivyScanStrategy.UNSTABLE)
 		trivy.saveFormattedTrivyReport(TrivyScanFormat.TABLE)
 		trivy.saveFormattedTrivyReport(TrivyScanFormat.JSON)
 		trivy.saveFormattedTrivyReport(TrivyScanFormat.HTML)
