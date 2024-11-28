@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@v2.5.0'])
+@Library(['github.com/cloudogu/ces-build-lib@feature/136_trivy_integration', 'github.com/cloudogu/dogu-build-lib@feature/58_export_images'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -84,11 +84,20 @@ node('vagrant') {
             }
 
             stage('Trivy scan') {
-                trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
-                trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
-                trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
+                Trivy trivy = new Trivy(this)
+                // Copy built dogu image from CES (Vagrant) machine to the Jenkins worker
+                ecoSystem.copyDoguImageToJenkinsWorker("/dogu")
+                // Scan the dogu image
+                trivy.scanDogu(".", params.TrivySeverityLevel, params.TrivyStrategy)
+                // Save the Trivy report in specific formats
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.TABLE)
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.JSON)
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.HTML)
             }
 
+            stage('STOP FOR NOW') {
+		unstable("Reicht für heute")
+            }
             stage('Verify') {
                 ecoSystem.verify("/dogu")
             }
