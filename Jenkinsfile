@@ -95,7 +95,7 @@ node('vagrant') {
             }
 
             stage('STOP FOR NOW') {
-		unstable("Reicht für heute")
+		error("Reicht für heute")
             }
             stage('Verify') {
                 ecoSystem.verify("/dogu")
