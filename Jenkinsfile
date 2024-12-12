@@ -141,7 +141,7 @@ node('vagrant') {
 
 def runIntegrationTests(EcoSystem ecoSystem, boolean videoRecording, boolean screenshotRecording) {
     ecoSystem.runCypressIntegrationTests([
-        cypressImage     : "cypress/included:12.16.0",
+        cypressImage     : "cypress/included:13.16.1",
         enableVideo      : videoRecording,
         enableScreenshots: screenshotRecording
     ])
