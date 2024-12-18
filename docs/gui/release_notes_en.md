@@ -4,6 +4,10 @@ Below you will find the release notes for the Jenkins Dogu.
 
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
+## [Unreleased]
+### Changed
+* The internal makefiles have been updated to standardize the versioning of the release notes.
+
 ## 2.462.3-2
 * Fixed a bug where the entries from the Dogu configuration for updateSiteUrl were not applied to Jenkins.
 * Fixed a bug where multiple entries for JDK 17 exists in the Jenkins tools.
