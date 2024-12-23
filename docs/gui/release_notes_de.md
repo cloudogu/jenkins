@@ -6,8 +6,8 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 ### Changed
-* Die internen Makefiles wurden aktualisiert um die Versionierung der Release-Notes zu vereinheitlichen. 
-* Ein Versionsprüfung für das CAS-Dogu wurde hinzugefügt, da Jenkins ab v2.462.3-1 eine CAS-Version >=7.0.5.1-4 benötigt für die Erstellung von Serviceaccounts
+* Die internen Makefiles wurden aktualisiert, um die Versionierung der Release-Notes zu vereinheitlichen. 
+* Eine Versionsprüfung für das CAS-Dogu wurde hinzugefügt, da Jenkins ab v2.462.3-1 eine CAS-Version >=7.0.5.1-4 benötigt für die Erstellung von Serviceaccounts
 
 ## 2.462.3-2
 * Es wurde ein Bugfix behoben, bei dem die Einträge aus der Dogu-Konfiguration für updateSiteUrl nicht in Jenkins übernommen wurden.
