@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - The internal makefiles have been updated to standardize the versioning of the release notes.
 
+### Added
+- Dependency version check for CAS, as version >=7.0.5.1-4 of CAS is required for service accounts with type cas
+
 ## [v2.462.3-2] - 2024-11-15
 ### Fixed
 - Fix reading dogu config for key updateSiteUrl; #180
