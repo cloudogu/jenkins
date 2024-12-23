@@ -4,6 +4,13 @@ Below you will find the release notes for the Jenkins Dogu.
 
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
+## [Unreleased]
+
+## [v2.462.3-3] - 2024-12-23
+### Changed
+* The internal makefiles have been updated to standardize the versioning of the release notes.
+* A version check has been added for the CAS dogu, as Jenkins since version v2.462.3-1 needs the CAS dogu in version >=7.0.5.1-4 to create service accounts
+
 ## 2.462.3-2
 * Fixed a bug where the entries from the Dogu configuration for updateSiteUrl were not applied to Jenkins.
 * Fixed a bug where multiple entries for JDK 17 exists in the Jenkins tools.
