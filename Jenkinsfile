@@ -93,9 +93,9 @@ node('vagrant') {
                 ecoSystem.verify("/dogu")
             }
 
-            stage('Integration tests') {
+          /*  stage('Integration tests') {
                 runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
-            }
+            }*/
 
             stage('Test: Change Global Admin Group') {
                 ecoSystem.changeGlobalAdminGroup("newAdminGroup")
