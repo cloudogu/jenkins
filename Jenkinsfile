@@ -33,7 +33,6 @@ node('vagrant') {
         ])
 
         EcoSystem ecoSystem = new EcoSystem(this, "gcloud-ces-operations-internal-packer", "jenkins-gcloud-ces-operations-internal")
-	Trivy trivy = new Trivy(this, ecoSystem)
 
         stage('Checkout') {
             checkout scm
