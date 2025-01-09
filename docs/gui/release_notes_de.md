@@ -1,14 +1,15 @@
 # Release Notes
 
-Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu. 
+Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+* Das Dogu bietet nun die Jenkins-Version 2.479.2 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.479.2/).
 
 ## [v2.462.3-3] - 2024-12-23
 ### Changed
-* Die internen Makefiles wurden aktualisiert, um die Versionierung der Release-Notes zu vereinheitlichen. 
+* Die internen Makefiles wurden aktualisiert, um die Versionierung der Release-Notes zu vereinheitlichen.
 * Eine Versionsprüfung für das CAS-Dogu wurde hinzugefügt, da Jenkins ab v2.462.3-1 eine CAS-Version >=7.0.5.1-4 benötigt für die Erstellung von Serviceaccounts
 
 ## 2.462.3-2

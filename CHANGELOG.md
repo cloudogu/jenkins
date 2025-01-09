@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Upgrade Jenkins to 2.479.2; #183
 - Upgrade to latest ces-build-lib and dogu-build-lib
 - Update pipeline to new Trivy methods
+- Upgrade Cypress to 13.16.1
+- Upgrade Java base image to 17.0.13-1
 
 ## [v2.462.3-3] - 2024-12-23
 ### Changed
@@ -311,7 +314,7 @@ If you have changed the global admin group, restart the Jenkins dogu before upgr
 - Upgrade java base image to 11.0.5-3
 
 ## [v2.235.2-2] - 2020-08-19
-### Fixed 
+### Fixed
 - Fix overwriting of custom installed jdks in `init100jdkautoinstall.groovy`
 
 ## [v2.235.2-1] - 2020-07-16
