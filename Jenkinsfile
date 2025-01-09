@@ -27,13 +27,12 @@ node('vagrant') {
                 string(defaultValue: '', description: 'Old Dogu version for the upgrade test (optional; e.g. 2.222.1-1)', name: 'OldDoguVersionForUpgradeTest'),
                 booleanParam(defaultValue: false, description: 'Enables the video recording during the test execution', name: 'EnableVideoRecording'),
                 booleanParam(defaultValue: false, description: 'Enables the screenshot recording during the test execution', name: 'EnableScreenshotRecording'),
-                choice(name: 'TrivyScanLevels', choices: [TrivyScanLevel.CRITICAL, TrivyScanLevel.HIGH, TrivyScanLevel.MEDIUM, TrivyScanLevel.ALL], description: 'The levels to scan with trivy'),
+                choice(name: 'TrivySeverityLevels', choices: [TrivySeverityLevel.CRITICAL, TrivySeverityLevel.HIGH_AND_ABOVE, TrivySeverityLevel.MEDIUM_AND_ABOVE, TrivySeverityLevel.ALL], description: 'The levels to scan with trivy'),
                 choice(name: 'TrivyStrategy', choices: [TrivyScanStrategy.UNSTABLE, TrivyScanStrategy.FAIL, TrivyScanStrategy.IGNORE], description: 'Define whether the build should be unstable, fail or whether the error should be ignored if any vulnerability was found.'),
             ])
         ])
 
         EcoSystem ecoSystem = new EcoSystem(this, "gcloud-ces-operations-internal-packer", "jenkins-gcloud-ces-operations-internal")
-	    Trivy trivy = new Trivy(this, ecoSystem)
 
         stage('Checkout') {
             checkout scm
@@ -83,19 +82,20 @@ node('vagrant') {
                 ecoSystem.build("/dogu")
             }
 
+            stage('Trivy scan') {
+                ecoSystem.copyDoguImageToJenkinsWorker("/dogu")
+                Trivy trivy = new Trivy(this)
+                trivy.scanDogu(".", params.TrivySeverityLevels, params.TrivyStrategy)
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.TABLE)
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.JSON)
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.HTML)
+            }
+
             stage('Verify') {
                 ecoSystem.verify("/dogu")
             }
 
-            stage('Trivy scan') {
-                ecoSystem.copyDoguImageToJenkinsWorker("/dogu")
-                trivy.scanDogu("/dogu", params.TrivyScanLevels, params.TrivyStrategy)
-                trivy.saveFormattedTrivyReport(TrivyScanFormat.HTML)
-                trivy.saveFormattedTrivyReport(TrivyScanFormat.JSON)
-                trivy.saveFormattedTrivyReport(TrivyScanFormat.PLAIN)
-            }
-
-           stage('Integration tests') {
+            stage('Integration tests') {
                 runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
             }
 
