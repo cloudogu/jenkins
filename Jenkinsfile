@@ -1,5 +1,5 @@
 #!groovy
-@Library(['github.com/cloudogu/ces-build-lib@2.4.0', 'github.com/cloudogu/dogu-build-lib@v2.5.0'])
+@Library(['github.com/cloudogu/ces-build-lib@4.0.1', 'github.com/cloudogu/dogu-build-lib@v3.0.0'])
 import com.cloudogu.ces.cesbuildlib.*
 import com.cloudogu.ces.dogubuildlib.*
 
@@ -33,7 +33,7 @@ node('vagrant') {
         ])
 
         EcoSystem ecoSystem = new EcoSystem(this, "gcloud-ces-operations-internal-packer", "jenkins-gcloud-ces-operations-internal")
-	Trivy trivy = new Trivy(this, ecoSystem)
+	    Trivy trivy = new Trivy(this, ecoSystem)
 
         stage('Checkout') {
             checkout scm
@@ -83,14 +83,16 @@ node('vagrant') {
                 ecoSystem.build("/dogu")
             }
 
-            stage('Trivy scan') {
-                trivy.scanDogu("/dogu", TrivyScanFormat.HTML, params.TrivyScanLevels, params.TrivyStrategy)
-                trivy.scanDogu("/dogu", TrivyScanFormat.JSON,  params.TrivyScanLevels, params.TrivyStrategy)
-                trivy.scanDogu("/dogu", TrivyScanFormat.PLAIN, params.TrivyScanLevels, params.TrivyStrategy)
-            }
-
             stage('Verify') {
                 ecoSystem.verify("/dogu")
+            }
+
+            stage('Trivy scan') {
+                ecoSystem.copyDoguImageToJenkinsWorker("/dogu")
+                trivy.scanDogu("/dogu", params.TrivyScanLevels, params.TrivyStrategy)
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.HTML)
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.JSON)
+                trivy.saveFormattedTrivyReport(TrivyScanFormat.PLAIN)
             }
 
            stage('Integration tests') {
