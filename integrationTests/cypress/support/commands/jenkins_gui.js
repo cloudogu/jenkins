@@ -13,7 +13,7 @@ const searchM3Installation = () => {
 
 const createJenkinsApiKey = () => {
     cy.fixture("testuser_data").then((user) => {
-        cy.visit("/jenkins/user/" + user.username + "/configure")
+        cy.visit("/jenkins/user/" + user.username + "/security")
     })
     cy.get("button").contains("Add new Token").click({force: true});
     cy.get("button").contains("Generate").click({force: true});
@@ -21,7 +21,7 @@ const createJenkinsApiKey = () => {
 };
 
 const getUserAttributesGui = (testUser) => {
-    cy.visit(Cypress.config().baseUrl + "/jenkins/user/" + testUser.username + "/configure");
+    cy.visit(Cypress.config().baseUrl + "/jenkins/user/" + testUser.username + "/account");
     cy.get("input[name='email.address']").invoke("val").then((mail) => {
         cy.get("input[name='_.fullName']").invoke("val").then((fullName) => {
             return {
