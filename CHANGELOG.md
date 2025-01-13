@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update pipeline to new Trivy methods
 - Upgrade Cypress to 13.16.1
 - Upgrade Java base image to 17.0.13-1
+- Upgrade Maven-Installation to 3.9.9
 
 ## [v2.462.3-3] - 2024-12-23
 ### Changed
