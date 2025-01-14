@@ -5,6 +5,8 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.479.2-1] - 2025-01-14
 * Das Dogu bietet nun die Jenkins-Version 2.479.2 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.479.2/).
 * Maven-Installation auf Version 3.9.9 aktualisiert
 
