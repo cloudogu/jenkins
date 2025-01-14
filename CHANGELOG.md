@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [v2.479.2-1] - 2025-01-14
 ### Changed
 - Upgrade Jenkins to 2.479.2; #183
 - Upgrade to latest ces-build-lib and dogu-build-lib
