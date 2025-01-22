@@ -5,7 +5,7 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
-* CAS-Plugin mindestens Version 1.7.0
+* Das CAS-Plugin muss nun mindestens die Version 1.7.0 haben.
 
 ## [v2.479.2-1] - 2025-01-14
 * Das Dogu bietet nun die Jenkins-Version 2.479.2 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.479.2/).
