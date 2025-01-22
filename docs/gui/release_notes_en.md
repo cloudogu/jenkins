@@ -6,6 +6,9 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.479.2-2] - 2025-01-22
+* The CAS-Plugin has to be at least version 1.7.0.
+
 ## [v2.479.2-1] - 2025-01-14
 * The Dogu now provides the Jenkins version 2.479.2. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog-stable/2.479.2/).
 * Update Maven-Installation to version 3.9.9

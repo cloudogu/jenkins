@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.479.2-2] - 2025-01-22
+### Changed
+- update cas-plugin to at least 1.7.0
+- Upgrade Makefiles to 9.5.3
+
 ## [v2.479.2-1] - 2025-01-14
 ### Changed
 - Upgrade Jenkins to 2.479.2; #183
