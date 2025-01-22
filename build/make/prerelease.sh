@@ -22,12 +22,18 @@ prerelease_namespace() {
   # Update version in Dockerfile
   if [ -f "Dockerfile" ]; then
     echo "Updating version in Dockerfile..."
-    ORIG_NAME="$(grep -oP ".*[ ]*NAME=\"([^\"]*)" Dockerfile | awk -F "\"" '{print $2}')"
-    ORIG_VERSION="$(grep -oP ".*[ ]*VERSION=\"([^\"]*)" Dockerfile | awk -F "\"" '{print $2}')"
+    ORIG_NAME="$(grep -oP ".*[ ]+NAME=\"([^\"]*)" Dockerfile | awk -F "\"" '{print $2}')"
+    echo 2
+    ORIG_VERSION="$(grep -oP ".*[ ]+VERSION=\"([^\"]*)" Dockerfile | awk -F "\"" '{print $2}')"
+    echo 3
     PRERELEASE_NAME="prerelease_$( echo -e "$ORIG_NAME" | sed 's/\//\\\//g' )"
+    echo 4
     PRERELEASE_VERSION="${ORIG_VERSION}${TIMESTAMP}"
-    sed -i "s/\(.*[ ]*NAME=\"\)\([^\"]*\)\(.*$\)/\1${PRERELEASE_NAME}\3/" Dockerfile
-    sed -i "s/\(.*[ ]*VERSION=\"\)\([^\"]*\)\(.*$\)/\1${PRERELEASE_VERSION}\3/" Dockerfile
+    echo "5 ${ORIG_NAME}++${ORIG_VERSION}++${PRERELEASE_NAME}++${PRERELEASE_VERSION}++"
+    sed -i "s/\(.* NAME=\"\)\([^\"]*\)\(.*$\)/\1${PRERELEASE_NAME}\3/" Dockerfile
+    echo 6
+    sed -i "s/\(.* VERSION=\"\)\([^\"]*\)\(.*$\)/\1${PRERELEASE_VERSION}\3/" Dockerfile
+    echo 7
   fi
 
 }
