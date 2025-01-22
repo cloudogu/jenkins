@@ -18,8 +18,8 @@ def getDoguctlWrapper() {
 
 doguctl = getDoguctlWrapper()
 
-// Make sure CAS-Plugin version is at least 1.5.0 to work with Jenkins 2.277.3 and following
-def MINIMAL_CAS_PLUGIN_VERSION = new VersionNumber("1.5.0")
+// Make sure CAS-Plugin version is at least 1.7.0 to work with Jenkins 2.479.3 and following
+def MINIMAL_CAS_PLUGIN_VERSION = new VersionNumber("1.7.0")
 // Make sure Matrix-Auth Plugin version is at least 3.0 to work with Jenkins 2.332.1 and following
 def MINIMAL_MATRIX_AUTH_PLUGIN_VERSION = new VersionNumber("3.0")
 
