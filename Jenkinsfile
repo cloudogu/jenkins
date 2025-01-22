@@ -63,6 +63,10 @@ node('vagrant') {
             }
 
             stage('Provision') {
+                // change namespace to prerelease_namespace if in develop-branch
+                if (gitflow.isPreReleaseBranch()) {
+                    sh "make prerelease_namespace"
+                }
                 ecoSystem.provision("/dogu")
             }
 
@@ -79,10 +83,6 @@ node('vagrant') {
             }
 
             stage('Build') {
-                // change namespace to prerelease_namespace if in develop-branch
-                if (gitflow.isPreReleaseBranch()) {
-                    ecoSystem.vagrant.ssh "cd /dogu && make prerelease_namespace"
-                }
                 ecoSystem.build("/dogu")
             }
 
