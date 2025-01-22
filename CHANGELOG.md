@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [v2.479.2-2] - 2025-01-22
 ### Changed
 - update cas-plugin to at least 1.7.0
 - Upgrade Makefiles to 9.5.3
