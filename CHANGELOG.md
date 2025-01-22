@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - update cas-plugin to at least 1.7.0
+- Upgrade Makefiles to 9.5.3
 
 ## [v2.479.2-1] - 2025-01-14
 ### Changed
