@@ -17,7 +17,7 @@ if [ "${FROM_VERSION}" = "${TO_VERSION}" ]; then
 fi
 
 # from 2.476 and above CAS-Plugin 1.7.0 is needed
-if isLesserVersionThen $FROM_VERSION "2.476.0-0" && isGreaterVersionThen $TO_VERSION "2.476.0-0"; then
+if isLesserVersionThan $FROM_VERSION "2.476.0-0" && isGreaterVersionThan $TO_VERSION "2.476.0-0"; then
   CAS_PLUGIN_VERSION="1.7.0"
   CAS_PLUGIN_SHA="763846f16e56ef288a44c8e581e5047b15f7df644e8cb092454502f9026742ef"
 

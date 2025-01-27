@@ -68,7 +68,7 @@ function compareVersion() {
   fi
 }
 
-function isGreaterVersionThen() {
+function isGreaterVersionThan() {
   local F_VERSION="${1}"
   local T_VERSION="${2}"
   if [[ "$(compareVersion $F_VERSION $T_VERSION)" == "1" ]]; then
@@ -77,7 +77,7 @@ function isGreaterVersionThen() {
   false; return
 }
 
-function isLesserVersionThen() {
+function isLesserVersionThan() {
   local F_VERSION="${1}"
   local T_VERSION="${2}"
   if [[ "$(compareVersion $F_VERSION $T_VERSION)" == "-1" ]]; then
