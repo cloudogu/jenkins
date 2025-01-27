@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+* The Dogu now provides the Jenkins version 2.479.3. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog-stable/2.479.3/).
+* Migration-script for upgrading CAS-Plugin to 1.7.0 before Jenkins-Service-Start
 
 ## [v2.479.2-2] - 2025-01-22
 * The CAS-Plugin has to be at least version 1.7.0.
