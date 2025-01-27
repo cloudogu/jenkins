@@ -17,7 +17,4 @@ ADMIN_GROUP=$(doguctl config --global admin_group)
 echo "Setting /config/jenkins/admin_group_last key to \"$ADMIN_GROUP\""
 doguctl config admin_group_last "$ADMIN_GROUP"
 
-
-if
-
 echo "Jenkins pre-upgrade done"
