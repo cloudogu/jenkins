@@ -6,6 +6,7 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 * Migrationskript für die Aktualisierung des CAS-Plugins vor dem Jenkins-Service-Start
+* Das Dogu bietet nun die Jenkins-Version 2.479.3 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.479.3/).
 
 ## [v2.479.2-2] - 2025-01-22
 * Das CAS-Plugin muss nun mindestens die Version 1.7.0 haben.
