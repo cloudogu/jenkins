@@ -16,7 +16,16 @@ def getDoguctlWrapper() {
     return doguctlWrapper
 }
 
+def getDefaultValues() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/DefaultValues.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    defaultWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return defaultWrapper
+}
+
 doguctl = getDoguctlWrapper()
+
+defaultValues = getDefaultValues()
 
 // Make sure CAS-Plugin version is at least 1.7.0 to work with Jenkins 2.479.3 and following
 def MINIMAL_CAS_PLUGIN_VERSION = new VersionNumber("1.7.0")
@@ -64,22 +73,7 @@ else{
 
 
 // configuration
-def plugins = [
-        'mailer-plugin',
-        'cas-plugin',
-        'git',
-        'mercurial',
-        'subversion',
-        'scm-manager',
-        'workflow-aggregator',
-        'matrix-auth',
-        'maven-plugin',
-        'credentials-binding',
-        'ssh-slaves',
-        'pipeline-github-lib',
-        'authorize-project',
-        'pipeline-stage-view'
-]
+def plugins = getDefaultValues().getPlugins()
 
 def additionalPluginPath = "additional.plugins"
 
