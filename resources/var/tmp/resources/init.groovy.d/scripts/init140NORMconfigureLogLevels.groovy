@@ -2,6 +2,7 @@ package scripts
 
 import java.util.logging.Level
 import java.util.logging.Logger
+import groovy.json.JsonSlurper
 
 def getDoguctlWrapper() {
     File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
@@ -16,19 +17,23 @@ Map<String, Level> getConfiguredLogLevels() {
 
     Map<String, Level> loggerLevelMap = new HashMap<>()
 
-    def listResult = doguctl.sh("doguctl ls logging")
-    if (listResult.contains("could not print values for key logging")) {
+    def jsonTextResult = doguctl.sh("doguctl config logging/logger")
+    def jsonSlurper = new JsonSlurper()
+    def listResult = jsonSlurper.parseText(jsonTextResult)
+    assert listResult instanceof List
+    if (listResult.size == 0) {
         println("No loggers are set, skip step...")
         return loggerLevelMap
     }
 
-    loggingKeys = listResult.split("\n")
-    for (key in loggingKeys) {
-        logValue = doguctl.getDoguConfig(key)
-        logLevel = getLogLevel(logValue)
-        logKey = key.replace("logging/", "")
-        loggerLevelMap.put(logKey, logLevel)
+    for (entry in listResult) {
+        logLevel = getLogLevel(entry.loglevel)
+        loggerLevelMap.put(entry.logger, logLevel)
     }
+
+    def resultRoot = doguctl.sh("doguctl config logging/root")
+    logLevel = getLogLevel(resultRoot)
+    loggerLevelMap.put("root", logLevel)
 
     return loggerLevelMap
 }

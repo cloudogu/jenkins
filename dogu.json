@@ -190,6 +190,11 @@
           "ERROR"
         ]
       }
+    },
+    {
+      "Name": "logging/logger",
+      "Description": "Set the log level of the loggers in the following pattern: [{\"logger\": \"org.apache.sshd\", \"loglevel\": \"WARN\"}]",
+      "Optional": true
     }
   ],
   "ExposedCommands": [
