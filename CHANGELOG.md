@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 * Default-Plugins can not be added to the blocklist
+* Update OpenJDK11 migration fallback to 11.0.26_p4-r0
 
 ## [v2.479.3-1] - 2025-02-04
 - Migrate CAS-Plugin from 1.6.3 to 1.7.0 when upgrading to Jenkins version 2.476.0 and higher

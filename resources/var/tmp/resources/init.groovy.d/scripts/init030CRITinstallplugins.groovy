@@ -16,14 +16,14 @@ def getDoguctlWrapper() {
     return doguctlWrapper
 }
 
+doguctl = getDoguctlWrapper()
+
 def getDefaultValues() {
     File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/DefaultValues.groovy")
     Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
-    defaultWrapper = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
-    return defaultWrapper
+    defaultValues = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return defaultValues
 }
-
-doguctl = getDoguctlWrapper()
 
 defaultValues = getDefaultValues()
 
@@ -71,9 +71,8 @@ else{
     println "matrix-auth plugin is not installed! Make sure this is intended."
 }
 
-
 // configuration
-def plugins = getDefaultValues().getPlugins()
+def plugins = defaultValues.getPlugins()
 
 def additionalPluginPath = "additional.plugins"
 

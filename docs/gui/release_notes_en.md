@@ -7,6 +7,7 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 ## [Unreleased]
 ### Changed
 * Default-Plugins can not be added to the blocklist
+* Use OpenJDK 11.0.26-p4-r0 from Alpine for migrationscripts
 
 ## [v2.479.3-1] - 2025-02-04
 * The Dogu now provides the Jenkins version 2.479.3. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog-stable/2.479.3/).
