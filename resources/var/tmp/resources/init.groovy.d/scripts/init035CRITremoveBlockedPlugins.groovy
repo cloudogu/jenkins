@@ -18,8 +18,19 @@ def getDoguctlWrapper() {
 
 doguctl = getDoguctlWrapper()
 
+def getDefaultValues() {
+    File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/DefaultValues.groovy")
+    Class groovyClass = new GroovyClassLoader(getClass().getClassLoader()).parseClass(sourceFile)
+    defaultValues = (GroovyObject) groovyClass.getDeclaredConstructor().newInstance()
+    return defaultValues
+}
+
+defaultValues = getDefaultValues()
+
 def blockedPluginsString = doguctl.getDoguConfig(blockedPluginKey)
 def blockedPluginList = blockedPluginsString ? blockedPluginsString.split(",") : []
+// Remove mandatory default plugins
+blockedPluginList = blockedPluginList.minus(defaultValues.getPlugins())
 
 def jenkins = Jenkins.instance
 
