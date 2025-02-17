@@ -43,11 +43,10 @@ node('vagrant') {
             lintDockerfile()
             shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
             checkPullRequest(changelog, releaseNotes)
-            currentBuild.result = 'SUCCESS'
-            return
         }
 
         stage('Check Markdown Links') {
+	    error("DEBUG: REICHT FÜR HEUTE")
             Markdown markdown = new Markdown(this)
             markdown.check()
         }
