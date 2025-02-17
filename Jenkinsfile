@@ -42,7 +42,14 @@ node('vagrant') {
         stage('Lint') {
             lintDockerfile()
             shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
-            checkPullRequest(changelog, releaseNotes)
+        }
+
+        stage('Check changelog') {
+            checkChangelog(changelog)
+        }
+
+        stage('Check release notes') {
+            checkReleaseNotes(releaseNotes)
         }
 
         stage('Check Markdown Links') {
