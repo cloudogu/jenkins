@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- Upgrade Jenkins to 2.492.1
+- Upgrade to latest ces-build-lib and dogu-build-lib
 
 ## [v2.479.3-1] - 2025-02-04
 - Migrate CAS-Plugin from 1.6.3 to 1.7.0 when upgrading to Jenkins version 2.476.0 and higher
