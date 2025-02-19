@@ -2,7 +2,7 @@
 FROM registry.cloudogu.com/official/java:17.0.13-1
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.479.3-1" \
+      VERSION="2.492.1-0" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -15,16 +15,16 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SERVICE_8080_TAGS="webapp" \
     SERVICE_8080_NAME="jenkins" \
     # jenkins version
-    JENKINS_VERSION=2.479.3 \
+    JENKINS_VERSION=2.492.1 \
     # SHA as of https://updates.jenkins.io/download/war/ for JENKINS_VERSION
-    SHA256_JENKINS_WAR="304c8592860d5b03dec27c96b5e89ec58fc744f78161c53f7a344a0bf7ce9203" \
+    SHA256_JENKINS_WAR="c0534f9daf9025ae4054ec30518b1b89fc5d97b32fafdb556b9b3a60e9ffffc8" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java version for legacy builds
-    ADDITIONAL_OPENJDK11_VERSION="11.0.25_p9-r0"
+    ADDITIONAL_OPENJDK11_VERSION="11.0.26_p4-r0"
 
 
 # Jenkins is ran with user `jenkins`, uid = 1000
