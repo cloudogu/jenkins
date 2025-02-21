@@ -5,6 +5,8 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.479.3-2] - 2025-02-21
 ### Changed
 * Standardplugins können nicht in die Blocklist aufgenommen werden
 * OpenJDK 11 für Migrationsskripte in Version 11.0.26_p4-r0 
