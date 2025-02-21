@@ -6,6 +6,11 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.479.3-2] - 2025-02-21
+### Changed
+* Standardplugins können nicht in die Blocklist aufgenommen werden
+* OpenJDK 11 für Migrationsskripte in Version 11.0.26_p4-r0 
+
 ## [v2.479.3-1] - 2025-02-04
 * Migrationskript für die Aktualisierung des CAS-Plugins vor dem Jenkins-Service-Start
 * Das Dogu bietet nun die Jenkins-Version 2.479.3 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.479.3/).
