@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upgrade Jenkins to 2.492.1
 - Upgrade to latest ces-build-lib and dogu-build-lib
 
+## [v2.479.3-2] - 2025-02-21
+### Changed
+* Default-Plugins can not be added to the blocklist
+* Update OpenJDK11 migration fallback to 11.0.26_p4-r0
+
 ## [v2.479.3-1] - 2025-02-04
 - Migrate CAS-Plugin from 1.6.3 to 1.7.0 when upgrading to Jenkins version 2.476.0 and higher
 - Upgrade Jenkins to 2.479.3; #198
