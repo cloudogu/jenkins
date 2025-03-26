@@ -1,6 +1,6 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.462.3-3",
+  "Version": "2.462.3-4",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
@@ -16,8 +16,7 @@
   "Dependencies": [
     {
       "type": "dogu",
-      "name": "cas",
-      "version": ">=7.0.5.1-4"
+      "name": "cas"
     },
     {
       "type": "dogu",
@@ -33,14 +32,6 @@
       "Type": "tcp",
       "Host": 50000,
       "Container": 50000
-    }
-  ],
-  "ServiceAccounts": [
-    {
-      "Type": "cas",
-      "Params": [
-        "cas"
-      ]
     }
   ],
   "Volumes": [

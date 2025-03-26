@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.462.3-4] - 2025-03-26
+This release removes the service account creation for the cas dogu to be compatible with older versions. 
+
+### Removed
+-Dependency version check for CAS
+- Service account for cas  
+
 ## [v2.462.3-3] - 2024-12-23
 ### Changed
 - The internal makefiles have been updated to standardize the versioning of the release notes.
