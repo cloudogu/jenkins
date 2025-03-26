@@ -6,6 +6,10 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.492.1-0] - 2025-03-26
+### Changed
+* The Dogu now provides the Jenkins version 2.492.1. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog-stable/2.492.1/).
+
 ## [v2.479.3-2] - 2025-02-21
 ### Changed
 * Default-Plugins can not be added to the blocklist

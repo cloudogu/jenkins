@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.492.1-0] - 2025-03-26
+### Changed
+- Upgrade Jenkins to 2.492.1
+- Upgrade to latest ces-build-lib and dogu-build-lib
+
 ## [v2.479.3-2] - 2025-02-21
 ### Changed
 * Default-Plugins can not be added to the blocklist
