@@ -1,7 +1,20 @@
 package scripts
 
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
 import java.util.logging.Level
 import java.util.logging.Logger
+
+String.metaClass.isJson << { ->
+    def normalize = { it.replaceAll("\\s", "").replaceAll("\'", "\"") }
+
+    try {
+        normalize(delegate) == normalize(JsonOutput.toJson(new JsonSlurper().parseText(normalize(delegate) as String)))
+    } catch (e) {
+        false
+    }
+}
 
 def getDoguctlWrapper() {
     File sourceFile = new File("/var/lib/jenkins/init.groovy.d/lib/Doguctl.groovy")
@@ -28,6 +41,16 @@ Map<String, Level> getConfiguredLogLevels() {
         logLevel = getLogLevel(logValue)
         logKey = key.replace("logging/", "")
         loggerLevelMap.put(logKey, logLevel)
+    }
+
+    // get additional loggers
+    String additionalLoggerJSON = doguctl.getDoguConfig("logging/additional_loggers")
+    if (additionalLoggerJSON != null && "DEFAULT_VALUE" != additionalLoggerJSON && additionalLoggerJSON.isJson()) {
+        additionalLoggerJSON = additionalLoggerJSON.replaceAll("\'", "\"")
+        Map parsedResponse = new JsonSlurper().parseText(additionalLoggerJSON) as Map
+        for (key in parsedResponse.keySet()) {
+            loggerLevelMap.put(key.toString(), getLogLevel(parsedResponse.get(key).toString()))
+        }
     }
 
     return loggerLevelMap
