@@ -52,14 +52,14 @@ if isLesserVersionThan $FROM_VERSION "2.492.1-1" && isGreaterVersionThan $TO_VER
     newEntry="{\"$name\":\"$(doguctl config $i)\"}"
 
     # add new entry in temporary file
-    jq -c ". + $newEntry" tmp/convert_logger.json > tmp/convert_logger.tmp && mv tmp/convert_logger.tmp tmp/convert_logger.json
+    jq -c ". + $newEntry" tmp/convert_logger.json > tmp/convert_logger.tmp && mv -f tmp/convert_logger.tmp tmp/convert_logger.json
   done
 
   # import merged json to dogu config
   doguctl config logging/additional_loggers < tmp/convert_logger.json
 
   # cleanup
-  rm tmp/convert_logger.tmp && rm tmp/convert_logger.json
+  rm tmp/convert_logger.json
 fi
 
 echo "Jenkins post-upgrade done"
