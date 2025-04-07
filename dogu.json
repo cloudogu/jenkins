@@ -190,6 +190,12 @@
           "ERROR"
         ]
       }
+    },
+    {
+      "Name": "additional_loggers",
+      "Description": "Additional loggers as key-value pairs in json syntax  e.g. {\"org.lorem.ipsum\": \"INFO\", \"com.sit.dolorem\": \"WARN\"}",
+      "Optional": true,
+      "Default": "{}"
     }
   ],
   "ExposedCommands": [
