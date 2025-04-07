@@ -6,6 +6,7 @@ import groovy.json.JsonOutput
 import java.util.logging.Level
 import java.util.logging.Logger
 
+// Helper for evaluating valid json strings
 String.metaClass.isJson << { ->
     def normalize = { it.replaceAll("\\s", "").replaceAll("\'", "\"") }
 
@@ -46,10 +47,13 @@ Map<String, Level> getConfiguredLogLevels() {
     // get additional loggers
     String additionalLoggerJSON = doguctl.getDoguConfig("logging/additional_loggers")
     if (additionalLoggerJSON != null && "DEFAULT_VALUE" != additionalLoggerJSON && additionalLoggerJSON.isJson()) {
+        // sanitize poissible quoting issues
         additionalLoggerJSON = additionalLoggerJSON.replaceAll("\'", "\"")
+
+        // iterate over json entries and add them to the logger list
         Map parsedResponse = new JsonSlurper().parseText(additionalLoggerJSON) as Map
-        for (key in parsedResponse.keySet()) {
-            loggerLevelMap.put(key.toString(), getLogLevel(parsedResponse.get(key).toString()))
+        for (entry in parsedResponse.entrySet()) {
+            loggerLevelMap.put(entry.getKey().toString(), getLogLevel(entry.value.toString()))
         }
     }
 
