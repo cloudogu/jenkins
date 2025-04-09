@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.492.2-1] - 2025-04-09
+### Changed
+* Das Dogu bietet nun die Jenkins-Version 2.492.2 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.492.2/).
+
 ## [v2.492.1-0] - 2025-03-26
 ### Changed
 * Das Dogu bietet nun die Jenkins-Version 2.492.1 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.492.1/).
