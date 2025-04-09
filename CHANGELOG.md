@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Update Jenkins to 2.492.2
-- Update ces-build-lib to 4.1.1
+- Update ces-build-lib to 4.2.0
 - Update dogu-build-lib to 3.1.0
-- Update makefiles to 9.8.0
+- Update makefiles to 9.9.0
 
 ## [v2.492.1-0] - 2025-03-26
 ### Changed
