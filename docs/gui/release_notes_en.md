@@ -5,6 +5,9 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed
+* Additional loggers are now managed together in a unified configuration-entry
+  * logging/additional_loggers: { "logger-path": "level"}
 
 ## [v2.492.3-1] - 2025-04-10
 ### Changed
