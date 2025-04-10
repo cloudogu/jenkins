@@ -36,14 +36,6 @@ Map<String, Level> getConfiguredLogLevels() {
         return loggerLevelMap
     }
 
-    loggingKeys = listResult.split("\n")
-    for (key in loggingKeys) {
-        logValue = doguctl.getDoguConfig(key)
-        logLevel = getLogLevel(logValue)
-        logKey = key.replace("logging/", "")
-        loggerLevelMap.put(logKey, logLevel)
-    }
-
     // get additional loggers
     String additionalLoggerJSON = doguctl.getDoguConfig("logging/additional_loggers")
     if (additionalLoggerJSON != null && "DEFAULT_VALUE" != additionalLoggerJSON && additionalLoggerJSON.isJson()) {

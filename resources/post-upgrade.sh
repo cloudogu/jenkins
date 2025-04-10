@@ -38,7 +38,8 @@ if isLesserVersionThan $FROM_VERSION "2.476.0-0" && isGreaterVersionThan $TO_VER
 fi
 
 # Migrate Logging Keys
-if isLesserVersionThan $FROM_VERSION "2.492.1-1" && isGreaterVersionThan $TO_VERSION "2.492.1-0"; then
+if isLesserVersionThan $FROM_VERSION "2.492.3-2" && isGreaterVersionThan $TO_VERSION "2.492.3-1"; then
+  echo "Migrating logging configuration keys to logging/additional_loggers"
   doguctl config --default "{}" logging/additional_loggers > tmp/convert_logger.json
   for i in $(doguctl ls logging); do
     # ignore root and logger list
@@ -60,6 +61,16 @@ if isLesserVersionThan $FROM_VERSION "2.492.1-1" && isGreaterVersionThan $TO_VER
 
   # cleanup
   rm tmp/convert_logger.json
+
+  for i in $(doguctl ls logging); do
+    # ignore root and logger list
+    if [[ $i = logging/root ]]; then continue; fi
+    if [[ $i = logging/additional_loggers ]]; then continue; fi
+
+    # delete old entry
+    doguctl config --rm $i
+
+    done
 fi
 
 echo "Jenkins post-upgrade done"
