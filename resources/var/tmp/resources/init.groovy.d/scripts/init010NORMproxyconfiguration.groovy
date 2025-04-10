@@ -82,7 +82,7 @@ def setProxyExcludes() {
     println(noProxyHosts)
 }
 
-// getActualConfiguredExcludes returns the current configured no proxy hosts as list from the dogu or an empty list if no proxy is configured.
+// getDoguConfiguredExcludes returns the current configured no proxy hosts as list from the dogu or an empty list if no proxy is configured.
 def getDoguConfiguredExcludes() {
     isProxyInstanceSet = instance.proxy
 
