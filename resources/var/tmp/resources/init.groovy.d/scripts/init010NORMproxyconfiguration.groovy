@@ -13,10 +13,10 @@ def getDoguctlWrapper() {
 
 doguctl = getDoguctlWrapper()
 
-def instance = Jenkins.getInstance()
+@Field def instance = Jenkins.getInstance()
 boolean isProxyEnabled = false
 @Field boolean enableProxyInJenkins = false
-@Field String proxyName, noProxyHost, proxyUser, proxyPassword
+@Field String proxyName, noProxyHosts, proxyUser, proxyPassword
 @Field int proxyPort
 
 try {
@@ -61,11 +61,41 @@ def setProxyAuthenticationSettings() {
 }
 
 def setProxyExcludes() {
-    noProxyHost = doguctl.getGlobalConfig("fqdn")
+    def excludes = getDoguConfiguredExcludes()
+
+    // FQDN should always be excluded
+    excludes.add(doguctl.getGlobalConfig("fqdn"))
+
+    boolean excludesExistsInGlobalConfig = doguctl.keyExists("global", "proxy/no_proxy_hosts")
+
+    if (!excludesExistsInGlobalConfig) {
+        println("proxy exclude configuration not existent in global config.")
+        noProxyHosts = excludes.unique().join(" ")
+        return
+    }
+
+    def actualGlobalConfigExcludes = new ArrayList<String>(Arrays.asList(doguctl.getGlobalConfig("proxy/no_proxy_hosts").split(",")))
+    excludes.addAll(actualGlobalConfigExcludes)
+    noProxyHosts = excludes.unique().join(" ")
+
+    println("set no proxy hosts")
+    println(noProxyHosts)
 }
 
+// getActualConfiguredExcludes returns the current configured no proxy hosts as list from the dogu or an empty list if no proxy is configured.
+def getDoguConfiguredExcludes() {
+    isProxyInstanceSet = instance.proxy
+
+    if (isProxyInstanceSet) {
+        return new ArrayList<String>(Arrays.asList(instance.proxy.noProxyHost.replaceAll(",|;", " ").split("\\n|\\s+")))
+    }
+
+    return new ArrayList<String>()
+}
+
+// TODO Discuss. Disabling proxy will not revert proxy changes a user manually changed the proxy via dogu ui. Cached change will be used.
 if (enableProxyInJenkins) {
-    def proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHost)
+    def proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHosts)
     instance.proxy = proxyConfiguration
     instance.save()
 }
