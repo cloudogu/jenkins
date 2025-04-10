@@ -93,9 +93,12 @@ def getDoguConfiguredExcludes() {
     return new ArrayList<String>()
 }
 
-// TODO Discuss. Disabling proxy will not revert proxy changes a user manually changed the proxy via dogu ui. Cached change will be used.
+def proxyConfiguration
 if (enableProxyInJenkins) {
-    def proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHosts)
-    instance.proxy = proxyConfiguration
-    instance.save()
+    proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHosts)
+} else {
+    proxyConfiguration = new hudson.ProxyConfiguration("", "", "", "", "")
 }
+
+instance.proxy = proxyConfiguration
+instance.save()
