@@ -8,6 +8,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - use logging/additional_loggers as config key for jenkins logger
 
+## [v2.492.3-1] - 2025-04-10
+### Changed
+- Update Jenkins to v2.492.3
+### [Security](https://www.jenkins.io/security/advisory/2025-04-02)
+- Fix [CVE-2024-3622](https://nvd.nist.gov/vuln/detail/CVE-2024-3622) 
+- Fix [CVE-2024-3623](https://nvd.nist.gov/vuln/detail/CVE-2024-3623) 
+- Fix [CVE-2024-3624](https://nvd.nist.gov/vuln/detail/CVE-2024-3624)
+- Fix [CVE-2024-3625](https://nvd.nist.gov/vuln/detail/CVE-2024-3625)
+- Fix [CVE-2024-3626](https://nvd.nist.gov/vuln/detail/CVE-2024-3626)
+- Fix [CVE-2024-3627](https://nvd.nist.gov/vuln/detail/CVE-2024-3627)
+
+## [v2.492.2-1] - 2025-04-09
+### Changed
+- Update Jenkins to 2.492.2
+- Update ces-build-lib to 4.2.0
+- Update dogu-build-lib to 3.1.0
+- Update makefiles to 9.9.0
+
 ## [v2.492.1-0] - 2025-03-26
 ### Changed
 - Upgrade Jenkins to 2.492.1
