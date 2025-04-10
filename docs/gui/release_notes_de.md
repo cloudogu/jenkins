@@ -6,6 +6,11 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.492.3-2] - 2025-04-10
+### Changed
+* Zusätzliche Logger werden nun gesammelt in einem Konfigurationseintrag verwaltet
+  * logging/additional_loggers: { "logger-path": "level"}
+
 ## [v2.492.3-1] - 2025-04-10
 ### Changed
 * Das Dogu bietet nun die Jenkins-Version 2.492.3 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.492.3/).
