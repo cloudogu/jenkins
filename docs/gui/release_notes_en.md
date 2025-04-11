@@ -6,7 +6,12 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
-## [v2.492.3-2] - 2025-04-10
+## [v2.492.3-3] - 2025-04-11
+### Changed
+* Additional loggers are now managed together in a unified configuration-entry
+    * logging/additional_loggers: { "logger-path": "level"}
+
+## [v2.492.3-2] - 2025-04-10 - Discontinued Release
 ### Changed
 * Additional loggers are now managed together in a unified configuration-entry
   * logging/additional_loggers: { "logger-path": "level"}

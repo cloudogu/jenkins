@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [v2.492.3-2] - 2025-04-10
+## [v2.492.3-3] - 2025-04-11
+### Changed
+- use logging/additional_loggers as config key for additional jenkins loggers
+
+## [v2.492.3-2] - 2025-04-10 - DISCONTINUED RELEASE
 ### Changed
 - use logging/additional_loggers as config key for additional jenkins loggers
 
