@@ -270,3 +270,4 @@ modules.xml
 target
 lib/*
 .env
+.bin
