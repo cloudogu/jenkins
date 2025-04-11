@@ -38,10 +38,13 @@ if isLesserVersionThan $FROM_VERSION "2.476.0-0" && isGreaterVersionThan $TO_VER
 fi
 
 # Migrate Logging Keys
-if isLesserVersionThan $FROM_VERSION "2.492.3-2" && isGreaterVersionThan $TO_VERSION "2.492.3-1"; then
+loggingKeys=$(doguctl ls logging) || exit_code=$?
+exit_code=${exit_code:-0}
+
+if [[ ${exit_code} -eq 0 ]] && isLesserVersionThan $FROM_VERSION "2.492.3-3" && isGreaterVersionThan $TO_VERSION "2.492.3-1"; then
   echo "Migrating logging configuration keys to logging/additional_loggers"
   doguctl config --default "{}" logging/additional_loggers > tmp/convert_logger.json
-  for i in $(doguctl ls logging); do
+  for i in $loggingKeys; do
     # ignore root and logger list
     if [[ $i = logging/root ]]; then continue; fi
     if [[ $i = logging/additional_loggers ]]; then continue; fi
@@ -62,7 +65,7 @@ if isLesserVersionThan $FROM_VERSION "2.492.3-2" && isGreaterVersionThan $TO_VER
   # cleanup
   rm tmp/convert_logger.json
 
-  for i in $(doguctl ls logging); do
+  for i in $loggingKeys; do
     # ignore root and logger list
     if [[ $i = logging/root ]]; then continue; fi
     if [[ $i = logging/additional_loggers ]]; then continue; fi
