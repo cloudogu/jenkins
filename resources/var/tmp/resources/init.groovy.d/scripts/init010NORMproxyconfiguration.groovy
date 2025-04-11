@@ -70,16 +70,13 @@ def setProxyExcludes() {
 
     if (!excludesExistsInGlobalConfig) {
         println("proxy exclude configuration not existent in global config.")
-        noProxyHosts = excludes.unique().join(" ")
+        noProxyHosts = excludes.unique().join('\n')
         return
     }
 
     def actualGlobalConfigExcludes = new ArrayList<String>(Arrays.asList(doguctl.getGlobalConfig("proxy/no_proxy_hosts").split(",")))
     excludes.addAll(actualGlobalConfigExcludes)
-    noProxyHosts = excludes.unique().join(" ")
-
-    println("set no proxy hosts")
-    println(noProxyHosts)
+    noProxyHosts = excludes.unique().join('\n')
 }
 
 // getDoguConfiguredExcludes returns the current configured no proxy hosts as list from the dogu or an empty list if no proxy is configured.
@@ -95,8 +92,14 @@ def getDoguConfiguredExcludes() {
 
 def proxyConfiguration
 if (enableProxyInJenkins) {
+    println("Set Proxy Configuration: -->")
+    println("proxyName     <" + proxyName + ">")
+    println("proxyPort     <" + proxyPort + ">")
+    println("proxyUser     <" + proxyUser + ">")
+    println("noProxyHost   <" + noProxyHosts + ">")
     proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHosts)
 } else {
+    println("Delete Proxy Configuration if one was set")
     proxyConfiguration = new hudson.ProxyConfiguration("", "", "", "", "")
 }
 
