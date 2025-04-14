@@ -90,18 +90,17 @@ def getDoguConfiguredExcludes() {
     return new ArrayList<String>()
 }
 
-def proxyConfiguration
 if (enableProxyInJenkins) {
     println("Set Proxy Configuration: -->")
     println("proxyName     <" + proxyName + ">")
     println("proxyPort     <" + proxyPort + ">")
     println("proxyUser     <" + proxyUser + ">")
-    println("noProxyHost   <" + noProxyHosts + ">")
-    proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHosts)
+    noProxyHosts?.split('\n')?.each {println("noProxyHost   <" + it + ">")}
+
+    instance.proxy = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHosts)
 } else {
     println("Delete Proxy Configuration if one was set")
-    proxyConfiguration = new hudson.ProxyConfiguration("", "", "", "", "")
+    instance.proxy = null
 }
 
-instance.proxy = proxyConfiguration
 instance.save()
