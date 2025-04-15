@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.492.3-4] - 2025-04-15
+### Added
+* Das Dogu kann Proxyausnahmen, konfigurierbar mit der globalen Konfiguration `/proxy/no_proxy_hosts`, verarbeiten.
+
 ## [v2.492.3-3] - 2025-04-11
 ### Changed
 * Zusätzliche Logger werden nun gesammelt in einem Konfigurationseintrag verwaltet

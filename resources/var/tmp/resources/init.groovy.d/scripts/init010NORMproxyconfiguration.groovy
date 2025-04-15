@@ -13,10 +13,10 @@ def getDoguctlWrapper() {
 
 doguctl = getDoguctlWrapper()
 
-def instance = Jenkins.getInstance()
+@Field def instance = Jenkins.getInstance()
 boolean isProxyEnabled = false
 @Field boolean enableProxyInJenkins = false
-@Field String proxyName, noProxyHost, proxyUser, proxyPassword
+@Field String proxyName, noProxyHosts, proxyUser, proxyPassword
 @Field int proxyPort
 
 try {
@@ -61,11 +61,46 @@ def setProxyAuthenticationSettings() {
 }
 
 def setProxyExcludes() {
-    noProxyHost = doguctl.getGlobalConfig("fqdn")
+    def excludes = getDoguConfiguredExcludes()
+
+    // FQDN should always be excluded
+    excludes.add(doguctl.getGlobalConfig("fqdn"))
+
+    boolean excludesExistsInGlobalConfig = doguctl.keyExists("global", "proxy/no_proxy_hosts")
+
+    if (!excludesExistsInGlobalConfig) {
+        println("proxy exclude configuration not existent in global config.")
+        noProxyHosts = excludes.unique().join('\n')
+        return
+    }
+
+    def actualGlobalConfigExcludes = new ArrayList<String>(Arrays.asList(doguctl.getGlobalConfig("proxy/no_proxy_hosts").split(",")))
+    excludes.addAll(actualGlobalConfigExcludes)
+    noProxyHosts = excludes.unique().join('\n')
+}
+
+// getDoguConfiguredExcludes returns the current configured no proxy hosts as list from the dogu or an empty list if no proxy is configured.
+def getDoguConfiguredExcludes() {
+    isProxyInstanceSet = instance.proxy
+
+    if (isProxyInstanceSet) {
+        return new ArrayList<String>(Arrays.asList(instance.proxy.noProxyHost.replaceAll(",|;", " ").split("\\n|\\s+")))
+    }
+
+    return new ArrayList<String>()
 }
 
 if (enableProxyInJenkins) {
-    def proxyConfiguration = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHost)
-    instance.proxy = proxyConfiguration
-    instance.save()
+    println("Set Proxy Configuration: -->")
+    println("proxyName     <" + proxyName + ">")
+    println("proxyPort     <" + proxyPort + ">")
+    println("proxyUser     <" + proxyUser + ">")
+    noProxyHosts?.split('\n')?.each {println("noProxyHost   <" + it + ">")}
+
+    instance.proxy = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHosts)
+} else {
+    println("Disable Proxy Configuration")
+    instance.proxy = null
 }
+
+instance.save()

@@ -6,6 +6,10 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.492.3-4] - 2025-04-15
+### Added
+* The dogu can handle proxy exclusions, configurable via global config `proxy/no_proxy_hosts`.
+
 ## [v2.492.3-3] - 2025-04-11
 ### Changed
 * Additional loggers are now managed together in a unified configuration-entry
