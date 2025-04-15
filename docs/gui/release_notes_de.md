@@ -6,7 +6,7 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 ### Added
-* Das Dogu kann Proxyausnahmen, konfigurierbar unter `proxy/no_proxy_hosts`, verarbeiten.
+* Das Dogu kann Proxyausnahmen, konfigurierbar mit der globalen Konfiguration `/proxy/no_proxy_hosts`, verarbeiten.
 
 ## [v2.492.3-1] - 2025-04-10
 ### Changed
