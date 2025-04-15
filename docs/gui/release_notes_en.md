@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.492.3-4] - 2025-04-15
 ### Added
 * The dogu can handle proxy exclusions, configurable via global config `proxy/no_proxy_hosts`.
 
