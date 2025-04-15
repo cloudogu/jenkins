@@ -99,7 +99,7 @@ if (enableProxyInJenkins) {
 
     instance.proxy = new hudson.ProxyConfiguration(proxyName, proxyPort, proxyUser, proxyPassword, noProxyHosts)
 } else {
-    println("Delete Proxy Configuration if one was set")
+    println("Disable Proxy Configuration")
     instance.proxy = null
 }
 
