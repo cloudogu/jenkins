@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- The init script `init010NORMproxyconfiguration.groovy` is able to read proxy exclusions.
+To use this feature set a comma separated list e.g. `*.mydomain.com,example.com` in the global config under `proxy/no_proxy_hosts`.
+Manually added excludes via the jenkins user interface will be merged.
 
 ## [v2.492.3-3] - 2025-04-11
 ### Changed
