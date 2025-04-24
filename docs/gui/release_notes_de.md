@@ -5,6 +5,8 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.492.3-5] - 2025-04-24
 ### Changed
 - Die Verwendung von Speicher und CPU wurden für die Kubernetes-Multinode-Umgebung optimiert.
 
