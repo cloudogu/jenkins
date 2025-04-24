@@ -85,14 +85,6 @@
       "Optional": true
     },
     {
-      "Name": "container_config/memory_limit",
-      "Description": "Limits the container's memory usage. Use a positive integer value followed by one of these units [b,k,m,g] (byte, kibibyte, mebibyte, gibibyte).",
-      "Optional": true,
-      "Validation": {
-        "Type": "BINARY_MEASUREMENT"
-      }
-    },
-    {
       "Name": "container_config/swap_limit",
       "Description": "Limits the container's swap memory usage. Use zero or a positive integer value followed by one of these units [b,k,m,g] (byte, kibibyte, mebibyte, gibibyte). 0 will disable swapping.",
       "Optional": true,
@@ -124,7 +116,8 @@
       "Optional": true,
       "Validation": {
         "Type": "BINARY_MEASUREMENT"
-      }
+      },
+      "Default": "879m"
     },
     {
       "Name": "container_config/memory_request",
@@ -133,7 +126,7 @@
       "Validation": {
         "Type": "BINARY_MEASUREMENT"
       },
-      "Default": "2g"
+      "Default": "879m"
     },
     {
       "Name": "container_config/swap_limit",
@@ -152,7 +145,7 @@
       "Name": "container_config/cpu_core_request",
       "Description": "Requests the container's minimal CPU core requirement. Use a positive floating value describing a fraction of 1 CPU core. When you define a value of '0.5', you are requesting half as much CPU time compared to if you asked for '1.0' CPU.",
       "Optional": true,
-      "Default": "1.0"
+      "Default": "0.2"
     },
     {
       "Name": "container_config/storage_limit",
