@@ -1,6 +1,6 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.492.3-4",
+  "Version": "2.492.3-5",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
@@ -117,7 +117,7 @@
       "Validation": {
         "Type": "BINARY_MEASUREMENT"
       },
-      "Default": "879m"
+      "Default": "1500m"
     },
     {
       "Name": "container_config/memory_request",
@@ -126,7 +126,7 @@
       "Validation": {
         "Type": "BINARY_MEASUREMENT"
       },
-      "Default": "879m"
+      "Default": "1500m"
     },
     {
       "Name": "container_config/swap_limit",
