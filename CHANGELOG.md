@@ -6,9 +6,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.492.3-5] - 2025-04-24
+### Changed
+- [#214] Set sensible resource requests and limits
+
+## [v2.492.3-4] - 2025-04-15
+### Added
+- The init script `init010NORMproxyconfiguration.groovy` is able to read proxy exclusions.
+To use this feature set a comma separated list e.g. `*.mydomain.com,example.com` in the global config under `proxy/no_proxy_hosts`.
+Manually added excludes via the jenkins user interface will be merged.
+
+## [v2.492.3-3] - 2025-04-11
+### Changed
+- use logging/additional_loggers as config key for additional jenkins loggers
+
+## [v2.492.3-2] - 2025-04-10 - DISCONTINUED RELEASE
+### Changed
+- use logging/additional_loggers as config key for additional jenkins loggers
+
 ## [v2.492.3-1] - 2025-04-10
 ### Changed
-- Update Jenkins to v2.503
+- Update Jenkins to v2.492.3
 ### [Security](https://www.jenkins.io/security/advisory/2025-04-02)
 - Fix [CVE-2024-3622](https://nvd.nist.gov/vuln/detail/CVE-2024-3622) 
 - Fix [CVE-2024-3623](https://nvd.nist.gov/vuln/detail/CVE-2024-3623) 

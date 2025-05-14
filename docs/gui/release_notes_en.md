@@ -5,6 +5,26 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.492.3-5] - 2025-04-24
+### Changed
+- Usage of memory and CPU was optimized for the Kubernetes Mutlinode environment.
+
+## [v2.492.3-4] - 2025-04-15
+### Added
+* The dogu can handle proxy exclusions, configurable via global config `proxy/no_proxy_hosts`.
+
+## [v2.492.3-3] - 2025-04-11
+### Changed
+* Additional loggers are now managed together in a unified configuration-entry
+    * logging/additional_loggers: { "logger-path": "level"}
+
+## [v2.492.3-2] - 2025-04-10 - Discontinued Release
+### Changed
+* Additional loggers are now managed together in a unified configuration-entry
+  * logging/additional_loggers: { "logger-path": "level"}
+
+## [v2.492.3-1] - 2025-04-10
 ### Changed
 * The Dogu now provides the Jenkins version 2.492.3. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog-stable/2.492.3/).
 ### [Security](https://www.jenkins.io/security/advisory/2025-04-02)

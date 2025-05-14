@@ -37,4 +37,43 @@ if isLesserVersionThan $FROM_VERSION "2.476.0-0" && isGreaterVersionThan $TO_VER
   cp "${CAS_PLUGIN_FALLBACK}" "${JENKINS_PLUGIN_DIR}/cas-plugin.jpi"
 fi
 
+# Migrate Logging Keys
+loggingKeys=$(doguctl ls logging) || exit_code=$?
+exit_code=${exit_code:-0}
+
+if [[ ${exit_code} -eq 0 ]] && isLesserVersionThan $FROM_VERSION "2.492.3-3" && isGreaterVersionThan $TO_VERSION "2.492.3-1"; then
+  echo "Migrating logging configuration keys to logging/additional_loggers"
+  doguctl config --default "{}" logging/additional_loggers > tmp/convert_logger.json
+  for i in $loggingKeys; do
+    # ignore root and logger list
+    if [[ $i = logging/root ]]; then continue; fi
+    if [[ $i = logging/additional_loggers ]]; then continue; fi
+
+    # strip of logging prefix
+    name=${i//"logging/"/}
+
+    # build new entry for old logger
+    newEntry="{\"$name\":\"$(doguctl config $i)\"}"
+
+    # add new entry in temporary file
+    jq -c ". + $newEntry" tmp/convert_logger.json > tmp/convert_logger.tmp && mv -f tmp/convert_logger.tmp tmp/convert_logger.json
+  done
+
+  # import merged json to dogu config
+  doguctl config logging/additional_loggers < tmp/convert_logger.json
+
+  # cleanup
+  rm tmp/convert_logger.json
+
+  for i in $loggingKeys; do
+    # ignore root and logger list
+    if [[ $i = logging/root ]]; then continue; fi
+    if [[ $i = logging/additional_loggers ]]; then continue; fi
+
+    # delete old entry
+    doguctl config --rm $i
+
+    done
+fi
+
 echo "Jenkins post-upgrade done"
