@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.504.1-1] - 2025-05-19
+### Changed 
+* Das Dogu bietet nun die Jenkins-Version 2.504.1 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog/2.504.1/)
+
 ## [v2.492.3-5] - 2025-04-24
 ### Changed
 - Die Verwendung von Speicher und CPU wurden für die Kubernetes-Multinode-Umgebung optimiert.

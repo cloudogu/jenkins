@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.504.1-1] - 2025-05-19
+### Changed 
+- Update Jenkins to 2.504.1
+
 ## [v2.492.3-5] - 2025-04-24
 ### Changed
 - [#214] Set sensible resource requests and limits
