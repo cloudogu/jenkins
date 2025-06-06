@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.504.2-1] - 2025-06-06
+### Changed 
+- [#217] Update Jenkins to 2.504.2
+- [#217] Update Makefiles to 10.1.1
+- [#217] Integrated Shared Pipeline (Jenkinsfile)
+
 ## [v2.504.1-1] - 2025-05-19
 ### Changed 
 - Update Jenkins to 2.504.1
