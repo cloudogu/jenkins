@@ -5,20 +5,19 @@
   'dogu-build-lib' // versioning handled by Global Trusted Pipeline Libraries in Jenkins
 ]) _
 
-def postIntegrationStage = { ctx ->
+def postIntegrationStage = { ecoSystem ->
     stage('Test: Change Global Admin Group') {
-        ctx.ecoSystem.changeGlobalAdminGroup("newAdminGroup")
-        ctx.ecoSystem.restartDogu("jenkins")
-        ctx.ecoSystem.waitForDogu("jenkins")
+        ecoSystem.changeGlobalAdminGroup("newAdminGroup")
+        ecoSystem.restartDogu("jenkins")
+        ecoSystem.waitForDogu("jenkins")
 
-        ctx.ecoSystem.runCypressIntegrationTests([
-            cypressImage     : ctx.cypressImage,
-            enableVideo      : ctx.params.EnableVideoRecording,
-            enableScreenshots: ctx.params.EnableScreenshotRecording
+        ecoSystem.runCypressIntegrationTests([
+            cypressImage     : "cypress/included:13.16.1",
+            enableVideo      : false,
+            enableScreenshots: false
         ])
     }
 }
-
 
 // Now call the sharedBuildPipeline function with your custom configuration.
 sharedBuildPipeline([
