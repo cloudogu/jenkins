@@ -7,18 +7,8 @@
 // Create instance of DoguPipe with configuration parameters
 def pipe = new com.pipebuildlib.DoguPipe(this, [
     doguName           : "jenkins",
-    doguDirectory      : "/dogu",
-    namespace          : "official",
-
-    // Credentials and Git info
-    gitUser            : "cesmarvin",
-    committerEmail     : "cesmarvin@cloudogu.com",
-    gcloudCredentials  : "gcloud-ces-operations-internal-packer",
-    sshCredentials     : "jenkins-gcloud-ces-operations-internal",
-    backendUser        : "cesmarvin-setup",
 
     // Optional behavior settings
-    updateSubmodules   : false,
     shellScripts       : "resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh",
     dependencies       : ["cas", "usermgt"],
     checkMarkdown      : true,
