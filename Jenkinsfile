@@ -1,48 +1,52 @@
-#!groovy
 @Library([
-  'github.com/cloudogu/build-lib-wrapper@develop',
-  'ces-build-lib', // versioning handled by Global Trusted Pipeline Libraries in Jenkins
-  'dogu-build-lib' // versioning handled by Global Trusted Pipeline Libraries in Jenkins
+  'github.com/cloudogu/pipe-build-lib@develop',
+  'ces-build-lib',
+  'dogu-build-lib'
 ]) _
 
-def postIntegrationStage = { ecoSystem ->
-    stage('Test: Change Global Admin Group') {
-        ecoSystem.changeGlobalAdminGroup("newAdminGroup")
-        ecoSystem.restartDogu("jenkins")
-        ecoSystem.waitForDogu("jenkins")
+// Create instance of DoguPipe with configuration parameters
+def pipe = new com.pipebuildlib.DoguPipe(this, [
+    doguName           : "jenkins",
+    doguDirectory      : "/dogu",
+    namespace          : "official",
 
-        ecoSystem.runCypressIntegrationTests([
+    // Credentials and Git info
+    gitUser            : "cesmarvin",
+    committerEmail     : "cesmarvin@cloudogu.com",
+    gcloudCredentials  : "gcloud-ces-operations-internal-packer",
+    sshCredentials     : "jenkins-gcloud-ces-operations-internal",
+    backendUser        : "cesmarvin-setup",
+
+    // Optional behavior settings
+    updateSubmodules   : false,
+    shellScripts       : "resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh",
+    dependencies       : ["cas", "usermgt"],
+    checkMarkdown      : true,
+    runIntegrationTests: true,
+    cypressImage       : "cypress/included:13.16.1"
+])
+
+// Set default or custom build parameters (can also pass a list to override defaults)
+pipe.setBuildProperties()
+
+// Insert a custom post-integration stage directly after the "Integration Tests" stage
+pipe.insertStageAfter("Integration Tests", "Post Integration Tests", {
+    def eco = pipe.ecoSystem
+    stage("Test: Change Global Admin Group") {
+        // Change the global admin group and restart jenkins
+        eco.changeGlobalAdminGroup("newAdminGroup")
+        eco.restartDogu("jenkins")
+        eco.waitForDogu("jenkins")
+
+        // Run Cypress tests again without video/screenshot recording
+        eco.runCypressIntegrationTests([
             cypressImage     : "cypress/included:13.16.1",
             enableVideo      : false,
             enableScreenshots: false
         ])
     }
-}
+})
 
-// Now call the sharedBuildPipeline function with your custom configuration.
-sharedBuildPipeline([
-    // Required parameter
-    doguName: "jenkins",
-    
-    // Optional parameters – override defaults here
-    preBuildAgent       : 'sos',
-    buildAgent          : 'sos',
-    doguDirectory       : "/dogu",
-    namespace           : "official",
-    
-    // Credentials and git information
-    gitUser             : "cesmarvin",
-    committerEmail      : "cesmarvin@cloudogu.com",
-    gcloudCredentials   : "gcloud-ces-operations-internal-packer",
-    sshCredentials      : "jenkins-gcloud-ces-operations-internal",
-    backendUser         : "cesmarvin-setup",
-    
-    // Additional options
-    updateSubmodules    : false,
-    shellScripts        : "resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh",
-    dependencies        : ["cas", "usermgt"],
-    checkMarkdown       : true,
-    runIntegrationTests : true,
-    cypressImage        : "cypress/included:13.16.1",
-    postIntegrationStage: postIntegrationStage
-])
+
+// Run the pipeline – this will execute all previously added stages
+pipe.run()
