@@ -18,7 +18,7 @@ def pipe = new com.pipebuildlib.DoguPipe(this, [
 
 // Set default or custom build parameters (can also pass a list to override defaults)
 pipe.setBuildProperties()
-pipe.setupStages()
+pipe.addDefaultStages()
 
 // Insert a custom post-integration stage directly after the "Integration Tests" stage
 pipe.insertStageAfter("Integration Tests", "Post Integration Tests", {
