@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed 
-- [#219] Update Jenkins to 2.504.2
+- [#219] Update Jenkins to 2.504.3
 - [#219] pip-build-lib (Jenkinsfile)
 
 ## [v2.504.2-1] - 2025-06-06
