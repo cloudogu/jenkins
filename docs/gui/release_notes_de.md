@@ -5,6 +5,8 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed 
+* Das Dogu bietet nun die Jenkins-Version 2.504.3 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog/2.504.3/)
 
 ## [v2.504.2-1] - 2025-06-06
 ### Changed 

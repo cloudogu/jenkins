@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed 
+- [#219] Update Jenkins to 2.504.3
+- [#219] pipe-build-lib (Jenkinsfile)
 
 ## [v2.504.2-1] - 2025-06-06
 ### Changed 
