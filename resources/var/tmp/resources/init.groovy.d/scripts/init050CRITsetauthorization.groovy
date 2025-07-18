@@ -119,12 +119,11 @@ if (instance.isUseSecurity()) {
             // add permissions for "authenticated" users
             authenticated = buildNewAccessList('authenticated', getJenkinsAuthenticatedUserPermissions())
             authenticated.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
-        } else if(authStrategy) {
-            updateOldUserGroupEntries(adminGroup, authStrategy)
-            updateOldUserGroupEntries('authenticated', authStrategy)
         }
         // if the user changes the authorization-strategy the admin group will not be setup automatically
         if (authStrategy instanceof GlobalMatrixAuthorizationStrategy) {
+            updateOldUserGroupEntries(adminGroup, authStrategy)
+            updateOldUserGroupEntries('authenticated', authStrategy)
             if (adminGroupLast == '') {
                 println 'Setting initial auth strategy'
                 // Adding admin group with admin permissions
