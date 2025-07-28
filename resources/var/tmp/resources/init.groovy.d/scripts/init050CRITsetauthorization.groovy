@@ -113,13 +113,18 @@ if (adminGroup == '') {
 if (instance.isUseSecurity()) {
     if (instance.pluginManager.activePlugins.find { it.shortName == 'matrix-auth' } != null) {
         AuthorizationStrategy authStrategy = instance.getAuthorizationStrategy()
-        if (!authStrategy || isConfigured == '') {
+        if (!authStrategy || isConfigured == '' || !(authStrategy instanceof GlobalMatrixAuthorizationStrategy)) {
             println('Initializing new matrix authorization strategy')
+            if (!(authStrategy instanceof GlobalMatrixAuthorizationStrategy)) {
+                // trigger reset of admin group
+                adminGroupLast = ''
+            }
             authStrategy = new ProjectMatrixAuthorizationStrategy()
             // add permissions for "authenticated" users
             authenticated = buildNewAccessList('authenticated', getJenkinsAuthenticatedUserPermissions())
             authenticated.each { p, u -> authStrategy.add(p, PermissionEntry.group(u)) }
         }
+
         // if the user changes the authorization-strategy the admin group will not be setup automatically
         if (authStrategy instanceof GlobalMatrixAuthorizationStrategy) {
             updateOldUserGroupEntries(adminGroup, authStrategy)
