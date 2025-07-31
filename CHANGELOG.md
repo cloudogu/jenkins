@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.504.3-2] - 2025-07-31
+### Changed
+- [#221] Always set project matrix strategy with default admin group if the configured strategy is no project matrix strategy
+- [#221] Update OpenJDK11 migration fallback to 11.0.28_p6-r0
+
 ## [v2.504.3-1] - 2025-07-01
 ### Changed 
 - [#219] Update Jenkins to 2.504.3

@@ -6,6 +6,12 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.504.3-2] - 2025-07-31
+### Changed
+* Project-based matrix access control is always applied when the Dogu is restarted.
+  * If a different access control than the project matrix is defined in the Jenkins configuration, it will be restored upon a Dogu restart.
+  * The admin group defined in the system is granted administrator rights in Jenkins.
+
 ## [v2.504.3-1] - 2025-07-01
 ### Changed
 * The Dogu now provides the Jenkins version 2.504.3. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog/2.504.3).
