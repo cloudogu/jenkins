@@ -5,10 +5,12 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.504.3-2] - 2025-07-31
 ### Changed
 * Projektbasierte Matrix-Zugriffssteuerung wird bei einem Neustart des Dogus immer gesetzt
   * Ist in der Jenkinsverwaltung eine andere Zugriffssteuerung als die Projekt-Matrix definiert, so wird diese bei einem Dogu-Neustart wieder hergestellt.
-  * Die im System definierte Admin-Gruppe wird im Jenkins mit Adminstrator-Rechten versehen 
+  * Die im System definierte Admin-Gruppe wird im Jenkins mit Administrator-Rechten versehen 
 
 ## [v2.504.3-1] - 2025-07-01
 ### Changed 

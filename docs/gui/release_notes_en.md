@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.504.3-2] - 2025-07-31
 ### Changed
 * Project-based matrix access control is always applied when the Dogu is restarted.
   * If a different access control than the project matrix is defined in the Jenkins configuration, it will be restored upon a Dogu restart.
