@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.516.1-1] - 2025-08-04
+### Changed 
+* Das Dogu bietet nun die Jenkins-Version 2.516.1 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog/2.516.1/)
+
 ## [v2.504.3-2] - 2025-07-31
 ### Changed
 * Projektbasierte Matrix-Zugriffssteuerung wird bei einem Neustart des Dogus immer gesetzt

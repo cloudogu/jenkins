@@ -1,5 +1,13 @@
 const jenkinsLogout = () => {
-    cy.get("a[href='/jenkins/logout']").click();
+  cy.get('a#root-action-UserAction')
+    .should('be.visible')
+    .trigger('mouseenter');
+
+  cy.get('div[id^="tippy-"]').invoke('attr', 'style', 'visibility: visible; opacity: 1; display: block;');
+
+  cy.contains('Sign out').click({ force: true });
+
+  cy.url().should('include', '/cas/logout');
 };
 
 const navigateToToolConfigAdminPage = () => {
@@ -15,9 +23,9 @@ const createJenkinsApiKey = () => {
     cy.fixture("testuser_data").then((user) => {
         cy.visit("/jenkins/user/" + user.username + "/security")
     })
-    cy.get("button").contains("Add new Token").click({force: true});
+    cy.get("button").contains("Add new token").click({force: true});
     cy.get("button").contains("Generate").click({force: true});
-    return cy.get("span[class='new-token-value visible']").invoke("text");
+    return cy.get("span[class='api-token-new-value']").invoke("text");
 };
 
 const getUserAttributesGui = (testUser) => {
