@@ -1,5 +1,11 @@
 const jenkinsLogout = () => {
-    cy.get("a[href='/jenkins/logout']").click();
+  cy.get('a#root-action-UserAction')
+    .should('be.visible')
+    .click();
+
+  cy.contains('Sign out')
+    .should('be.visible')
+    .click();
 };
 
 const navigateToToolConfigAdminPage = () => {
