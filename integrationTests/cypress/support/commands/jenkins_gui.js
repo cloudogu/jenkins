@@ -3,8 +3,6 @@ const jenkinsLogout = () => {
     .should('be.visible')
     .trigger('mouseenter');
 
-  cy.get('#root-action-UserAction').trigger('mouseenter');
-
   cy.get('div[id^="tippy-"]').invoke('attr', 'style', 'visibility: visible; opacity: 1; display: block;');
 
   cy.contains('Sign out').click({ force: true });
