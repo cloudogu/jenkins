@@ -1,7 +1,7 @@
 const jenkinsLogout = () => {
   cy.get('a#root-action-UserAction')
     .should('be.visible')
-    .click();
+    .trigger('mouseenter');
 
   cy.contains('Sign out')
     .should('be.visible')
