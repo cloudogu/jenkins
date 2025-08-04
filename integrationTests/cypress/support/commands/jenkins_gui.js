@@ -3,9 +3,13 @@ const jenkinsLogout = () => {
     .should('be.visible')
     .trigger('mouseenter');
 
-  cy.contains('Sign out')
-    .should('be.visible')
-    .click();
+  cy.get('#root-action-UserAction').trigger('mouseenter');
+
+  cy.get('div[id^="tippy-"]').invoke('attr', 'style', 'visibility: visible; opacity: 1; display: block;');
+
+  cy.contains('Sign out').click({ force: true });
+
+  cy.url().should('include', '/cas/logout');
 };
 
 const navigateToToolConfigAdminPage = () => {
