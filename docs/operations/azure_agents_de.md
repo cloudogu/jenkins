@@ -3,7 +3,9 @@
 In diesem Text wird beschrieben, wie Sie Jenkins-Agents für die Ausführung auf virtuellen Maschinen in der Azure-Cloud erstellen und konfigurieren.
 Er umfasst auch die Installation von Docker, um Container in Jenkins-Pipelines auszuführen.
 
-Sie benötigen die Tools [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) und [Packer](https://www.packer.io/) auf Ihrem lokalen Rechner.
+Sie benötigen die Tools [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) und 
+<!-- markdown-link-check-disable-next-line -->
+[Packer](https://developer.hashicorp.com/packer) auf Ihrem lokalen Rechner.
 Außerdem benötigen Sie Zugriff auf Ihren Kubernetes-Cluster über `kubectl`.
 
 
