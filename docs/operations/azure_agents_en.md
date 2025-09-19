@@ -4,7 +4,8 @@ This text describes how to create and configure Jenkins agents to run on Azure C
 It includes the installation of Docker to run containers inside Jenkins pipelines.
 
 You will need the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) tool and
-[Packer](https://www.packer.io/) installed on your local machine.
+<!-- markdown-link-check-disable-next-line -->
+[Packer](https://developer.hashicorp.com/packer) installed on your local machine.
 You also need access to your Kubernetes cluster via `kubectl`.
 
 
