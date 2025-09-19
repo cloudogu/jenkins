@@ -2,7 +2,7 @@
 FROM registry.cloudogu.com/official/java:17.0.13-1
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.516.2-1" \
+      VERSION="2.516.3-1" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -15,9 +15,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SERVICE_8080_TAGS="webapp" \
     SERVICE_8080_NAME="jenkins" \
     # jenkins version
-    JENKINS_VERSION="2.516.2" \
+    JENKINS_VERSION="2.516.3" \
     # SHA as of https://updates.jenkins.io/download/war/ for JENKINS_VERSION
-    SHA256_JENKINS_WAR="ed6b9c0995d78062e055c7a42a055b65187c4d26ea36fb9b49d8f2dd86bc6fc8" \
+    SHA256_JENKINS_WAR="81b3abcc0f24cea48e74effe152f69dc5f0d880edc0c2737c61446b3c5992c00" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
