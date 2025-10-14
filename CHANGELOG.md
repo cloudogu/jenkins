@@ -5,7 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
+### Changed
+- Updated base image to `eclipse-temurin:21-jre-alpine-3.22` 
+  * Java 17 -> Java 21
+  * Alpine 3.20 -> Alpine 3.22
+  
 ## [v2.516.3-1] - 2025-09-19
 ### Changed 
 - [#228] Update Jenkins to 2.516.3

@@ -1,5 +1,10 @@
-# cesi/scm
-FROM registry.cloudogu.com/official/java:17.0.13-1
+# Stage 1: get doguctl from Cloudogu base (Alpine 3.22)
+FROM registry.cloudogu.com/official/java:21.0.5-1 AS doguctl
+
+RUN echo "Just retrieve doguctl from this image!"
+
+# Stage 2: main JRE (Alpine 3.22)
+FROM eclipse-temurin:21-jre-alpine-3.22
 
 LABEL NAME="official/jenkins" \
       VERSION="2.516.3-1" \
@@ -26,6 +31,18 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     # additional java version for legacy builds
     ADDITIONAL_OPENJDK11_VERSION="11.0.28_p6-r0"
 
+# copy doguctl + helper scripts into PATH
+COPY --from=doguctl /usr/bin/doguctl /usr/bin/doguctl
+COPY --from=doguctl /usr/bin/create-ca-certificates.sh /usr/bin/create-ca-certificates.sh
+COPY --from=doguctl /usr/bin/create_truststore.sh /usr/bin/create_truststore.sh
+RUN chmod 0755 /usr/bin/doguctl /usr/bin/create-ca-certificates.sh /usr/bin/create_truststore.sh
+
+# bring in bash (startup.sh uses bashisms) + first resource copy
+RUN apk add --no-cache bash
+COPY resources/ /
+RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
+  && [ -f "$JAVA_HOME/lib/security/cacerts" ] \
+  && ln -sf "$JAVA_HOME/lib/security/cacerts" "$JAVA_HOME/jre/lib/security/cacerts"'
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
@@ -58,15 +75,15 @@ RUN set -o errexit \
  # make sure that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
  && apk add --no-cache libstdc++ gcompat
 
- RUN (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true )
+RUN (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true )
 
- RUN set -o errexit \
-  && set -o nounset \
-  && set -o pipefail \
-   echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
-  # cleanup
- && apk del curl \
- && rm -rf /tmp/* /var/cache/apk/*
+RUN set -o errexit \
+    && set -o nounset \
+    && set -o pipefail \
+    echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
+    # cleanup
+    && apk del curl \
+    && rm -rf /tmp/* /var/cache/apk/*
 
 # Jenkins home directoy is a volume, so configuration and build history
 # can be persisted and survive image upgrades
@@ -74,6 +91,12 @@ VOLUME /var/lib/jenkins
 
 # add jenkins config file template, including changes for cas plugin and mailConfiguration
 COPY ./resources /
+
+# ensure startup.sh has correct line endings & perms AFTER the final COPY
+RUN sed -i 's/\r$//' /startup.sh && chmod +x /startup.sh
+
+# prove doguctl is runnable at build time
+RUN doguctl version >/dev/null || true
 
 # switch to jenkins user
 USER jenkins
