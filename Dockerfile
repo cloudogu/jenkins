@@ -10,13 +10,25 @@ LABEL NAME="official/jenkins" \
       VERSION="2.516.3-1" \
       maintainer="hello@cloudogu.com"
 
+    # jenkins home configuration
 ENV JENKINS_HOME=/var/lib/jenkins \
+    # temporary directory for builds
     WORKSPACE_TMP=/tmp \
+    # mark as webapp for nginx
     SERVICE_TAGS=webapp \
+    # Only mark port 8080 as webapp
     SERVICE_8080_TAGS="webapp" \
     SERVICE_8080_NAME="jenkins" \
+    # jenkins version
     JENKINS_VERSION="2.516.3" \
+    # SHA as of https://updates.jenkins.io/download/war/ for JENKINS_VERSION
     SHA256_JENKINS_WAR="81b3abcc0f24cea48e74effe152f69dc5f0d880edc0c2737c61446b3c5992c00" \
+    # glibc for alpine version
+    GLIBC_VERSION=2.35-r1 \
+    SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
+    SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
+    SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
+    # additional java version for legacy builds
     ADDITIONAL_OPENJDK11_VERSION="11.0.28_p6-r0"
 
 # copy doguctl + helper scripts into PATH
@@ -28,7 +40,6 @@ RUN chmod 0755 /usr/bin/doguctl /usr/bin/create-ca-certificates.sh /usr/bin/crea
 # bring in bash (startup.sh uses bashisms) + first resource copy
 RUN apk add --no-cache bash
 COPY resources/ /
-# after installing bash / copying scripts, before switching USER
 RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
   && [ -f "$JAVA_HOME/lib/security/cacerts" ] \
   && ln -sf "$JAVA_HOME/lib/security/cacerts" "$JAVA_HOME/jre/lib/security/cacerts"'
@@ -64,7 +75,15 @@ RUN set -o errexit \
  # make sure that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
  && apk add --no-cache libstdc++ gcompat
 
- RUN (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true )
+RUN (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true )
+
+RUN set -o errexit \
+    && set -o nounset \
+    && set -o pipefail \
+    echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
+    # cleanup
+    && apk del curl \
+    && rm -rf /tmp/* /var/cache/apk/*
 
 # Jenkins home directoy is a volume, so configuration and build history
 # can be persisted and survive image upgrades
