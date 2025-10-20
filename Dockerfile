@@ -82,7 +82,6 @@ RUN set -o errexit \
     && set -o pipefail \
     echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
     # cleanup
-    && apk del curl \
     && rm -rf /tmp/* /var/cache/apk/*
 
 # Jenkins home directoy is a volume, so configuration and build history
