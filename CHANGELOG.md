@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.528.1-1] - 2025-10-20
+### Changed 
+- [#232] Update Jenkins to 2.528.1
+
 ## [v2.516.3-2] - 2025-10-14
 ### Changed
 - Updated base image to `eclipse-temurin:21-jre-alpine-3.22` 
