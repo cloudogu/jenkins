@@ -17,40 +17,6 @@ echo "                       'V/(/////////////////////////////V'      "
 
 JENKINS_HOME_DIR="/var/lib/jenkins"
 
-
-# --- NEU: Preflight für Mindest-Plugins -------------------------------
-ensure_plugin() { # ensure_plugin <shortName> <version> [<sha256>]
-  local n="$1" v="$2" sha="${3:-}"
-  local dir="${JENKINS_HOME_DIR}/plugins"
-  mkdir -p "$dir"
-
-  # Pins/Locks entfernen, sonst blockieren sie Updates
-  rm -f "${dir}/${n}.hpi.pinned" "${dir}/${n}.jpi.pinned" "${dir}/${n}.lock"
-
-  local tmp="/tmp/${n}-${v}.jpi"
-  echo "Ensuring plugin ${n}@${v} ..."
-  curl -fsSL "https://updates.jenkins.io/download/plugins/${n}/${v}/${n}.hpi" -o "$tmp"
-
-  if [ -n "$sha" ]; then
-    echo "${sha}  ${tmp}" | sha256sum -c - || { echo "SHA256 failed for ${n}"; exit 1; }
-  fi
-
-  # immer als .jpi ablegen (Jenkins akzeptiert .hpi/.jpi)
-  mv -f "$tmp" "${dir}/${n}.jpi"
-  chown jenkins:jenkins "${dir}/${n}.jpi"
-  chmod 0644 "${dir}/${n}.jpi"
-}
-
-ensure_minimum_plugins() {
-  # >>> Diese beiden Versionen sind die Boot-Blocker-Fixes <<<
-  # Tipp: Trage optional die Checksums ein (leer lassen = ohne Check).
-  ensure_plugin "ssh-credentials" "355.v9b_e5b_cde5003"    ""   # <SHA256 optional>
-  ensure_plugin "cloudbees-folder" "6.1026.ve06dfa_cf31c3" ""   # <SHA256 optional>
-
-  # Optional (schadet nicht): Matrix-Auth auf sinnvolles Minimum ziehen
-  # ensure_plugin "matrix-auth" "3.2.8" ""
-}
-# ---------------------------------------------------------------------
 run_main() {
   INIT_SCRIPT_FOLDER="${JENKINS_HOME_DIR}/init.groovy.d"
   # TODO rename resources to jenkins
@@ -68,9 +34,6 @@ run_main() {
   create-ca-certificates.sh "${JENKINS_HOME_DIR}/ca-certificates.crt"
   createCurlCertificates "${JENKINS_HOME_DIR}"
   createSubversionCertificates "${JENKINS_HOME_DIR}"
-
-  ensure_minimum_plugins
-  # copy init scripts
 
   # remove old folder to be sure,
   # that it contains no script which is already removed from custom init script folder
