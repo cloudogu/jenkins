@@ -7,7 +7,7 @@ RUN echo "Just retrieve doguctl from this image!"
 FROM eclipse-temurin:21-jre-alpine-3.22
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.516.3-2" \
+      VERSION="2.528.1-0" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -20,9 +20,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SERVICE_8080_TAGS="webapp" \
     SERVICE_8080_NAME="jenkins" \
     # jenkins version
-    JENKINS_VERSION="2.516.3" \
+    JENKINS_VERSION="2.528.1" \
     # SHA as of https://updates.jenkins.io/download/war/ for JENKINS_VERSION
-    SHA256_JENKINS_WAR="81b3abcc0f24cea48e74effe152f69dc5f0d880edc0c2737c61446b3c5992c00" \
+    SHA256_JENKINS_WAR="d630dca265f75a8d581f127a9234f1679d4b0800a8f370d03ad4a154ceb7295b" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
@@ -82,7 +82,6 @@ RUN set -o errexit \
     && set -o pipefail \
     echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
     # cleanup
-    && apk del curl \
     && rm -rf /tmp/* /var/cache/apk/*
 
 # Jenkins home directoy is a volume, so configuration and build history

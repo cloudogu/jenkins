@@ -35,8 +35,6 @@ run_main() {
   createCurlCertificates "${JENKINS_HOME_DIR}"
   createSubversionCertificates "${JENKINS_HOME_DIR}"
 
-  # copy init scripts
-
   # remove old folder to be sure,
   # that it contains no script which is already removed from custom init script folder
   if [ -d "${INIT_SCRIPT_FOLDER}" ]; then
