@@ -29,7 +29,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java versions for legacy builds
-    ADDITIONAL_OPENJDK11_VERSION="11.0.29_p7-r0"
+    ADDITIONAL_OPENJDK11_VERSION="11.0.29_p7-r0" \
     ADDITIONAL_OPENJDK17_VERSION="17.0.17_p10-r0"
 
 # copy doguctl + helper scripts into PATH
