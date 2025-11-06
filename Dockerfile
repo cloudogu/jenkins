@@ -4,7 +4,7 @@ RUN echo "Just retrieve doguctl from this image!"
 FROM eclipse-temurin:21-jdk-alpine-3.22
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.528.1-2" \
+      VERSION="2.528.1-1" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
