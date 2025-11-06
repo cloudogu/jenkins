@@ -1,10 +1,7 @@
-# Stage 1: get doguctl from Cloudogu base (Alpine 3.22)
 FROM registry.cloudogu.com/official/java:21.0.5-1 AS doguctl
-
 RUN echo "Just retrieve doguctl from this image!"
 
-# Stage 2: main JRE (Alpine 3.22)
-FROM eclipse-temurin:21-jre-alpine-3.22
+FROM eclipse-temurin:21-jdk-alpine-3.22
 
 LABEL NAME="official/jenkins" \
       VERSION="2.528.1-2" \
