@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.528.3-1] - 2025-12-12
+### Changed
+- [#237] Update Jenkins to 2.528.3
+- [#237] Revert Base Image to `17.0.13-1`
+- [#237] Removed optional OpenJDK 17 to
+- [#237] Reverted optional OpenJDK 11 to `11.0.28_p6-r0`
+
 ## [v2.528.1-2] - 2025-11-06
 ### Changed
 - [#235] Add optional OpenJDK 17 version `17.0.17_p10`

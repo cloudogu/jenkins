@@ -6,6 +6,12 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.528.3-1] - 2025-12-12
+### Changed
+* The Dogu now provides the Jenkins version 2.528.3. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog/2.528.3).
+* Removal of the optional OpenJDK 17 version `17.0.17_p10`
+* Updated the optional OpenJDK 11 to version`11.0.28_p6-r0`
+
 ## [v2.528.1-2] - 2025-11-06
 ### Changed
 * Add the optional OpenJDK 17 in version `17.0.17_p10`
