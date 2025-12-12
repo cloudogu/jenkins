@@ -4,7 +4,7 @@ RUN echo "Just retrieve doguctl from this image!"
 FROM registry.cloudogu.com/official/java:17.0.13-1
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.528.3-0" \
+      VERSION="2.528.3-1" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
