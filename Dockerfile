@@ -1,6 +1,7 @@
 FROM registry.cloudogu.com/official/java:21.0.5-1 AS doguctl
 RUN echo "Just retrieve doguctl from this image!"
 
+# old java base version
 FROM registry.cloudogu.com/official/java:17.0.13-1
 
 LABEL NAME="official/jenkins" \
