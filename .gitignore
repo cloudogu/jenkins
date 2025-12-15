@@ -24,7 +24,6 @@ out/
 .settings/
 .classpath
 .project
-bin/
 
 
 ### Intellij ###
