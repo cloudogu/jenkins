@@ -74,6 +74,11 @@ else{
 // configuration
 def plugins = defaultValues.getPlugins()
 
+if (doguctl.isMultinode()) {
+    def mnPlugins = defaultValues.getMnPlugins()
+    plugins = plugins + mnPlugins
+}
+
 def additionalPluginPath = "additional.plugins"
 
 if (doguctl.keyExists("dogu", additionalPluginPath)) {
