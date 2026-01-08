@@ -41,6 +41,10 @@
       "Params": [
         "cas"
       ]
+    },
+    {
+      "Type": "k8s-dogu-operator",
+      "Kind": "k8s"
     }
   ],
   "Volumes": [
