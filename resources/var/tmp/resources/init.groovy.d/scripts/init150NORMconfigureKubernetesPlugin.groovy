@@ -15,12 +15,17 @@ def getDoguctlWrapper() {
 doguctl = getDoguctlWrapper()
 
 if (doguctl.isMultinode()) {
+    def cloudName = "kubernetes"
+
+    def kubernetesCloud = jenkins.clouds.getByName(cloudName)
+
+    if (kubernetesCloud == null) {
+        kubernetesCloud = new KubernetesCloud(
+                cloudName
+        )
+    }
 
     def crt = new File("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt").text
-
-    def kubernetesCloud = new KubernetesCloud(
-            "kubernetes"
-    )
 
     kubernetesCloud.setNamespace("ecosystem")
     kubernetesCloud.setServerUrl("kubernetes.default.svc.cluster.local")
