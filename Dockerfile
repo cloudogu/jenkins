@@ -37,6 +37,7 @@ RUN chmod 0755 /usr/bin/doguctl /usr/bin/create-ca-certificates.sh /usr/bin/crea
 # bring in bash (startup.sh uses bashisms) + first resource copy
 RUN apk add --no-cache bash
 COPY resources/ /
+COPY k8s /k8s
 RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
   && [ -f "$JAVA_HOME/lib/security/cacerts" ] \
   && ln -sf "$JAVA_HOME/lib/security/cacerts" "$JAVA_HOME/jre/lib/security/cacerts"'

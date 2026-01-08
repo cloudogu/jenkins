@@ -20,7 +20,7 @@ if (doguctl.isMultinode()) {
     )
     // TODO configure kubernetes cloud correctly
     kubernetesCloud.setNamespace("jenkins-build")
-    kubernetesCloud.setServerUrl("https://kubernetes.default")
+    kubernetesCloud.setServerUrl("kubernetes.default.svc.cluster.local")
 
     jenkins.clouds.add(kubernetesCloud)
     jenkins.save()
