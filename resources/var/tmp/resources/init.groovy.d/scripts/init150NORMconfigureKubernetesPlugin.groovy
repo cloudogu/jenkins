@@ -18,25 +18,14 @@ def getDoguctlWrapper() {
 doguctl = getDoguctlWrapper()
 
 if (doguctl.isMultinode()) {
-
-    def token = new File("/var/run/secrets/kubernetes.io/serviceaccount")
-
-    def creds = new StringCredentialsImpl(
-            CredentialScope.GLOBAL,
-            "k8s-sa-token",
-            "Kubernetes SA Token",
-            Secret.fromString(token)
-    )
-
-    SystemCredentialsProvider.getInstance().getStore().addCredentials(Domain.global(), creds)
-
     def kubernetesCloud = new KubernetesCloud(
             "kubernetes"
     )
 
-    kubernetesCloud.setNamespace("jenkins-build")
+    kubernetesCloud.setNamespace("ecosystem")
     kubernetesCloud.setServerUrl("kubernetes.default.svc.cluster.local")
-    kubernetesCloud.setCredentialsId("k8s-sa-token")
+    kubernetesCloud.setSkipTlsVerify(true)
+    kubernetesCloud.setPodLabels([new PodLabel("cloudogu.com/pod-kind", "jenkins-build")])
 
     jenkins.clouds.add(kubernetesCloud)
     jenkins.save()

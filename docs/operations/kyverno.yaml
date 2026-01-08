@@ -10,7 +10,9 @@ spec:
           - resources:
               kinds:
                 - /v1/Pod
-              namespaces: [jenkins-build]
+              selector:
+                matchLabels:
+                  cloudogu.com/pod-kind: jenkins-build
       mutate:
         patchStrategicMerge:
           spec:
