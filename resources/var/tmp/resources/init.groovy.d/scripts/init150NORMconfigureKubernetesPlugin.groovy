@@ -15,24 +15,15 @@ def getDoguctlWrapper() {
 doguctl = getDoguctlWrapper()
 
 if (doguctl.isMultinode()) {
-    def cloudName = "kubernetes"
+    def kubernetesCloud = new KubernetesCloud("kubernetes")
 
-    def kubernetesCloud = jenkins.clouds.getByName(cloudName)
-
-    if (kubernetesCloud == null) {
-        kubernetesCloud = new KubernetesCloud(
-                cloudName
-        )
-    }
-
-    def crt = new File("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt").text
-
-    kubernetesCloud.setNamespace("ecosystem")
     kubernetesCloud.setServerUrl("kubernetes.default.svc.cluster.local")
+    def crt = new File("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt").text
     kubernetesCloud.setServerCertificate(crt)
+    kubernetesCloud.setNamespace("ecosystem")
     kubernetesCloud.setPodLabels([new PodLabel("cloudogu.com/pod-kind", "jenkins-build")])
     kubernetesCloud.setJenkinsUrl("http://jenkins.ecosystem.svc.cluster.local:8080/jenkins")
 
-    jenkins.clouds.add(kubernetesCloud)
+    jenkins.clouds.replace(kubernetesCloud)
     jenkins.save()
 }
