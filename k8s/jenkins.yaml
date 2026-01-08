@@ -41,3 +41,45 @@ roleRef:
   kind: Role #this must be Role or ClusterRole
   name: jenkins-build-role # must match the name of the Role
   apiGroup: rbac.authorization.k8s.io
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: build-to-jenkins
+spec:
+  podSelector:
+    matchLabels:
+      dogu.name: jenkins
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ecosystem
+        - podSelector:
+            matchLabels:
+              cloudogu.com/pod-kind: jenkins-build
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: jenkins-to-build
+spec:
+  podSelector:
+    matchLabels:
+      cloudogu.com/pod-kind: jenkins-build
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ecosystem
+        - podSelector:
+            matchLabels:
+              dogu.name: jenkins
