@@ -29,8 +29,9 @@ if (doguctl.isMultinode()) {
 
     kubernetesCloud.setNamespace("ecosystem")
     kubernetesCloud.setServerUrl("kubernetes.default.svc.cluster.local")
-    kubernetesCloud.setPodLabels([new PodLabel("cloudogu.com/pod-kind", "jenkins-build")])
     kubernetesCloud.setServerCertificate(crt)
+    kubernetesCloud.setPodLabels([new PodLabel("cloudogu.com/pod-kind", "jenkins-build")])
+    kubernetesCloud.setJenkinsUrl("http://jenkins.ecosystem.svc.cluster.local:8080/jenkins")
 
     jenkins.clouds.add(kubernetesCloud)
     jenkins.save()
