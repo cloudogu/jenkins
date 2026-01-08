@@ -5,6 +5,18 @@
 Da ressourcenintensive Builds andere Workloads stören oder die Sicherheit beeinträchtigen könnten, möchten Sie Ihre 
 Jenkins-Builds möglicherweise auf bestimmte Knoten ohne andere Workloads beschränken.
 
+Es ist möglich, zu verhindern, dass Workloads auf unserem Knoten ausgeführt werden, indem wir einen Taint setzen:
+```shell
+kubectl taint nodes worker-2 reserved-node=jenkins-build:NoSchedule
+```
+Das muss ausgeführt werden, bevor Workloads dem Knoten zugewiesen werden. Ansonsten muss der Knoten leer gemacht werden
+([siehe drain][drain]).
+
+Ggf. ist es sinnvoll, unseren Knoten zu labeln, sodass wir unseren Pods später einfacher eine Affinity geben können:
+```shell
+kubectl label node worker-2 reserved-node=jenkins-build
+```
+
 Jenkins-Builds sind standardmäßig bereits auf den Namespace `jenkins-build` beschränkt, sodass sie leicht isoliert 
 werden können. Das Mutieren von Pods dieses Namespaces, um sie nur auf einem bestimmten Knoten auszuführen, wird 
 üblicherweise mit einem Admission-Controller erreicht. Wir könnten zwar einen eigenen implementieren, aber es stehen
@@ -19,6 +31,7 @@ bereits mehrere Optionen zur Verfügung:
 3. [Gatekeeper][gatekeeper] ist eine Alternative zu Kyverno. In diesen Beispielen sehen Sie, wie Sie 
    [eine Affinity][gatekeeper-affinity] und [Tolerations][gatekeeper-tolerations] für Ihre Pods in Gatekeeper festlegen.
 
+[drain]: https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
 [podnodeselector]: https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#podnodeselector
 [kyverno]: https://kyverno.io/
 [kyverno-example]: https://github.com/cloudogu/jenkins/blob/develop/docs/operations/kyverno.yaml
