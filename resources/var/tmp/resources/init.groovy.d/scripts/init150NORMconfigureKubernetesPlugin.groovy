@@ -2,9 +2,6 @@ package scripts
 
 import jenkins.model.*
 import org.csanchez.jenkins.plugins.kubernetes.*
-import com.cloudbees.plugins.credentials.*
-import com.cloudbees.plugins.credentials.domains.*
-import com.cloudbees.plugins.credentials.impl.*
 
 def jenkins = Jenkins.instance
 
@@ -18,14 +15,17 @@ def getDoguctlWrapper() {
 doguctl = getDoguctlWrapper()
 
 if (doguctl.isMultinode()) {
+
+    def crt = new File("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt").text
+
     def kubernetesCloud = new KubernetesCloud(
             "kubernetes"
     )
 
     kubernetesCloud.setNamespace("ecosystem")
     kubernetesCloud.setServerUrl("kubernetes.default.svc.cluster.local")
-    kubernetesCloud.setSkipTlsVerify(true)
     kubernetesCloud.setPodLabels([new PodLabel("cloudogu.com/pod-kind", "jenkins-build")])
+    kubernetesCloud.setServerCertificate(crt)
 
     jenkins.clouds.add(kubernetesCloud)
     jenkins.save()
