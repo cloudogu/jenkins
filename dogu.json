@@ -189,6 +189,20 @@
       }
     },
     {
+      "Name": "tcp_inbound_agent_port",
+      "Description": "Whether the TCP port for inbound agents should be set to a static value of 50000, a dynamic port or disabled entirely.",
+      "Optional": true,
+      "Default": "disabled",
+      "Validation": {
+        "Type": "ONE_OF",
+        "Values": [
+          "static",
+          "dynamic",
+          "disabled"
+        ]
+      }
+    },
+    {
       "Name": "additional_loggers",
       "Description": "Additional loggers as key-value pairs in json syntax  e.g. {\"org.lorem.ipsum\": \"INFO\", \"com.sit.dolorem\": \"WARN\"}",
       "Optional": true,
