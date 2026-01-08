@@ -1,5 +1,25 @@
 # Kubernetes-native builds
 
+## Prerequisites
+When a kubernetes environment is detected, the kubernetes plugin is automatically installed and configured.
+However, to use agents, the Jenkins agent port has to be set to a static value of 50000.
+This can easily be done by setting the dogu config key `tcp_inbound_agent_port` to `static`.
+
+## Usage
+
+A small example pipeline may look like this:
+```groovy
+podTemplate {
+    node(POD_LABEL) {
+        stage('Run shell') {
+            sh 'echo hello world'
+        }
+    }
+}
+```
+
+For more usage, see [the official documentation][jenkins-kubernetes].
+
 ## Limit builds to certain nodes
 
 Since resource-heavy builds might interfere with other workloads or compromise security,
@@ -17,8 +37,8 @@ We might also want to label our node to make it easier to give our pods an affin
 kubectl label node worker-2 reserved-node=jenkins-build
 ```
 
-Jenkins builds are already limited to the `jenkins-build`-namespace by default, so it's easy to single them out.
-Mutating any pods of that namespace to only run on a specific node is usually accomplished with an admission-controller.
+Jenkins builds are already labeled with `cloudogu.com/pod-kind: jenkins-build` by default, so it's easy to single them out.
+Mutating these to only run on a specific node is usually accomplished with an admission-controller.
 Now, we could implement our own but there are already multiple options readily available:
 
 1. [PodNodeSelector][podnodeselector] is a Kubernetes built-in admission controller currently in an alpha stage.
@@ -26,13 +46,12 @@ Now, we could implement our own but there are already multiple options readily a
 2. [Kyverno][kyverno] is a policy engine and admission controller that you might have already installed.
    A policy like the one we want can easily be implemented, [see this example][kyverno-example].
 3. [Gatekeeper][gatekeeper] is an alternative to Kyverno.
-   See these examples on how to set [an affinity][gatekeeper-affinity] and [tolerations][gatekeeper-tolerations] for
-   your pods in Gatekeeper.
+   For how to implement the policies in gatekeeper, [see this example][gatekeeper-example].
 
+[jenkins-kubernetes]: https://plugins.jenkins.io/kubernetes/#plugin-content-usage
 [drain]: https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/
 [podnodeselector]: https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#podnodeselector
 [kyverno]: https://kyverno.io/
 [kyverno-example]: https://github.com/cloudogu/jenkins/blob/develop/docs/operations/kyverno.yaml
 [gatekeeper]: https://open-policy-agent.github.io/gatekeeper/website/
-[gatekeeper-affinity]: https://github.com/cloudogu/jenkins/blob/develop/docs/operations/gatekeeper_affinity.yaml
-[gatekeeper-tolerations]: https://github.com/cloudogu/jenkins/blob/develop/docs/operations/gatekeeper_tolerations.yaml
+[gatekeeper-example]: https://github.com/cloudogu/jenkins/blob/develop/docs/operations/gatekeeper.yaml
