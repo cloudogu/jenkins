@@ -23,6 +23,7 @@ if (doguctl.isMultinode()) {
     kubernetesCloud.setNamespace("ecosystem")
     kubernetesCloud.setPodLabels([new PodLabel("cloudogu.com/pod-kind", "jenkins-build")])
     kubernetesCloud.setJenkinsUrl("http://jenkins.ecosystem.svc.cluster.local:8080/jenkins")
+    kubernetesCloud.setWebSocket(true)
 
     jenkins.clouds.replace(kubernetesCloud)
     jenkins.save()

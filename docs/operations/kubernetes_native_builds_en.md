@@ -1,9 +1,6 @@
 # Kubernetes-native builds
 
-## Prerequisites
 When a kubernetes environment is detected, the kubernetes plugin is automatically installed and configured.
-However, to use agents, the Jenkins agent port has to be set to a static value of 50000.
-This can easily be done by setting the dogu config key `tcp_inbound_agent_port` to `static`.
 
 ## Usage
 
