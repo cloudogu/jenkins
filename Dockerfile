@@ -1,7 +1,4 @@
-FROM registry.cloudogu.com/official/java:21.0.5-1 AS doguctl
-RUN echo "Just retrieve doguctl from this image!"
-
-FROM registry.cloudogu.com/official/java:17.0.13-1
+FROM registry.cloudogu.com/official/java:21.0.9-2
 
 LABEL NAME="official/jenkins" \
       VERSION="2.528.3-1" \
@@ -27,12 +24,6 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java versions for legacy builds
     ADDITIONAL_OPENJDK11_VERSION="11.0.28_p6-r0"
-
-# copy doguctl + helper scripts into PATH
-COPY --from=doguctl /usr/bin/doguctl /usr/bin/doguctl
-COPY --from=doguctl /usr/bin/create-ca-certificates.sh /usr/bin/create-ca-certificates.sh
-COPY --from=doguctl /usr/bin/create_truststore.sh /usr/bin/create_truststore.sh
-RUN chmod 0755 /usr/bin/doguctl /usr/bin/create-ca-certificates.sh /usr/bin/create_truststore.sh
 
 # bring in bash (startup.sh uses bashisms) + first resource copy
 RUN apk add --no-cache bash
