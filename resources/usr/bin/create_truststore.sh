@@ -64,7 +64,7 @@ function importAdditionalCertificates() {
 
     importCertificate "${certAlias}" "${certFile}"
 
-    rm "${certFile}"
+    rm -f "${certFile}"
   done
 }
 
