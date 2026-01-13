@@ -6,6 +6,12 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.528.3-2] - 2026-01-13
+### Changed
+* Aktualisieren des Java base-image zu `21.0.9-2`
+* Hinzufügen von OpenJDK 17 Tools mit version `17.0.17_p10-r0`
+* Aktualisieren OpenJDK 11 Tools in version `11.0.29_p7-r0`
+
 ## [v2.528.3-1] - 2025-12-12
 ### Changed
 * Das Dogu bietet nun die Jenkins-Version 2.528.3 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog/2.528.3/)
