@@ -193,6 +193,69 @@
       "Description": "Additional loggers as key-value pairs in json syntax  e.g. {\"org.lorem.ipsum\": \"INFO\", \"com.sit.dolorem\": \"WARN\"}",
       "Optional": true,
       "Default": "{}"
+    },
+    {
+      "Name": "enable_kubernetes_agents",
+      "Description": "Whether to enable kubernetes agent integration. Irrelevant if not on kubernetes.",
+      "Optional": true,
+      "Default": "false",
+      "Validation": {
+        "Type": "ONE_OF",
+        "Values": [
+          "true",
+          "false"
+        ]
+      }
+    },
+    {
+      "Name": "ecosystem_kubernetes_namespace",
+      "Description": "Kubernetes namespace where this Jenkins instance is deployed. Irrelevant if not on kubernetes and not using kubernetes agents.",
+      "Optional": true,
+      "Default": "ecosystem"
+    },
+    {
+      "Name": "agent_kubernetes_namespace",
+      "Description": "Kubernetes namespace where the Jenkins agents are deployed. Irrelevant if not on kubernetes and not using kubernetes agents.",
+      "Optional": true,
+      "Default": "jenkins-ci"
+    },
+    {
+      "Name": "agent_kubernetes_pod_labels",
+      "Description": "Labels to be added to agent pods. Irrelevant if not on kubernetes and not using kubernetes agents.",
+      "Optional": true,
+      "Default": "{\"cloudogu.com/pod-kind\": \"jenkins-ci\"}"
+    },
+    {
+      "Name": "agent_kubernetes_restricted_pss_security_context",
+      "Description": "Whether to add a Security Context to agent pods that is suitable for the use of the 'restricted' Pod Security Standard. Irrelevant if not on kubernetes and not using kubernetes agents.",
+      "Optional": true,
+      "Default": "false",
+      "Validation": {
+        "Type": "ONE_OF",
+        "Values": [
+          "true",
+          "false"
+        ]
+      }
+    },
+    {
+      "Name": "agent_kubernetes_docker_registry",
+      "Description": "Docker registry to use for the agent image if none is specified. Irrelevant if not on kubernetes and not using kubernetes agents.",
+      "Optional": true,
+      "Default": ""
+    },
+    {
+      "Name": "agent_kubernetes_enable_garbage_collection",
+      "Description": "When enabled, Jenkins will periodically check for orphan pods that have not been touched for 300 seconds and delete them. Irrelevant if not on kubernetes and not using kubernetes agents.",
+      "Optional": true,
+      "Default": "false",
+      "Validation": {
+        "Type": "ONE_OF",
+        "Values": [
+          "true",
+          "false"
+        ]
+      }
     }
   ],
   "ExposedCommands": [
