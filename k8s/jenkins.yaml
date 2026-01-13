@@ -2,6 +2,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: jenkins-build-role
+  namespace: jenkins-build
 rules:
   - apiGroups: [""]
     resources: ["pods"]
@@ -33,13 +34,14 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: jenkins-build-binding
+  namespace: jenkins-build
 subjects:
   - kind: ServiceAccount
-    name: jenkins # Name is case sensitive
+    name: jenkins
     namespace: ecosystem
 roleRef:
-  kind: Role #this must be Role or ClusterRole
-  name: jenkins-build-role # must match the name of the Role
+  kind: Role
+  name: jenkins-build-role
   apiGroup: rbac.authorization.k8s.io
 
 ---
@@ -58,7 +60,7 @@ spec:
     - from:
         - namespaceSelector:
             matchLabels:
-              kubernetes.io/metadata.name: ecosystem
+              kubernetes.io/metadata.name: jenkins-build
         - podSelector:
             matchLabels:
               cloudogu.com/pod-kind: jenkins-build

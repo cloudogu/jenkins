@@ -20,7 +20,7 @@ if (doguctl.isMultinode()) {
     kubernetesCloud.setServerUrl("kubernetes.default.svc.cluster.local")
     def crt = new File("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt").text
     kubernetesCloud.setServerCertificate(crt)
-    kubernetesCloud.setNamespace("ecosystem")
+    kubernetesCloud.setNamespace("jenkins-build")
     kubernetesCloud.setPodLabels([new PodLabel("cloudogu.com/pod-kind", "jenkins-build")])
     kubernetesCloud.setJenkinsUrl("http://jenkins.ecosystem.svc.cluster.local:8080/jenkins")
     kubernetesCloud.setWebSocket(true)
