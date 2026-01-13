@@ -81,7 +81,7 @@ function importCertificate() {
 
 function run_main() {
   STORE="${1:-$DIRECTORY/truststore.jks}"
-  create
+  create 2> /dev/null
   echo "-Djavax.net.ssl.trustStore=${STORE} -Djavax.net.ssl.trustStorePassword=${STOREPASS}"
 }
 
