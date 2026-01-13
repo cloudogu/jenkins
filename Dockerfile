@@ -29,6 +29,7 @@ ENV JENKINS_HOME=/var/lib/jenkins \
 # bring in bash (startup.sh uses bashisms) + first resource copy
 RUN apk add --no-cache bash
 COPY resources/ /
+RUN chmod +x /usr/bin/create_truststore.sh
 RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
   && [ -f "$JAVA_HOME/lib/security/cacerts" ] \
   && ln -sf "$JAVA_HOME/lib/security/cacerts" "$JAVA_HOME/jre/lib/security/cacerts"'
