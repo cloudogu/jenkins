@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - [#242] Update Java base-image to `21.0.9-2`
+- [#242] Add OpenJDK 17 tooling with version `17.0.17_p10-r0`
+- [#242] Update OpenJDK 11 tooling to version `11.0.29_p7-r0`
 
 ## [v2.528.3-1] - 2025-12-12
 ### Changed
