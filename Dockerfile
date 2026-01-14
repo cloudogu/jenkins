@@ -26,9 +26,10 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     ADDITIONAL_OPENJDK11_VERSION="11.0.29_p7-r0" \
     ADDITIONAL_OPENJDK17_VERSION="17.0.17_p10-r0"
 
-# bring in bash (startup.sh uses bashisms) + first resource copy
-RUN apk add --no-cache bash
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
+
 COPY resources/ /
+
 RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
   && [ -f "$JAVA_HOME/lib/security/cacerts" ] \
   && ln -sf "$JAVA_HOME/lib/security/cacerts" "$JAVA_HOME/jre/lib/security/cacerts"'
@@ -39,16 +40,26 @@ RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
 RUN set -o errexit \
  && set -o nounset \
  && set -o pipefail \
- && apk update \
- && apk upgrade \
+ && apk upgrade --no-cache \
  && addgroup -S -g 1000 jenkins \
  && adduser -S -h "$JENKINS_HOME" -s /bin/bash -G jenkins -u 1000 jenkins \
  # install coreutils, ttf-dejavu, openssh and scm clients
  # coreutils and ttf-dejavu is required because of java.awt.headless problem:
  # - https://wiki.jenkins.io/display/JENKINS/Jenkins+got+java.awt.headless+problem
- && apk add --no-cache coreutils ttf-dejavu openssh-client git subversion mercurial curl gcompat \
- && apk add --no-cache openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
- && apk add --no-cache openjdk17="$ADDITIONAL_OPENJDK17_VERSION" \
+ # install gcompat and libstdc++ to make sure that jenkins is able to execute
+ # Oracle JDK, which can be installed over the global tool installer
+ && apk add --no-cache \
+    coreutils \
+    ttf-dejavu \
+    openssh-client \
+    git \
+    subversion \
+    mercurial \
+    curl \
+    gcompat \
+    libstdc++ \
+    openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
+    openjdk17="$ADDITIONAL_OPENJDK17_VERSION" \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
  && curl -L https://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \
@@ -61,18 +72,7 @@ RUN set -o errexit \
  # set subversion system ca-certificates
  && mkdir /etc/subversion \
  && printf "[global]\nssl-authority-files=/var/lib/jenkins/ca-certificates.crt\n" > /etc/subversion/server \
- # install glibc for alpine
- # make sure that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
- && apk add --no-cache libstdc++ gcompat
-
-RUN (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true )
-
-RUN set -o errexit \
-    && set -o nounset \
-    && set -o pipefail \
-    echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
-    # cleanup
-    && rm -rf /tmp/* /var/cache/apk/*
+ && rm -rf /tmp/* /var/cache/apk/*
 
 # Jenkins home directoy is a volume, so configuration and build history
 # can be persisted and survive image upgrades
