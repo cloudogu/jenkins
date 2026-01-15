@@ -16,35 +16,35 @@ def getDoguctlWrapper() {
 doguctl = getDoguctlWrapper()
 
 def kubernetesCloud = new KubernetesCloud("kubernetes")
-if (doguctl.isMultinode() && doguctl.getDoguConfig("enable_kubernetes_agents") == "true") {
+if (doguctl.isMultinode() && doguctl.getDoguConfigWithDefaultFromDescriptor("enable_kubernetes_agents") == "true") {
 
     kubernetesCloud.setServerUrl("https://kubernetes.default.svc.cluster.local")
     def crt = new File("/var/run/secrets/kubernetes.io/serviceaccount/ca.crt").text
     kubernetesCloud.setServerCertificate(crt)
 
-    def agentNamespace = doguctl.getDoguConfig("agent_kubernetes_namespace")
+    def agentNamespace = doguctl.getDoguConfigWithDefaultFromDescriptor("agent_kubernetes_namespace")
     kubernetesCloud.setNamespace(agentNamespace)
 
-    def podLabelsJson = doguctl.getDoguConfig("agent_kubernetes_pod_labels")
+    def podLabelsJson = doguctl.getDoguConfigWithDefaultFromDescriptor("agent_kubernetes_pod_labels")
     def jsonSlurper = new JsonSlurper()
     def podLabelsMap = jsonSlurper.parseText(podLabelsJson)
-    def podLabels = podLabelsMap.collectEntries{key, value -> [new PodLabel(key, value)]}
+    def podLabels = podLabelsMap.collect{entry -> new PodLabel(entry.key, entry.value)}
     kubernetesCloud.setPodLabels(podLabels)
 
-    def restrictedSecurityContext = doguctl.getDoguConfig("agent_kubernetes_restricted_pss_security_context")
+    def restrictedSecurityContext = doguctl.getDoguConfigWithDefaultFromDescriptor("agent_kubernetes_restricted_pss_security_context")
     kubernetesCloud.setRestrictedPssSecurityContext(restrictedSecurityContext == "true")
 
     def agentImageRegistry = doguctl.getDoguConfig("agent_kubernetes_docker_registry")
     kubernetesCloud.setJnlpregistry(agentImageRegistry)
 
-    def enableGarbageCollection = doguctl.getDoguConfig("agent_kubernetes_enable_garbage_collection")
+    def enableGarbageCollection = doguctl.getDoguConfigWithDefaultFromDescriptor("agent_kubernetes_enable_garbage_collection")
     if (enableGarbageCollection == "true") {
         def garbageCollection = new GarbageCollection()
         garbageCollection.setTimeout(300)
         kubernetesCloud.setGarbageCollection(garbageCollection)
     }
 
-    def ecosystemNamespace = doguctl.getDoguConfig("ecosystem_kubernetes_namespace")
+    def ecosystemNamespace = doguctl.getDoguConfigWithDefaultFromDescriptor("ecosystem_kubernetes_namespace")
     kubernetesCloud.setJenkinsUrl("http://jenkins.${ecosystemNamespace}.svc.cluster.local:8080/jenkins")
     kubernetesCloud.setWebSocket(true)
 
