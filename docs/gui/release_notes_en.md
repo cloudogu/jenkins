@@ -6,6 +6,10 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.528.3-3] - 2026-01-15
+### Changed
+* Only technical changes were made to Dogu. Details are listed in the changelog.
+
 ## [v2.528.3-2] - 2026-01-13
 ### Changed
 * Update Java base-image to `21.0.9-2`

@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.528.3-3] - 2026-01-15
+### Changed
+* Im Dogu wurden nur technische Änderungen vorgenommen. Details sind im Changelog aufgeführt.
+
 ## [v2.528.3-2] - 2026-01-13
 ### Changed
 * Aktualisieren des Java base-image zu `21.0.9-2`
@@ -29,7 +33,7 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [v2.516.3-2] - 2025-10-14
 ### Changed
-* Im Dogu wurden nur technische Änderungen vorgenommen. Details sind im Changelog aufgeführt.  
+* Im Dogu wurden nur technische Änderungen vorgenommen. Details sind im Changelog aufgeführt.
 
 ## [v2.516.3-1] - 2025-09-19
 ### Changed

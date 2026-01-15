@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.528.3-3] - 2026-01-15
+### Changed
+- [#244] Localization and packet handling improvements
+
 ## [v2.528.3-2] - 2026-01-13
 ### Changed
 - [#242] Update Java base-image to `21.0.9-2`
