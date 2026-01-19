@@ -203,7 +203,7 @@ Default:
 cloudogu.com/pod-kind: jenkins-ci
 ```
 
-List of labels of pods to match with the policy.
+Map of labels of pods to match with the policy.
 
 ##### `policies.matchPods.namespaceSelector.enabled`
 

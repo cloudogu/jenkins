@@ -198,7 +198,7 @@ Standard:
 cloudogu.com/pod-kind: jenkins-ci
 ```
 
-Liste der Labels von Pods, die mit der Policy übereinstimmen sollen.
+Labels, mit denen die Pods abgeglichen werden sollen.
 
 ##### `policies.matchPods.namespaceSelector.enabled`
 
