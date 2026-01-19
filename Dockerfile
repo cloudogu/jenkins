@@ -1,10 +1,7 @@
-FROM registry.cloudogu.com/official/java:21.0.5-1 AS doguctl
-RUN echo "Just retrieve doguctl from this image!"
-
-FROM registry.cloudogu.com/official/java:17.0.13-1
+FROM registry.cloudogu.com/official/java:21.0.9-2
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.528.3-1" \
+      VERSION="2.528.3-3" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -26,16 +23,11 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java versions for legacy builds
-    ADDITIONAL_OPENJDK11_VERSION="11.0.28_p6-r0"
+    ADDITIONAL_OPENJDK11_VERSION="11.0.29_p7-r0" \
+    ADDITIONAL_OPENJDK17_VERSION="17.0.17_p10-r0"
 
-# copy doguctl + helper scripts into PATH
-COPY --from=doguctl /usr/bin/doguctl /usr/bin/doguctl
-COPY --from=doguctl /usr/bin/create-ca-certificates.sh /usr/bin/create-ca-certificates.sh
-COPY --from=doguctl /usr/bin/create_truststore.sh /usr/bin/create_truststore.sh
-RUN chmod 0755 /usr/bin/doguctl /usr/bin/create-ca-certificates.sh /usr/bin/create_truststore.sh
+ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
-# bring in bash (startup.sh uses bashisms) + first resource copy
-RUN apk add --no-cache bash
 COPY resources/ /
 COPY k8s /k8s
 RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
@@ -48,15 +40,26 @@ RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
 RUN set -o errexit \
  && set -o nounset \
  && set -o pipefail \
- && apk update \
- && apk upgrade \
+ && apk upgrade --no-cache \
  && addgroup -S -g 1000 jenkins \
  && adduser -S -h "$JENKINS_HOME" -s /bin/bash -G jenkins -u 1000 jenkins \
  # install coreutils, ttf-dejavu, openssh and scm clients
  # coreutils and ttf-dejavu is required because of java.awt.headless problem:
  # - https://wiki.jenkins.io/display/JENKINS/Jenkins+got+java.awt.headless+problem
- && apk add --no-cache coreutils ttf-dejavu openssh-client git subversion mercurial curl gcompat \
- && apk add --no-cache openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
+ # install gcompat and libstdc++ to make sure that jenkins is able to execute
+ # Oracle JDK, which can be installed over the global tool installer
+ && apk add --no-cache \
+    coreutils \
+    ttf-dejavu \
+    openssh-client \
+    git \
+    subversion \
+    mercurial \
+    curl \
+    gcompat \
+    libstdc++ \
+    openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
+    openjdk17="$ADDITIONAL_OPENJDK17_VERSION" \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
  && curl -L https://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \
@@ -69,18 +72,7 @@ RUN set -o errexit \
  # set subversion system ca-certificates
  && mkdir /etc/subversion \
  && printf "[global]\nssl-authority-files=/var/lib/jenkins/ca-certificates.crt\n" > /etc/subversion/server \
- # install glibc for alpine
- # make sure that jenkins is able to execute Oracle JDK, which can be installed over the global tool installer
- && apk add --no-cache libstdc++ gcompat
-
-RUN (/usr/glibc-compat/bin/localedef --force --inputfile POSIX --charmap UTF-8 C.UTF-8 || true )
-
-RUN set -o errexit \
-    && set -o nounset \
-    && set -o pipefail \
-    echo "export LANG=C.UTF-8" > /etc/profile.d/locale.sh \
-    # cleanup
-    && rm -rf /tmp/* /var/cache/apk/*
+ && rm -rf /tmp/* /var/cache/apk/*
 
 # Jenkins home directoy is a volume, so configuration and build history
 # can be persisted and survive image upgrades
