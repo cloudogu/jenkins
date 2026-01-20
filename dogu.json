@@ -15,9 +15,9 @@
   "Image": "registry.cloudogu.com/official/jenkins",
   "Dependencies": [
     {
-      "type": "client",
-      "name": "k8s-dogu-operator",
-      "version": ">=3.19.0"
+      "type": "package",
+      "name": "cesapp",
+      "version": ">=7.11.0"
     },
     {
       "type": "dogu",
