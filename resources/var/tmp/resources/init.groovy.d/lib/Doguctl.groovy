@@ -2,7 +2,7 @@ package lib
 
 String getGlobalConfig(String key) {
     try {
-        def value = sh("doguctl config --global --default DEFAULT_VALUE ${key}")
+        def value = sh("doguctl config --global --default DEFAULT_VALUE ${key}" as String)
         println "reading global config value: '${key}' -> '${value}'"
         return value == "DEFAULT_VALUE" ? '' : value
     } catch (Exception e) {
@@ -12,9 +12,19 @@ String getGlobalConfig(String key) {
 
 String getDoguConfig(String key) {
     try {
-        def value = sh("doguctl config --default DEFAULT_VALUE ${key}")
+        def value = sh("doguctl config --default DEFAULT_VALUE ${key}" as String)
         println "reading dogu config value: '${key}' -> '${value}'"
         return value == "DEFAULT_VALUE" ? '' : value
+    } catch (Exception e) {
+        e.printStackTrace()
+    }
+}
+
+String getDoguConfigWithDefaultFromDescriptor(String key) {
+    try {
+        def value = sh("doguctl config ${key}" as String)
+        println "reading dogu config value: '${key}' -> '${value}'"
+        return value
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -23,7 +33,7 @@ String getDoguConfig(String key) {
 void setDoguConfig(String key, String value) {
     try {
         println "setting dogu config value '${key}' to '${value}'"
-        sh("doguctl config ${key} ${value}")
+        sh("doguctl config ${key} ${value}" as String)
         println "value set successfully"
     } catch (Exception e) {
         e.printStackTrace()
@@ -33,7 +43,7 @@ void setDoguConfig(String key, String value) {
 void removeDoguConfig(String key) {
     try {
         println "removing dogu config key '${key}'"
-        sh("doguctl config --rm ${key}")
+        sh("doguctl config --rm ${key}" as String)
     } catch (Exception e) {
         e.printStackTrace()
     }
@@ -42,7 +52,7 @@ void removeDoguConfig(String key) {
 void setDoguState(String state) {
     try {
         println "setting dogu state to ${state}'"
-        sh("doguctl state ${state}")
+        sh("doguctl state ${state}" as String)
         println "state set successfully"
     } catch (Exception e) {
         e.printStackTrace()

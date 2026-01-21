@@ -23,3 +23,10 @@ def getPlugins() {
             'pipeline-stage-view'
     ]
 }
+
+// The List of Plugins which should be installed specifically for multinode
+def getMnPlugins() {
+    return  [
+            'kubernetes'
+    ]
+}
