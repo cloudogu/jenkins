@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Added
+* Integration for starting Jenkins agents on Kubernetes
 
 ## [v2.528.3-3] - 2026-01-15
 ### Changed
