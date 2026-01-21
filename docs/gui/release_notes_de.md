@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.528.3-4] - 2026-01-21
+### Added
+* Integration, um Jenkins-Agenten auf Kubernetes zu starten
+
 ## [v2.528.3-3] - 2026-01-15
 ### Changed
 * Im Dogu wurden nur technische Änderungen vorgenommen. Details sind im Changelog aufgeführt.
