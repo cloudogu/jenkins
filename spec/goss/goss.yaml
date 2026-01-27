@@ -52,6 +52,7 @@ file:
     filetype: directory
     contains: []
   /var/lib/jenkins/plugins/credentials-binding:
+    exists: true
     owner: jenkins
     group: jenkins
     filetype: directory
