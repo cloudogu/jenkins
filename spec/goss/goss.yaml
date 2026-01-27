@@ -47,7 +47,6 @@ file:
     - <enabled>false</enabled>
   /var/lib/jenkins/plugins/cas-plugin:
     exists: true
-    mode: "0755"
     owner: jenkins
     group: jenkins
     filetype: directory
@@ -154,10 +153,8 @@ package:
   gcompat:
     installed: true
 port:
-  tcp6:8080:
+  tcp:8080:
     listening: true
-    ip:
-    - "::"
 user:
   jenkins:
     exists: true
@@ -174,3 +171,8 @@ group:
 process:
   java:
     running: true
+command:
+  permission-cas-plugin:
+    exec: |
+      stat -c '%a' /var/lib/jenkins/plugins/cas-plugin | sed 's/^.*\(.\{3\}\)$/\1/' | grep -q '^755$'
+    exit-status: 0
