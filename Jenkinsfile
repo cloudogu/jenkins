@@ -18,7 +18,7 @@ def pipe = new com.cloudogu.sos.pipebuildlib.DoguPipe(this, [
 pipe.setBuildProperties()
 pipe.addDefaultStages()
 
-pipe.insertStageAfter("Checkout","Test: Change Global Admin Group") {
+pipe.insertStageAfter("MN-Setup","Test-Patch") {
     def ctx = pipe.multiNodeEcoSystem
          ctx.runCypressIntegrationTests([
             cypressImage     : "cypress/included:13.16.1",
