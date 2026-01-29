@@ -6,6 +6,8 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.528.3-5] - 2026-01-29
+
 ### Security
 - [#252] fixed [cve-2025-15467](https://avd.aquasec.com/nvd/2025/cve-2025-15467/)
 
