@@ -6,6 +6,12 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.479.3-3] - 2026-02-01
+
+### Security
+- Fixed CVE: [cve-2025-15467](https://avd.aquasec.com/nvd/2025/cve-2025-15467/)
+
+
 ## [v2.479.3-2] - 2025-02-21
 ### Changed
 * Default-Plugins can not be added to the blocklist
