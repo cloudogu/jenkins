@@ -84,8 +84,13 @@ node('vagrant') {
 
             stage('Integration tests') {
                 runIntegrationTests(ecoSystem, params.EnableVideoRecording, params.EnableScreenshotRecording)
-            }
 
+            }
+            stage('Release') {
+                    String releaseVersion = 'v2.479.3-3'
+                    ecoSystem.push('/dogu')
+                    github.createReleaseWithChangelog(releaseVersion, changelog, "main")
+            }
             stage('Test: Change Global Admin Group') {
                 ecoSystem.changeGlobalAdminGroup("newAdminGroup")
                 // this waits until the dogu is up and running
