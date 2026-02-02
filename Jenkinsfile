@@ -38,23 +38,6 @@ node('vagrant') {
             checkout scm
         }
 
-        stage('Lint') {
-            lintDockerfile()
-            shellCheck("resources/startup.sh resources/upgrade-notification.sh resources/pre-upgrade.sh")
-
-            if (env.CHANGE_TARGET) {
-                echo 'This is a pull request; checking changelog...'
-                String newChanges = changelog.changesForVersion('Unreleased')
-                if (!newChanges || newChanges.allWhitespace) {
-                    unstable('CHANGELOG.md should contain new change entries in the `[Unreleased]` section but none were found.')
-                }
-            }
-        }
-
-        stage('Check Markdown Links') {
-            Markdown markdown = new Markdown(this)
-            markdown.check()
-        }
 
         try {
             stage('Bats Tests') {

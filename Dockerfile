@@ -41,7 +41,7 @@ RUN set -o errexit \
  # coreutils and ttf-dejavu is required because of java.awt.headless problem:
  # - https://wiki.jenkins.io/display/JENKINS/Jenkins+got+java.awt.headless+problem
  && apk add --no-cache coreutils ttf-dejavu openssh-client git subversion mercurial curl gcompat \
- && apk add openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
+ && apk add openjdk11 \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
  && curl -L https://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \
