@@ -6,10 +6,18 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
-## [v2.528.3-5] - 2026-01-29
+## [v2.528.3-6] - 2026-02-06
+### Changed
+* Update Java base-image to `21.0.10-2`
+* Update OpenJDK 17 tooling to version `17.0.18_p8-r0`
+* Update OpenJDK 11 tooling to version `11.0.30_p7-r0`
 
 ### Security
-- [#252] fixed [cve-2025-15467](https://avd.aquasec.com/nvd/2025/cve-2025-15467/)
+* [#254] CVE fixed [cve-2026-24515](https://avd.aquasec.com/nvd/2026/cve-2026-24515/)
+
+## [v2.528.3-5] - 2026-01-29
+### Security
+* [#252] CVE fixed [cve-2025-15467](https://avd.aquasec.com/nvd/2025/cve-2025-15467/)
 
 ## [v2.528.3-4] - 2026-01-21
 ### Added
