@@ -5,6 +5,11 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed
+* Aktualisieren von Java Basis-Image auf `21.0.10-2`
+* Aktualisieren von OpenJDK 17 für Tooling auf Version `17.0.18_p8-r0`
+* Aktualisieren von OpenJDK 11 für Tooling auf Version `11.0.30_p7-r0`
+
 ### Security
 * [#254] Sicherheitslücke geschlossen [cve-2026-24515](https://avd.aquasec.com/nvd/2026/cve-2026-24515/)
 
@@ -22,9 +27,9 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [v2.528.3-2] - 2026-01-13
 ### Changed
-* Aktualisieren des Java base-image zu `21.0.9-2`
-* Hinzufügen von OpenJDK 17 Tools mit version `17.0.17_p10-r0`
-* Aktualisieren OpenJDK 11 Tools in version `11.0.29_p7-r0`
+* Aktualisieren von Java Basis-Image auf `21.0.9-2`
+* Hinzufügen von OpenJDK 17 für Tooling in Version `17.0.17_p10-r0`
+* Aktualisieren von OpenJDK 11 für Tooling auf Version `11.0.29_p7-r0`
 
 ## [v2.528.3-1] - 2025-12-12
 ### Changed
