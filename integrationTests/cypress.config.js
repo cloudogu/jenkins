@@ -21,13 +21,13 @@ async function setupNodeEvents(on, config) {
 
 module.exports = defineConfig({
     e2e: {
-        baseUrl: "https://34.107.73.133",
+        baseUrl: "https://192.168.56.2",
         env: {
             "DoguName": "jenkins",
             "MaxLoginRetries": 3,
-            "AdminUsername": "mbergen",
-            "AdminPassword":  "l+kk)GyGI3=}d1Ud",
-            "AdminGroup":  "cesAdmin"
+            "AdminUsername": "ces-admin",
+            "AdminPassword":  "Ecosystem2016!",
+            "AdminGroup":  "CesAdministrators"
         },
         videoCompression: false,
         specPattern: ["cypress/e2e/**/*.feature"],
