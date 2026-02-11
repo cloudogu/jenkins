@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#257] CVE fixed [CVE-2025-6965](https://avd.aquasec.com/nvd/2026/cve-2025-6965/)
 ### Changed
 - [#257] Bump java base-image to v17.0.18-2
+- [#257] Bump additional OpenJDK 11 to v11.0.30
 
 ## [v2.479.3-2] - 2025-02-21
 ### Changed
