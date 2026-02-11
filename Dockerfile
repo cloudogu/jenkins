@@ -1,8 +1,8 @@
 # cesi/scm
-FROM registry.cloudogu.com/official/java:17.0.13-1
+FROM registry.cloudogu.com/official/java:17.0.18-2
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.479.3-2" \
+      VERSION="2.479.3-4" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
