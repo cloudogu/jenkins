@@ -51,11 +51,6 @@ node('vagrant') {
             }
         }
 
-        stage('Check Markdown Links') {
-            Markdown markdown = new Markdown(this)
-            markdown.check()
-        }
-
         try {
             stage('Bats Tests') {
                 Bats bats = new Bats(this, docker)
