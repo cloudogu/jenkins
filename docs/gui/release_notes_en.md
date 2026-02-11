@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed
+- We have only made technical changes. You can find more details in the changelogs.
 
 ## [v2.479.3-2] - 2025-02-21
 ### Changed
