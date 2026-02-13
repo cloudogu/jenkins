@@ -6,6 +6,12 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.528.3-7] - 2026-02-13
+### Changed
+* [#259] Aktualisieren von Java Basis-Image auf `21.0.10-2`
+### Security
+* [#259] Sicherheitslücke geschlossen [cve-2025-68121](https://nvd.nist.gov/vuln/detail/cve-2025-68121)
+
 ## [v2.528.3-6] - 2026-02-06
 ### Changed
 * Aktualisieren von Java Basis-Image auf `21.0.10-2`
