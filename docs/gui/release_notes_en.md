@@ -6,6 +6,10 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.528.3-8] - 2026-02-17
+### Changed
+* [#261] Update Java base-image to `21.0.10-4`
+
 ## [v2.528.3-7] - 2026-02-13
 ### Changed
 * [#259] Update Java base-image to `21.0.10-3`

@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.528.3-8] - 2026-02-17
+### Changed
+* [#261] Aktualisieren von Java Basis-Image auf `21.0.10-4`
+
 ## [v2.528.3-7] - 2026-02-13
 ### Changed
 * [#259] Aktualisieren von Java Basis-Image auf `21.0.10-2`
