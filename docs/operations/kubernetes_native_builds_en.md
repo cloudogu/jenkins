@@ -62,6 +62,13 @@ Default: `"false"`
 
 Whether to add a Security Context to agent pods that is suitable for the use of the 'restricted' Pod Security Standard.
 
+### `agent_kubernetes_docker_image`
+
+Default: `""`
+
+Container image to be used for the agent pods if none is specified.
+If no image is specified, the default image of the Kubernetes plugin is used.
+
 ### `agent_kubernetes_docker_registry`
 
 Default: `""`

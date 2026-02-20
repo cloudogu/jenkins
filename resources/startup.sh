@@ -79,11 +79,38 @@ run_main() {
   start_jenkins
 }
 
+function kubernetesAgentBuildsEnabled() {
+  local isMultiNode
+  isMultiNode="$(doguctl multinode)"
+  local k8sAgentsEnabled
+  k8sAgentsEnabled="$(doguctl config "enable_kubernetes_agents")"
+
+  if [[ "${isMultiNode}" == "true" && "$k8sAgentsEnabled" == "true" ]];
+  then
+    return 0
+  fi
+
+  return 1
+}
+
 function start_jenkins() {
+  local JENKINS_ARGS
   JENKINS_ARGS=("-Djava.awt.headless=true" \
     "-Djavax.net.ssl.trustStore=${TRUSTSTORE}"\
     "-Djavax.net.ssl.trustStorePassword=changeit"\
     "-Djenkins.install.runSetupWizard=false")
+
+  if kubernetesAgentBuildsEnabled; then
+    local k8sAgentImage
+    k8sAgentImage="$(doguctl config "agent_kubernetes_docker_image" -d "empty")"
+    if [[ "${k8sAgentImage}" != "empty" && "${k8sAgentImage}" != "" ]];
+    then
+      JENKINS_ARGS+=("-Dorg.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateStepExecution.defaultImage=$k8sAgentImage")
+      echo "Setting default kubernetes agent image: $k8sAgentImage"
+    else
+      echo "Using default kubernetes agent image from kubernetes plugin."
+    fi
+  fi
 
   # Backslashes should not be escaped automatically
   # shellcheck disable=SC2162
