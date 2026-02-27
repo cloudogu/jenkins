@@ -6,6 +6,29 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.528.3-8] - 2026-02-17
+### Changed
+* [#261] Aktualisieren von Java Basis-Image auf `21.0.10-4`
+
+## [v2.528.3-7] - 2026-02-13
+### Changed
+* [#259] Aktualisieren von Java Basis-Image auf `21.0.10-2`
+### Security
+* [#259] Sicherheitslücke geschlossen [cve-2025-68121](https://nvd.nist.gov/vuln/detail/cve-2025-68121)
+
+## [v2.528.3-6] - 2026-02-06
+### Changed
+* Aktualisieren von Java Basis-Image auf `21.0.10-2`
+* Aktualisieren von OpenJDK 17 für Tooling auf Version `17.0.18_p8-r0`
+* Aktualisieren von OpenJDK 11 für Tooling auf Version `11.0.30_p7-r0`
+
+### Security
+* [#254] Sicherheitslücke geschlossen [cve-2026-24515](https://avd.aquasec.com/nvd/2026/cve-2026-24515/)
+
+## [v2.528.3-5] - 2026-01-29
+### Security
+* [#252] Sicherheitslücke geschlossen [cve-2025-15467](https://avd.aquasec.com/nvd/2025/cve-2025-15467/)
+
 ## [v2.528.3-4] - 2026-01-21
 ### Added
 * Integration, um Jenkins-Agenten auf Kubernetes zu starten
@@ -16,9 +39,9 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [v2.528.3-2] - 2026-01-13
 ### Changed
-* Aktualisieren des Java base-image zu `21.0.9-2`
-* Hinzufügen von OpenJDK 17 Tools mit version `17.0.17_p10-r0`
-* Aktualisieren OpenJDK 11 Tools in version `11.0.29_p7-r0`
+* Aktualisieren von Java Basis-Image auf `21.0.9-2`
+* Hinzufügen von OpenJDK 17 für Tooling in Version `17.0.17_p10-r0`
+* Aktualisieren von OpenJDK 11 für Tooling auf Version `11.0.29_p7-r0`
 
 ## [v2.528.3-1] - 2025-12-12
 ### Changed
