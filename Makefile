@@ -10,6 +10,7 @@ include build/make/prerelease.mk
 include build/make/bats.mk
 include build/make/version-sha.mk
 include build/make/k8s-dogu.mk
+include build/make/trivyscan.mk
 
 JENKINS_VERSION=$(shell grep JENKINS_VERSION= Dockerfile | sed 's/.*JENKINS_VERSION=\([^ ]*\).*/\1/g')
 GLIBC_VERSION=$(shell grep GLIBC_VERSION= Dockerfile | sed 's/.*GLIBC_VERSION=\([^ ]*\).*/\1/g')
