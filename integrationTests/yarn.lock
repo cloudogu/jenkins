@@ -90,9 +90,10 @@
   dependencies:
     debug "4.3.4"
 
-"@cloudogu/dogu-integration-test-library@git+https://github.com/cloudogu/dogu-integration-test-library.git#bug/redirect-in-usermgt-api-in-mn":
-  version "6.2.0"
-  resolved "git+https://github.com/cloudogu/dogu-integration-test-library.git#5eb7a464a00d5875a8007a0bec853de7a8854fe5"
+"@cloudogu/dogu-integration-test-library@6.1.1":
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/@cloudogu/dogu-integration-test-library/-/dogu-integration-test-library-6.1.1.tgz#76a3cc5b585c84fdab92669b7f2b55c87482d040"
+  integrity sha512-plQpFu7QbuX4Kuuvq4XVhWNUwy5rKk5KPF3DY8XSQyodWvtuPtTWEgoJ2e8TwqN6WK5c0aEcMMBLoboiTh/CJg==
   dependencies:
     "@badeball/cypress-cucumber-preprocessor" "^16.0.0"
     cypress "^12.9.0"
