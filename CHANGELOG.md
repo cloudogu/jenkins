@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- [#263] Added configuration `agent_kubernetes_docker_image` to override the default container image used for Kubernetes agents.
 
 ## [v2.528.3-8] - 2026-02-17
 ### Changed

@@ -244,6 +244,11 @@
       }
     },
     {
+      "Name": "agent_kubernetes_docker_image",
+      "Description": "Docker image to use for the agent image if none is specified. Irrelevant if not on kubernetes and not using kubernetes agents. Example: jenkins/inbound-agent:3355.v388858a_47b_33-14-jdk21. If no imaged is specified, the default image will be used from the kubernetes plugin.",
+      "Optional": true
+    },
+    {
       "Name": "agent_kubernetes_docker_registry",
       "Description": "Docker registry to use for the agent image if none is specified. Irrelevant if not on kubernetes and not using kubernetes agents.",
       "Optional": true,

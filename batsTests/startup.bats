@@ -175,16 +175,57 @@ assert_file_not_contains() {
 @test "start_jenkins() should call java with correct args" {
   source /workspace/resources/startup.sh
 
-  mock_set_status "${doguctl}" 0
-  mock_set_output "${doguctl}" "-Dtest=1 -Dtest1=\"test\ test\" -Dtest2=2" 1
-  mock_set_output "${doguctl}" "1" 2
-  mock_set_output "${doguctl}" "1" 3
+  mock_set_status "${doguctl}" 0 1
+  mock_set_output "${doguctl}" "false" 1
+  mock_set_status "${doguctl}" 0 2
+  mock_set_output "${doguctl}" "false" 2
+  mock_set_status "${doguctl}" 0 3
+  mock_set_output "${doguctl}" "-Dtest=1 -Dtest1=\"test\ test\" -Dtest2=2" 3
+  mock_set_output "${doguctl}" "1" 4
+  mock_set_output "${doguctl}" "1" 5
+  mock_set_output "${doguctl}" "1" 6
 
   export TRUSTSTORE=""
   run start_jenkins
 
   assert_success
-  assert_equal "$(mock_get_call_args "${java}" "1")" "-Djava.awt.headless=true -Djavax.net.ssl.trustStore= -Djavax.net.ssl.trustStorePassword=changeit -Djenkins.install.runSetupWizard=false -Dtest=1 -Dtest1=\"test test\" -Dtest2=2 -XX:MaxRAMPercentage=1 -XX:MinRAMPercentage= -jar /jenkins.war --prefix=/jenkins"
+  assert_line "Starting Jenkins with memory limits: MaxRAMPercentage=1, MinRAMPercentage=1 ..."
+  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "multinode"
+  assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config enable_kubernetes_agents"
+  assert_equal "$(mock_get_call_args "${doguctl}" "3")" "config additional_java_args"
+  assert_equal "$(mock_get_call_args "${doguctl}" "4")" "config container_config/memory_limit -d empty"
+  assert_equal "$(mock_get_call_args "${doguctl}" "5")" "config container_config/java_max_ram_percentage"
+  assert_equal "$(mock_get_call_args "${doguctl}" "6")" "config container_config/java_min_ram_percentage"
+  assert_equal "$(mock_get_call_args "${java}" "1")" "-Djava.awt.headless=true -Djavax.net.ssl.trustStore= -Djavax.net.ssl.trustStorePassword=changeit -Djenkins.install.runSetupWizard=false -Dtest=1 -Dtest1=\"test test\" -Dtest2=2 -XX:MaxRAMPercentage=1 -XX:MinRAMPercentage=1 -jar /jenkins.war --prefix=/jenkins"
+}
+
+@test "start_jenkins() should call java with kubernetes agent image" {
+  source /workspace/resources/startup.sh
+
+  mock_set_status "${doguctl}" 0 1
+  mock_set_output "${doguctl}" "true" 1
+  mock_set_status "${doguctl}" 0 2
+  mock_set_output "${doguctl}" "true" 2
+  mock_set_status "${doguctl}" 0 3
+  mock_set_output "${doguctl}" "jenkins/inbound-agent:v2_jdk100" 3
+
+
+  mock_set_status "${doguctl}" 0 4
+  mock_set_output "${doguctl}" "UNSET" 4
+
+  mock_set_output "${doguctl}" "empty" 5
+
+  export TRUSTSTORE=""
+  run start_jenkins
+
+  assert_success
+  assert_line "Setting default kubernetes agent image: jenkins/inbound-agent:v2_jdk100"
+  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "multinode"
+  assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config enable_kubernetes_agents"
+  assert_equal "$(mock_get_call_args "${doguctl}" "3")" "config agent_kubernetes_docker_image -d empty"
+  assert_equal "$(mock_get_call_args "${doguctl}" "4")" "config additional_java_args"
+  assert_equal "$(mock_get_call_args "${doguctl}" "5")" "config container_config/memory_limit -d empty"
+  assert_equal "$(mock_get_call_args "${java}" "1")" "-Djava.awt.headless=true -Djavax.net.ssl.trustStore= -Djavax.net.ssl.trustStorePassword=changeit -Djenkins.install.runSetupWizard=false -Dorg.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateStepExecution.defaultImage=jenkins/inbound-agent:v2_jdk100 -jar /jenkins.war --prefix=/jenkins"
 }
 
 @test "checkCertCount() should return false for unequal count of BEGIN and END CERTIFICATE lines" {
@@ -247,4 +288,34 @@ assert_file_not_contains() {
   assert_file_contains "${subversionServersConfig}" "# commented line 1"
   assert_file_contains "${subversionServersConfig}" "# commented line 2"
   assert_file_contains "${subversionServersConfig}" "ssl-authority-files = /path/to/cert1.pem;/path/to/cert2.pem;/path/to/.subversion/cert-alias1-00;/path/to/.subversion/cert-alias1-01;"
+}
+
+@test "kubernetesAgentBuildsEnabled() should return 0 if agent is enabled and environment is multinode" {
+  source /workspace/resources/startup.sh
+
+  mock_set_status "${doguctl}" 0 1
+  mock_set_output "${doguctl}" "true" 1
+  mock_set_status "${doguctl}" 0 2
+  mock_set_output "${doguctl}" "true" 2
+
+  run kubernetesAgentBuildsEnabled
+
+  assert_success
+  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "multinode"
+  assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config enable_kubernetes_agents"
+}
+
+@test "kubernetesAgentBuildsEnabled() should return 1 if agent is disabled or environment is not multinode" {
+  source /workspace/resources/startup.sh
+
+  mock_set_status "${doguctl}" 0 1
+  mock_set_output "${doguctl}" "false" 1
+  mock_set_status "${doguctl}" 0 2
+  mock_set_output "${doguctl}" "false" 2
+
+  run kubernetesAgentBuildsEnabled
+
+  assert_failure
+  assert_equal "$(mock_get_call_args "${doguctl}" "1")" "multinode"
+  assert_equal "$(mock_get_call_args "${doguctl}" "2")" "config enable_kubernetes_agents"
 }
