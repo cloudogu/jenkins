@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.528.3-9] - 2026-03-12
 ### Added
 * [#263] A configuration option `agent_kubernetes_docker_image` has been added.
 This configuration allows the container image of the agent pods in Kubernetes to be overwritten.

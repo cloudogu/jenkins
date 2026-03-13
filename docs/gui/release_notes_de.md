@@ -5,6 +5,8 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.528.3-9] - 2026-03-12
 ### Added
 * [#263] Es wurde eine Konfigurationsoption `agent_kubernetes_docker_image` hinzugefügt.
 Mit dieser Konfiguration kann das Container-Image der Agent-Pods in Kubernetes überschrieben werden. 
