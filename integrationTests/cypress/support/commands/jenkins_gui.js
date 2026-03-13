@@ -25,7 +25,7 @@ const createJenkinsApiKey = () => {
     })
     cy.get("button").contains("Add new token").click({force: true});
     cy.get("button").contains("Generate").click({force: true});
-    return cy.get("span[class='api-token-new-value']").invoke("text");
+    return cy.get("span[class='api-token-new-value']").invoke("text").should('not.be.empty');
 };
 
 const getUserAttributesGui = (testUser) => {

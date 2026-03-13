@@ -47,49 +47,42 @@ file:
     - <enabled>false</enabled>
   /var/lib/jenkins/plugins/cas-plugin:
     exists: true
-    mode: "0755"
     owner: jenkins
     group: jenkins
     filetype: directory
     contains: []
   /var/lib/jenkins/plugins/credentials-binding:
     exists: true
-    mode: "0755"
     owner: jenkins
     group: jenkins
     filetype: directory
     contains: []
   /var/lib/jenkins/plugins/git:
     exists: true
-    mode: "0755"
     owner: jenkins
     group: jenkins
     filetype: directory
     contains: []
   /var/lib/jenkins/plugins/matrix-auth:
     exists: true
-    mode: "0755"
     owner: jenkins
     group: jenkins
     filetype: directory
     contains: []
   /var/lib/jenkins/plugins/mercurial:
     exists: true
-    mode: "0755"
     owner: jenkins
     group: jenkins
     filetype: directory
     contains: []
   /var/lib/jenkins/plugins/subversion:
     exists: true
-    mode: "0755"
     owner: jenkins
     group: jenkins
     filetype: directory
     contains: []
   /var/lib/jenkins/plugins/workflow-aggregator:
     exists: true
-    mode: "0755"
     owner: jenkins
     group: jenkins
     filetype: directory
@@ -156,8 +149,6 @@ package:
 port:
   tcp6:8080:
     listening: true
-    ip:
-    - "::"
 user:
   jenkins:
     exists: true
@@ -174,3 +165,18 @@ group:
 process:
   java:
     running: true
+command:
+  stat -c '%a' /var/lib/jenkins/plugins/cas-plugin | sed 's/^.*\(.\{3\}\)$/\1/' | grep -q '^755$':
+    exit-status: 0
+  stat -c '%a' /var/lib/jenkins/plugins/credentials-binding | sed 's/^.*\(.\{3\}\)$/\1/' | grep -q '^755$':
+    exit-status: 0
+  stat -c '%a' /var/lib/jenkins/plugins/git | sed 's/^.*\(.\{3\}\)$/\1/' | grep -q '^755$':
+    exit-status: 0
+  stat -c '%a' /var/lib/jenkins/plugins/matrix-auth | sed 's/^.*\(.\{3\}\)$/\1/' | grep -q '^755$':
+    exit-status: 0
+  stat -c '%a' /var/lib/jenkins/plugins/mercurial | sed 's/^.*\(.\{3\}\)$/\1/' | grep -q '^755$':
+    exit-status: 0
+  stat -c '%a' /var/lib/jenkins/plugins/subversion | sed 's/^.*\(.\{3\}\)$/\1/' | grep -q '^755$':
+    exit-status: 0
+  stat -c '%a' /var/lib/jenkins/plugins/workflow-aggregator | sed 's/^.*\(.\{3\}\)$/\1/' | grep -q '^755$':
+    exit-status: 0

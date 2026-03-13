@@ -21,11 +21,11 @@ async function setupNodeEvents(on, config) {
 
 module.exports = defineConfig({
     e2e: {
-        baseUrl: 'https://192.168.56.2',
+        baseUrl: "https://192.168.56.2",
         env: {
             "DoguName": "jenkins",
             "MaxLoginRetries": 3,
-            "AdminUsername":  "ces-admin",
+            "AdminUsername": "ces-admin",
             "AdminPassword":  "Ecosystem2016!",
             "AdminGroup":  "CesAdministrators"
         },

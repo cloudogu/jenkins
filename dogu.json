@@ -1,6 +1,6 @@
 {
   "Name": "official/jenkins",
-  "Version": "2.528.3-8",
+  "Version": "2.528.3-9",
   "DisplayName": "Jenkins CI",
   "Description": "Jenkins Continuous Integration Server",
   "Category": "Development Apps",
@@ -242,6 +242,11 @@
           "false"
         ]
       }
+    },
+    {
+      "Name": "agent_kubernetes_docker_image",
+      "Description": "Docker image to use for the agent image if none is specified. Irrelevant if not on kubernetes and not using kubernetes agents. Example: jenkins/inbound-agent:3355.v388858a_47b_33-14-jdk21. If no imaged is specified, the default image will be used from the kubernetes plugin.",
+      "Optional": true
     },
     {
       "Name": "agent_kubernetes_docker_registry",

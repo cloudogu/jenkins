@@ -6,6 +6,12 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.528.3-9] - 2026-03-12
+### Added
+* [#263] Es wurde eine Konfigurationsoption `agent_kubernetes_docker_image` hinzugefügt.
+Mit dieser Konfiguration kann das Container-Image der Agent-Pods in Kubernetes überschrieben werden. 
+Wenn es nicht gesetzt wird, wird das Standard-Image des Kubernetes-Plugins verwendet.
+
 ## [v2.528.3-8] - 2026-02-17
 ### Changed
 * [#261] Aktualisieren von Java Basis-Image auf `21.0.10-4`
