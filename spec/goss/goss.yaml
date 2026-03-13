@@ -147,7 +147,7 @@ package:
   gcompat:
     installed: true
 port:
-  tcp:8080:
+  tcp6:8080:
     listening: true
 user:
   jenkins:
