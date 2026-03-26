@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- [#265] Upgrade Jenkins to v2.541.3
+- [#265] Upgrade Java base image to v21.0.10-6
+### Security
+- [#265] Vulnerability fixed: [CVE-2026-33001](https://avd.aquasec.com/nvd/cve-2026-33001/)
 
 ## [v2.528.3-9] - 2026-03-12
 ### Added
