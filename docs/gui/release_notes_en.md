@@ -6,6 +6,13 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.541.3-1] - 2026-03-26
+### Changed
+- Upgrade Jenkins to v2.541.3
+- Upgrade Java base image to v21.0.10-6
+### Security
+- Vulnerability fixed: [CVE-2026-33001](https://avd.aquasec.com/nvd/cve-2026-33001/)
+
 ## [v2.528.3-9] - 2026-03-12
 ### Added
 * [#263] A configuration option `agent_kubernetes_docker_image` has been added.

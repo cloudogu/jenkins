@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.541.3-1] - 2026-03-26
+### Changed
+- [#265] Upgrade Jenkins to v2.541.3
+- [#265] Upgrade Java base image to v21.0.10-6
+### Security
+- [#265] Vulnerability fixed: [CVE-2026-33001](https://avd.aquasec.com/nvd/cve-2026-33001/)
+
 ## [v2.528.3-9] - 2026-03-12
 ### Added
 - [#263] Added configuration `agent_kubernetes_docker_image` to override the default container image used for Kubernetes agents.
