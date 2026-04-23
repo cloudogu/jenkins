@@ -1,7 +1,7 @@
-FROM registry.cloudogu.com/official/java:21.0.10-6
+FROM registry.cloudogu.com/official/java:21.0.10-7
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.541.3-1" \
+      VERSION="2.555.1-1" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -14,9 +14,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SERVICE_8080_TAGS="webapp" \
     SERVICE_8080_NAME="jenkins" \
     # jenkins version
-    JENKINS_VERSION="2.541.3" \
+    JENKINS_VERSION="2.555.1" \
     # SHA as of https://updates.jenkins.io/download/war/ for JENKINS_VERSION
-    SHA256_JENKINS_WAR="0000addfa8722963164137a4e0e60abc227d9d60710c4deb19481f9a751cf512" \
+    SHA256_JENKINS_WAR="2608ba58c6a56c653f0abf5ac62771949a217437df299dff39083be37cb7bd03" \
     # glibc for alpine version
     GLIBC_VERSION=2.35-r1 \
     SHA256_GLIB_APK="276f43ce9b2d5878422bca94ca94e882a7eb263abe171d233ac037201ffcaf06" \
@@ -24,7 +24,8 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java versions for legacy builds
     ADDITIONAL_OPENJDK11_VERSION="11.0.30_p7-r0" \
-    ADDITIONAL_OPENJDK17_VERSION="17.0.18_p8-r0"
+    ADDITIONAL_OPENJDK17_VERSION="17.0.18_p8-r0" \
+    ADDITIONAL_OPENJDK25_VERSION="25.0.2_p10-r1"
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
@@ -60,6 +61,7 @@ RUN set -o errexit \
     libstdc++ \
     openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
     openjdk17="$ADDITIONAL_OPENJDK17_VERSION" \
+    openjdk25="$ADDITIONAL_OPENJDK25_VERSION" \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
  && curl -L https://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \

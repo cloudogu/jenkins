@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.555.1-1] - 2026-04-23
+### Changed
+- [#269] Upgrade Jenkins to v2.555.1
+- [#269] Upgrade Java base image to v21.0.10-7
+### Security
+- [#269] Vulnerability fixed: [CVE-2026-22732](https://avd.aquasec.com/nvd/cve-2026-22732/)
+
 ## [v2.541.3-1] - 2026-03-26
 ### Changed
 - [#265] Upgrade Jenkins to v2.541.3
