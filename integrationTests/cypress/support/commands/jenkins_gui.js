@@ -20,12 +20,27 @@ const searchM3Installation = () => {
 };
 
 const createJenkinsApiKey = () => {
-    cy.fixture("testuser_data").then((user) => {
-        cy.visit("/jenkins/user/" + user.username + "/security")
-    })
-    cy.get("button").contains("Add new token").click({force: true});
-    cy.get("button").contains("Generate").click({force: true});
-    return cy.get("span[class='api-token-new-value']").invoke("text").should('not.be.empty');
+    return cy.fixture("testuser_data").then((user) => {
+        cy.visit("/jenkins/user/" + user.username + "/security");
+
+        cy.get("button.api-token-property-add:visible")
+            .first()
+            .click();
+
+        cy.get('dialog input[name="tokenName"]')
+            .should("be.visible")
+            .type("e2e-token");
+
+        cy.get('dialog button[data-id="ok"]')
+            .should("be.visible")
+            .and("not.be.disabled")
+            .click();
+
+        return cy.get("span.api-token-new-value", { timeout: 10000 })
+            .should("be.visible")
+            .invoke("text")
+            .should("not.be.empty");
+    });
 };
 
 const getUserAttributesGui = (testUser) => {
