@@ -5,6 +5,11 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed
+- Aktualisieren von Jenkins auf v2.555.1
+- Aktualisieren von Java base image auf v21.0.10-7
+### Security
+- Sicherheitslücke geschlossen: [CVE-2026-22732](https://nvd.nist.gov/vuln/detail/CVE-2026-22732)
 
 ## [v2.541.3-1] - 2026-03-26
 ### Changed
