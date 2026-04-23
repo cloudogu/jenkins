@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [v2.555.1-1] - 2026-04-23
 ### Changed
 - [#269] Upgrade Jenkins to v2.555.1
 - [#269] Upgrade Java base image to v21.0.10-7
