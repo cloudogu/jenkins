@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- [#271] Update OpenJDK 11 for tooling to version `11.0.31_p11-r0`
+- [#271] Update OpenJDK 17 for tooling to version `17.0.19_p10-r0`
+- [#271] Update OpenJDK 25 for tooling to version `25.0.3_p9-r1`
+### Fixed
+- [#271] Do not recreate configuration object of kubernetes plugin
+  - prevent wiping out configured pod-templates  
+
 
 ## [v2.555.1-1] - 2026-04-23
 ### Changed
