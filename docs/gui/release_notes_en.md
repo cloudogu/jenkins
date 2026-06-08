@@ -5,6 +5,11 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed
+* Persistent storage of pod templates in the Kubernetes plugin
+* Updated OpenJDK 11 for tooling to version 11.0.31_p11-r0
+* Updated OpenJDK 17 for tooling to version 17.0.19_p10-r0
+* Updated OpenJDK 25 for tooling to version 25.0.3_p9-r1
 
 ## [v2.555.1-1] - 2026-04-23
 ### Changed

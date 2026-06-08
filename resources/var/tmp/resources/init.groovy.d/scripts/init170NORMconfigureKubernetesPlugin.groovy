@@ -15,7 +15,12 @@ def getDoguctlWrapper() {
 
 doguctl = getDoguctlWrapper()
 
-def kubernetesCloud = new KubernetesCloud("kubernetes")
+def kubernetesCloud = jenkins.clouds.getByName("kubernetes")
+
+if (kubernetesCloud == null) {
+    kubernetesCloud = new KubernetesCloud("kubernetes")
+    jenkins.clouds.add(kubernetesCloud)
+}
 if (doguctl.isMultinode() && doguctl.getDoguConfigWithDefaultFromDescriptor("enable_kubernetes_agents") == "true") {
 
     kubernetesCloud.setServerUrl("https://kubernetes.default.svc.cluster.local")
