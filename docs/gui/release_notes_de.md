@@ -6,6 +6,13 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.555.1-3] - 2026-06-08
+### Changed
+* Persistente Speicherung der Pod-Templates im Kubernetes-Plugin
+* Aktualisieren von OpenJDK 11 für Tooling auf Version `11.0.31_p11-r0`
+* Aktualisieren von OpenJDK 17 für Tooling auf Version `17.0.19_p10-r0`
+* Aktualisieren von OpenJDK 25 für Tooling auf Version `25.0.3_p9-r1`
+
 ## [v2.555.1-1] - 2026-04-23
 ### Changed
 - Aktualisieren von Jenkins auf v2.555.1
