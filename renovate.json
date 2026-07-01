@@ -1,0 +1,68 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "baseBranchPatterns": [
+    "develop"
+  ],
+  "ignorePaths": [
+    "build/**"
+  ],
+  "configMigration": true,
+  "minimumReleaseAge": "7 days",
+  "semanticCommits": "enabled",
+  "extends": [
+    "customManagers:dockerfileVersions",
+    "customManagers:makefileVersions"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": [
+        "**/[Dd]ockerfile*"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[a-zA-Z0-9-._]+?) depName=(?<depName>[^\\s]+?)(?: (?:lookupName|packageName)=(?<packageName>[^\\s]+?))?(?: versioning=(?<versioning>[^\\s]+?))?(?: extractVersion=(?<extractVersion>[^\\s]+?))?(?: registryUrl=(?<registryUrl>[^\\s]+?))?\\s+FROM registry\\.cloudogu\\.com/official/base:(?<currentValue>[^\\s]+)(?:\\s+AS\\s+[^\\s]+)?"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Keep build/ in sync",
+      "matchDatasources": [
+        "github-tags"
+      ],
+      "matchDepNames": [
+        "cloudogu/makefiles"
+      ],
+      "postUpgradeTasks": {
+        "commands": [
+          "make update-makefiles"
+        ],
+        "fileFilters": [
+          "Makefile",
+          "build/**"
+        ],
+        "executionMode": "branch"
+      }
+    },
+    {
+      "description": "No delay for self-made deps",
+      "matchDatasources": [
+        "github-tags"
+      ],
+      "matchDepNames": [
+        "cloudogu/**"
+      ],
+      "minimumReleaseAge": "0 days"
+    },
+    {
+      "description": "Update Cloudogu base image from GitHub tags",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "registry.cloudogu.com/official/base"
+      ],
+      "enabled": false
+    }
+  ]
+}
