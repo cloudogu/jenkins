@@ -1,4 +1,4 @@
-FROM registry.cloudogu.com/official/java:21.0.10-7
+FROM registry.cloudogu.com/official/java:21.0.11-2
 
 LABEL NAME="official/jenkins" \
       VERSION="2.555.1-3" \
