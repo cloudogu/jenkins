@@ -6,7 +6,7 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 ### Changed
-- Upgrade Jenkins zu v2.555.3
+- Aktualisieren von Jenkins auf v2.555.3
 
 ## [v2.555.1-3] - 2026-06-08
 ### Changed
