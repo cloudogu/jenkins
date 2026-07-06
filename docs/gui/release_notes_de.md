@@ -7,7 +7,6 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 ## [Unreleased]
 ### Changed
 - Upgrade Jenkins zu v2.555.3
-- Upgrade Java base-image zu v21.0.11-2
 
 ## [v2.555.1-3] - 2026-06-08
 ### Changed
@@ -19,14 +18,12 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 ## [v2.555.1-1] - 2026-04-23
 ### Changed
 - Aktualisieren von Jenkins auf v2.555.1
-- Aktualisieren von Java base image auf v21.0.10-7
 ### Security
 - Sicherheitslücke geschlossen: [CVE-2026-22732](https://nvd.nist.gov/vuln/detail/CVE-2026-22732)
 
 ## [v2.541.3-1] - 2026-03-26
 ### Changed
 - Aktualisieren von Jenkins auf v2.541.3
-- Aktualisieren von Java base image auf v21.0.10-6
 ### Security
 - Sicherheitslücke geschlossen: [CVE-2026-33001](https://avd.aquasec.com/nvd/cve-2026-33001/)
 
