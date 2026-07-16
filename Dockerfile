@@ -30,9 +30,6 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 COPY resources/ /
 COPY k8s /k8s
-RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
-  && [ -f "$JAVA_HOME/lib/security/cacerts" ] \
-  && ln -sf "$JAVA_HOME/lib/security/cacerts" "$JAVA_HOME/jre/lib/security/cacerts"'
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,
