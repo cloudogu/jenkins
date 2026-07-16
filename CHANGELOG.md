@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.555.3-2] - 2026-07-16
+### Fixed
+- [#279] Remove JRE cacert symlink
+
 ## [v2.555.3-1] - 2026-07-06
 ### Changed
 - [#273] Upgrade Jenkins to v2.555.3

@@ -1,7 +1,7 @@
 FROM registry.cloudogu.com/official/java:21.0.11-2
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.555.3-1" \
+      VERSION="2.555.3-2" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -30,9 +30,6 @@ ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 COPY resources/ /
 COPY k8s /k8s
-RUN sh -lc 'mkdir -p "$JAVA_HOME/jre/lib/security" \
-  && [ -f "$JAVA_HOME/lib/security/cacerts" ] \
-  && ln -sf "$JAVA_HOME/lib/security/cacerts" "$JAVA_HOME/jre/lib/security/cacerts"'
 
 # Jenkins is ran with user `jenkins`, uid = 1000
 # If you bind mount a volume from host/volume from a data container,

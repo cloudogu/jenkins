@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.555.3-2] - 2026-07-16
+### Changed
+- Im Dogu wurden nur technische Änderungen vorgenommen. Details sind im Changelog aufgeführt.
+
 ## [v2.555.3-1] - 2026-07-06
 ### Changed
 - Aktualisieren von Jenkins auf v2.555.3
