@@ -5,6 +5,8 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Fixed
+- Java 21 wird wieder als Standard-JDK verwendet.
 
 ## [v2.555.3-2] - 2026-07-16
 ### Changed

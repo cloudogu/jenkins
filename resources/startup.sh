@@ -138,7 +138,7 @@ function start_jenkins() {
 
   # disable shellcheck her. This behaviour is intended
   # shellcheck disable=SC2086
-  java "${JENKINS_ARGS[@]}" -jar /jenkins.war --prefix=/jenkins
+  "${JAVA_HOME}/bin/java" "${JENKINS_ARGS[@]}" -jar /jenkins.war --prefix=/jenkins
 }
 
 function createCurlCertificates() {
