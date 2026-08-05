@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.555.3-3] - 2026-08-05
+### Fixed
+- Java 21 wird wieder als Standard-JDK verwendet.
+
 ## [v2.555.3-2] - 2026-07-16
 ### Changed
 - Im Dogu wurden nur technische Änderungen vorgenommen. Details sind im Changelog aufgeführt.

@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.555.3-3] - 2026-08-05
+### Fixed
+- [#281] Use JAVA_HOME (currently java 21) as the default version for starting Jenkins instead of the newest version
+- [#281] updated openjdk versions
+
 ## [v2.555.3-2] - 2026-07-16
 ### Fixed
 - [#279] Remove JRE cacert symlink

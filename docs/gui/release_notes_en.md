@@ -6,6 +6,10 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.555.3-3] - 2026-08-05
+### Fixed
+- Java 21 is used as the default java version again.
+
 ## [v2.555.3-2] - 2026-07-16
 ### Changed
 - Only technical changes were made in this Dogu. For more details, see the changelog.
