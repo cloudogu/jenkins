@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [v2.555.3-3] - 2026-08-05
 ### Fixed
 - [#281] Use JAVA_HOME (currently java 21) as the default version for starting Jenkins instead of the newest version
 - [#281] updated openjdk versions
