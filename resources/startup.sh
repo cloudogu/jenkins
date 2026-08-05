@@ -138,6 +138,7 @@ function start_jenkins() {
 
   # disable shellcheck her. This behaviour is intended
   # shellcheck disable=SC2086
+# use JAVA_HOME from the base Java installation. Update the base java version to use a different one.
   "${JAVA_HOME}/bin/java" "${JENKINS_ARGS[@]}" -jar /jenkins.war --prefix=/jenkins
 }
 
