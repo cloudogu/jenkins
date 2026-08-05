@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Fixed
+- Java 21 is used as the default java version again.
 
 ## [v2.555.3-2] - 2026-07-16
 ### Changed
