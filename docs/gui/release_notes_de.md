@@ -5,6 +5,14 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed
+* Jenkins-Upgrade auf 2.568.2
+### [Security](https://www.jenkins.io/security/advisory/2026-08-05/)
+- Sicherheitslücke geschlossen: [CVE-2026-70426](https://nvd.nist.gov/vuln/detail/CVE-2026-70426)
+- Sicherheitslücke geschlossen: [CVE-2026-70427](https://nvd.nist.gov/vuln/detail/CVE-2026-70427)
+- Sicherheitslücke geschlossen: [CVE-2026-70428](https://nvd.nist.gov/vuln/detail/CVE-2026-70428)
+- Sicherheitslücke geschlossen: [CVE-2026-70429](https://nvd.nist.gov/vuln/detail/CVE-2026-70429)
+- Sicherheitslücke geschlossen: [CVE-2026-70430](https://nvd.nist.gov/vuln/detail/CVE-2026-70430)
 
 ## [v2.555.3-3] - 2026-08-05
 ### Fixed
