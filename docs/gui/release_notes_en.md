@@ -5,8 +5,11 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.568.2-1] - 2026-08-11
 ### Changed
 * Upgrade Jenkins to 2.568.2
+
 ### [Security](https://www.jenkins.io/security/advisory/2026-08-05/)
 - Fix [CVE-2026-70426](https://nvd.nist.gov/vuln/detail/CVE-2026-70426)
 - Fix [CVE-2026-70427](https://nvd.nist.gov/vuln/detail/CVE-2026-70427)
