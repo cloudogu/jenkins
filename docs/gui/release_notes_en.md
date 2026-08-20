@@ -150,7 +150,8 @@ If it is not set, the default image of the Kubernetes plugin is used.
 ## [v2.492.3-1] - 2025-04-10
 ### Changed
 * The Dogu now provides the Jenkins version 2.492.3. You can find the Jenkins release notes [here](https://www.jenkins.io/changelog-stable/2.492.3/).
-### [Security](https://www.jenkins.io/security/advisory/2025-04-02)
+### Security
+- [Jenkins Security Advisory](https://www.jenkins.io/security/advisory/2025-04-02)
 - Fix [CVE-2024-3622](https://nvd.nist.gov/vuln/detail/CVE-2024-3622) 
 - Fix [CVE-2024-3623](https://nvd.nist.gov/vuln/detail/CVE-2024-3623) 
 - Fix [CVE-2024-3624](https://nvd.nist.gov/vuln/detail/CVE-2024-3624)
