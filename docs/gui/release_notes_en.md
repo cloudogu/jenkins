@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed
+- The documentation of old version was removed. References to Classic CES were replaced by MN CES.
 
 ## [v2.555.3-3] - 2026-08-05
 ### Fixed
