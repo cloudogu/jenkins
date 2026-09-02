@@ -19,25 +19,25 @@ Inside the dogus, for the regular execution of Jenkins, there is the possibility
 There are some conditions to successfully find the certificates and apply them to the dogu.
 
 1. the certificates must be in PEM format.
-2. the certificates must be present in `etcd` below `/config/_global/certificate/additional/`.
+2. the certificates must be present in the `global-config` Configmap as `global/certificate/additional/`.
    - The key name (also called _alias_) is used for addressing and dogu-internal storage and should not contain any spaces.
    - It would make sense to use the FQDN of the service (e.g. `service.example.com`), so that a certificate can be removed more easily later.
    - A key can have more than one certificate for a service. Certificates in PEM format have textual markers that can be used to separate the certificates again.
-3. the key name under which the certificate was stored must be stored in `etcd` under `/config/_global/certificate/additional/toc`.
+3. the key name under which the certificate was stored must be stored in the `global-config` Configmap as `certificate/additional/toc`.
    - Certificates of different services must be separated with a single space character
 
 
-Example configuration in `etcd`:
+Example configuration the ``global-config`` Configmap:
 
-```
-config/
-└─ _global/
-   └─ certificate/
-      └─ additional/
-         ├─ toc          -> "example.com localserver2 server3"
-         ├─ example.com  -> "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
-         ├─ localserver2 -> "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
-         └─ server3      -> "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+```yaml
+data:
+  config.yaml:
+    certificate:
+      additional:
+         toc: "example.com localserver2 server3"
+         example.com: "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+         localserver2: "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+         server3: "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
 ```
 
 ## Storing additional certificates in the Jenkins dogu
