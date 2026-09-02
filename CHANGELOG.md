@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.568.2-2] - 2026-09-02
+### Added
+- [#283] update docs for multinode
+
 ## [v2.568.2-1] - 2026-08-11
 ### Changed
 - [#285] Update Jenkins to 2.568.2

@@ -19,25 +19,25 @@ Innerhalb des Dogus besteht für die reguläre Ausführung von Jenkins die Mögl
 Es gibt einige Bedingungen, um erfolgreich die Zertifikate zu finden und im Dogu anzuwenden.
 
 1. Die Zertifikate müssen im PEM-Format vorliegen.
-2. Die Zertifikate müssen im `etcd` unterhalb von `/config/_global/certificate/additional/` vorliegen
+2. Die Zertifikate müssen in der Configmap `global-config` vorliegen
    - Der Schlüsselname (auch _Alias_ genannt) dient der Adressierung und dogu-internen Ablage und sollte keine Leerzeichen enthalten.
    - Sinnvoll wäre hier die FQDN des Dienstes (etwa: `dienst.example.com`), damit später ein Zertifikat leichter wieder entfernt werden kann
    - Ein Schlüssel kann mehr als ein Zertifikat zu einem Dienst besitzen. Zertifikate im PEM-Format haben textuelle Markierungen, anhand dessen die Zertifikate wieder auseinander getrennt werden können.  
-3. Der Schlüsselname, unter dem das Zertifikat abgelegt wurde, muss im `etcd` unter `/config/_global/certificate/additional/toc` abgelegt werden.
+3. Der Schlüsselname, unter dem das Zertifikat abgelegt wurde, muss in der Configmap `global-config` unter `certificate/additional/toc` abgelegt werden.
    - Zertifikate unterschiedlicher Dienste müssen mit einem einzelnen Leerzeichen getrennt werden
 
 
-Beispielkonfiguration im `etcd`:
+Beispielkonfiguration im in der Configmap ``global-config``:
 
-```
-config/
-└─ _global/
-   └─ certificate/
-      └─ additional/
-         ├─ toc          -> "example.com localserver2 server3"
-         ├─ example.com  -> "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
-         ├─ localserver2 -> "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
-         └─ server3      -> "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+```yaml
+data:
+  config.yaml:
+    certificate:
+      additional:
+         toc: "example.com localserver2 server3"
+         example.com: "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+         localserver2: "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
+         server3: "-----BEGIN CERTIFICATE-----\n...\n-----END CERTIFICATE-----"
 ```
 
 ## Ablage zusätzlicher Zertifikate im Jenkins-Dogu

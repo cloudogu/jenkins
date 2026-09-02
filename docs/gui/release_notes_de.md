@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.568.2-2] - 2026-09-02
+### Changed
+- Die Dokumentation veralteter Versionen wurde entfernt. Referenzen auf Classic-CES wurden durch MN-CES ersetzt.
+
 ## [v2.568.2-1] - 2026-08-11
 ### Changed
 * Jenkins-Upgrade auf 2.568.2
@@ -161,7 +165,8 @@ Wenn es nicht gesetzt wird, wird das Standard-Image des Kubernetes-Plugins verwe
 ## [v2.492.3-1] - 2025-04-10
 ### Changed
 * Das Dogu bietet nun die Jenkins-Version 2.492.3 an. Die Release Notes von Jenkins finden Sie [hier](https://www.jenkins.io/changelog-stable/2.492.3/).
-### [Security](https://www.jenkins.io/security/advisory/2025-04-02)
+### Security
+- [Jenkins Security Advisory](https://www.jenkins.io/security/advisory/2025-04-02)
 - Fix [CVE-2024-3622](https://nvd.nist.gov/vuln/detail/CVE-2024-3622) 
 - Fix [CVE-2024-3623](https://nvd.nist.gov/vuln/detail/CVE-2024-3623) 
 - Fix [CVE-2024-3624](https://nvd.nist.gov/vuln/detail/CVE-2024-3624)
