@@ -11,7 +11,11 @@ def pipe = new com.cloudogu.sos.pipebuildlib.DoguPipe(this, [
     dependencies        : ["cas", "usermgt"],
     checkMarkdown       : true,
     runIntegrationTests : true,
-    cypressImage        : "cypress/included:13.16.1",
+    // Default cypress/included:13.17.0 bundles Node 22.13, too old for
+    // cosmiconfig@10 (pulled in by @badeball/cypress-cucumber-preprocessor@28,
+    // required for cypress@16 compatibility). Override to an image with a
+    // newer bundled Node until the shared pipeline lib's own default catches up.
+    cypressImage        : "cypress/included:16.1.0",
 
 ])
 
@@ -25,7 +29,11 @@ pipe.insertStageAfter("Integration tests","Test: Change Global Admin Group") {
         ctx.waitForDogu("jenkins")
 
         ctx.runCypressIntegrationTests([
-            cypressImage     : "cypress/included:13.16.1",
+            // Default cypress/included:13.17.0 bundles Node 22.13, too old for
+            // cosmiconfig@10 (pulled in by @badeball/cypress-cucumber-preprocessor@28,
+            // required for cypress@16 compatibility). Override to an image with a
+            // newer bundled Node until the shared pipeline lib's own default catches up.
+            cypressImage     : "cypress/included:16.1.0",
             enableVideo      : false,
             enableScreenshots: false
         ])

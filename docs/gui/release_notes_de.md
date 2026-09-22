@@ -6,6 +6,13 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.568.3-1] - 2026-09-22
+### Changed
+- Jenkins wurde auf v2.568.3 aktualisiert
+
+### Security
+- Sicherheitslücke [CVE-2026-56854](https://nvd.nist.gov/vuln/detail/CVE-2026-56854) geschlossen
+
 ## [v2.568.2-2] - 2026-09-02
 ### Changed
 - Die Dokumentation veralteter Versionen wurde entfernt. Referenzen auf Classic-CES wurden durch MN-CES ersetzt.
