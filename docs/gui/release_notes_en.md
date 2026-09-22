@@ -5,6 +5,8 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.568.3-1] - 2026-09-22
 ### Changed
 - Update Jenkins to v2.568.3
 
