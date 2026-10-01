@@ -1,5 +1,8 @@
 # renovate: datasource=github-tags depName=cloudogu/makefiles extractVersion=^v(?<version>.*)$
-MAKEFILES_VERSION=10.9.0
+MAKEFILES_VERSION=11.0.0
+
+# base-version for backport-releases for the 2.555 version
+BASE_VERSION=2.555
 
 .DEFAULT_GOAL:=dogu-release
 
