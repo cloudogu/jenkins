@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.568.3-2] - 2026-10-05
+### Changed
+- [#289] Update makefiles to v11.0.0
+
+### Fixed
+- [#290] Use java 21 as default java version (`/usr/bin/java`) instead of the newest installed version
+
 ## [v2.568.3-1] - 2026-09-22
 ### Changed
 - [#287] Update Jenkins to v2.568.3
