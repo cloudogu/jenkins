@@ -6,6 +6,10 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.555.3-4] - 2026-10-05
+### Fixed
+- Java 21 is used as the default java version inside the container again.
+
 ## [v2.555.3-3] - 2026-08-05
 ### Fixed
 - Java 21 is used as the default java version again.
