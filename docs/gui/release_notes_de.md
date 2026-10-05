@@ -6,6 +6,10 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.568.3-2] - 2026-10-05
+### Fixed
+- Java 21 wird auch im Container als Standard-JDK verwendet.
+
 ## [v2.568.3-1] - 2026-09-22
 ### Changed
 - Jenkins wurde auf v2.568.3 aktualisiert
