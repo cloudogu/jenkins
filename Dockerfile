@@ -1,7 +1,7 @@
 FROM registry.cloudogu.com/official/java:21.0.11-2
 
 LABEL NAME="official/jenkins" \
-      VERSION="2.555.3-3" \
+      VERSION="2.555.3-4" \
       maintainer="hello@cloudogu.com"
 
     # jenkins home configuration
@@ -58,6 +58,8 @@ RUN set -o errexit \
     openjdk11="$ADDITIONAL_OPENJDK11_VERSION" \
     openjdk17="$ADDITIONAL_OPENJDK17_VERSION" \
     openjdk25="$ADDITIONAL_OPENJDK25_VERSION" \
+ # alpine points default-jvm to the newest installed jdk; use java 21 (JAVA_HOME) instead
+ && ln -sfn java-21-openjdk /usr/lib/jvm/default-jvm \
  # could use ADD but this one does not check Last-Modified header
  # see https://github.com/docker/docker/issues/8331
  && curl -L https://mirrors.jenkins-ci.org/war-stable/${JENKINS_VERSION}/jenkins.war -o /jenkins.war \

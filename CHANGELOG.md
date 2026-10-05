@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.555.3-4] - 2026-10-05
+### Fixed
+- [#290] Use java 21 as default java version (`/usr/bin/java`) instead of the newest installed version
+
 ## [v2.555.3-3] - 2026-08-05
 ### Fixed
 - [#281] Use JAVA_HOME (currently java 21) as the default version for starting Jenkins instead of the newest version
