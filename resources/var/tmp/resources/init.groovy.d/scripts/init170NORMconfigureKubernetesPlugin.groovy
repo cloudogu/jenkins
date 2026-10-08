@@ -2,7 +2,8 @@ package scripts
 
 import jenkins.model.*
 import org.csanchez.jenkins.plugins.kubernetes.*
-import groovy.json.JsonSlurper;
+import org.csanchez.jenkins.plugins.kubernetes.model.KeyValueEnvVar
+import groovy.json.JsonSlurper
 
 def jenkins = Jenkins.instance
 
@@ -41,6 +42,66 @@ if (doguctl.isMultinode() && doguctl.getDoguConfigWithDefaultFromDescriptor("ena
 
     def agentImageRegistry = doguctl.getDoguConfig("agent_kubernetes_docker_registry")
     kubernetesCloud.setJnlpregistry(agentImageRegistry)
+
+    // ------------------------------------------------------------
+    // Proxy configuration for Kubernetes build pods
+    // ------------------------------------------------------------
+    def proxyTemplateName = "default-template"
+    def proxyEnabled = doguctl.getGlobalConfig("proxy/enabled") == "true"
+
+    def templates = new ArrayList<PodTemplate>(
+        kubernetesCloud.getTemplates()
+    )
+
+    // Make the modification idempotent
+    // Remove the template created by a previous execution of this init script.
+    templates.removeAll {
+        it.getName() == proxyTemplateName
+    }
+
+    if (proxyEnabled) {
+        def proxyServer = doguctl.getGlobalConfig("proxy/server")
+        def proxyPort = doguctl.getGlobalConfig("proxy/port")
+        def noProxy = doguctl.getGlobalConfig("proxy/no_proxy")
+
+        if (!proxyServer || !proxyPort) {
+            throw new IllegalStateException(
+                "CES proxy is enabled, but proxy/server or proxy/port is missing"
+            )
+        }
+
+        def proxyUrl = "http://${proxyServer}:${proxyPort}"
+
+        def proxyEnvVars = [
+            new KeyValueEnvVar("HTTP_PROXY", proxyUrl),
+            new KeyValueEnvVar("HTTPS_PROXY", proxyUrl)
+        ]
+
+        if (noProxy) {
+            proxyEnvVars.add(
+                new KeyValueEnvVar("NO_PROXY", noProxy)
+            )
+        }
+
+        def proxyTemplate = new PodTemplate()
+        proxyTemplate.setName(proxyTemplateName)
+        proxyTemplate.setEnvVars(proxyEnvVars)
+
+        templates.add(proxyTemplate)
+
+        kubernetesCloud.setTemplates(templates)
+
+        // Every pod template of this Kubernetes cloud inherits these values.
+        kubernetesCloud.setDefaultsProviderTemplate(proxyTemplateName)
+    } else {
+        kubernetesCloud.setTemplates(templates)
+
+        if (kubernetesCloud.getDefaultsProviderTemplate()
+                == proxyTemplateName) {
+            kubernetesCloud.setDefaultsProviderTemplate(null)
+        }
+    }
+    // ------------------------------------------------------------
 
     def enableGarbageCollection = doguctl.getDoguConfigWithDefaultFromDescriptor("agent_kubernetes_enable_garbage_collection")
     if (enableGarbageCollection == "true") {
