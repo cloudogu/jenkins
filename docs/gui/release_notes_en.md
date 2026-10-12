@@ -6,6 +6,10 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.580.1-1] - 2026-10-12
+### Changed
+- Update Jenkins to v2.580.1
+
 ## [v2.568.3-2] - 2026-10-05
 ### Fixed
 - Java 21 is used as the default java version inside the container again.
