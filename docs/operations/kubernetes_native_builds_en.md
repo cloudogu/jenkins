@@ -9,6 +9,7 @@ To set up a namespace and access control for the agents, the [k8s-jenkins-agent-
 Its default config should also work for the most common scenarios, but depends on Kyverno to schedule agents on specific
 nodes only. If you do not have Kyverno installed, you might want to disable this integration, see
 [the component's configuration options](#component-configuration).
+Shortcut to install k8s-jenkins-agent-integration without Kyverno: `echo -e 'apiVersion: k8s.cloudogu.com/v1\nkind: Component\nmetadata:\n  name: k8s-jenkins-agent-integration\nspec:\n  name: k8s-jenkins-agent-integration\n  namespace: k8s\n  version: 1.1.0\n  valuesYamlOverwrite: |\n    policies:\n      kyverno:\n        enabled: false' | kubectl -n ecosystem apply -f -`
 
 ## Usage
 
