@@ -19,6 +19,11 @@ setup() {
   java="$(mock_create)"
   export java
   ln -s "${java}" "${BATS_TMPDIR}/java"
+  # startup.sh calls java via JAVA_HOME (set by the base image), so point it at the java mock
+  mockJavaHome="$(mktemp -d)"
+  export JAVA_HOME="${mockJavaHome}"
+  mkdir -p "${JAVA_HOME}/bin"
+  ln -s "${java}" "${JAVA_HOME}/bin/java"
 
   svn="$(mock_create)"
   export svn
@@ -35,6 +40,7 @@ setup() {
 teardown() {
   rm "${BATS_TMPDIR}/doguctl"
   rm "${BATS_TMPDIR}/java"
+  rm -rf "${mockJavaHome}"
   rm "${BATS_TMPDIR}/svn"
   rm "${mockCaCertificates}"
   rm -rf "${mockHome}"
