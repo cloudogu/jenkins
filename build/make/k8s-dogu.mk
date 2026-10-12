@@ -21,7 +21,7 @@ endif
 # It is placed in the integer "extra" slot (after the single hyphen) that
 # cesapp-lib's core.ParseVersion expects, replacing any existing packaging revision: e.g. 3.12.1-2 -> 3.12.1-<ts>.
 DOGU_BUILD_VERSION := $(shell date +%s)
-DOGU_VERSION_BASE = $(firstword $(subst -, ,$(VERSION)))
+DOGU_VERSION_BASE := $(firstword $(subst -, ,$(VERSION)))
 DOGU_DEV_VERSION ?= $(DOGU_VERSION_BASE)-$(DOGU_BUILD_VERSION)
 ifeq (${STAGE}, development)
 	DOGU_TARGET_VERSION = $(DOGU_DEV_VERSION)
@@ -65,3 +65,15 @@ install-dogu-descriptor: ${BINARY_YQ} $(TARGET_DIR) ## Installs a configmap with
 	@$(BINARY_YQ) -oj ".Image=\"${IMAGE_DEV}\" | .Version=\"${DOGU_TARGET_VERSION}\""  ${DOGU_JSON_FILE} > ${DOGU_JSON_DEV_FILE}
 	@kubectl --context="${KUBE_CONTEXT_NAME}" create configmap "$(ARTIFACT_ID)-descriptor" --from-file=$(DOGU_JSON_DEV_FILE) --dry-run=client -o yaml | kubectl --context="${KUBE_CONTEXT_NAME}" --namespace=${NAMESPACE} apply -f -
 	@echo "Done."
+
+.PHONY: restart-dogu
+restart-dogu:
+	@echo "Restarting ${ARTIFACT_ID} Dogu!"
+	@printf '%s\n' \
+		'apiVersion: k8s.cloudogu.com/v2' \
+		'kind: DoguRestart' \
+		'metadata:' \
+		'  generateName: ${ARTIFACT_ID}-restart-' \
+		'spec:' \
+		'  doguName: ${ARTIFACT_ID}' \
+		| kubectl -n ${NAMESPACE} create -f -
