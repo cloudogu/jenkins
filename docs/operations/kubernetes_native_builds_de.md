@@ -8,6 +8,7 @@ Eine sinnvolle Standardkonfiguration wird automatisch bereitgestellt, [kann aber
 Um einen Namespace und eine Zugriffskontrolle für die Agenten einzurichten, kann die Komponente [k8s-jenkins-agent-integration][integration-component] installiert werden.
 Deren Standardkonfiguration sollte auch für die gängigsten Szenarien funktionieren, hängt jedoch von Kyverno ab, um Agenten nur auf bestimmten Knoten zu planen.
 Wenn Sie Kyverno nicht installiert haben, möchten Sie diese Integration möglicherweise deaktivieren, siehe [Konfigurationsoptionen der Komponente](#komponenten-konfiguration).
+Kurzbefehl, um k8s-jenkins-agent-integration ohne Kyverno zu installieren: `echo -e 'apiVersion: k8s.cloudogu.com/v1\nkind: Component\nmetadata:\n  name: k8s-jenkins-agent-integration\nspec:\n  name: k8s-jenkins-agent-integration\n  namespace: k8s\n  version: 1.1.0\n  valuesYamlOverwrite: |\n    policies:\n      kyverno:\n        enabled: false' | kubectl -n ecosystem apply -f -`
 
 ## Verwendung
 
