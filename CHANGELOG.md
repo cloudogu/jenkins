@@ -5,6 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- [#295] Update Jenkins to v2.580.1
+- [#295] Update java base image to v21.0.12-3
+
+### Security
+- [#295] Fix [CVE-2026-60002](https://nvd.nist.gov/vuln/detail/CVE-2026-60002)
+
 ### Added
 - Kubernetes build pods integrate the global proxy configuration, if it is enabled
 
