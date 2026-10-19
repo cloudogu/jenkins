@@ -1,9 +1,9 @@
 package lib
 
-String getGlobalConfig(String key) {
+String getGlobalConfig(String key, boolean logValue = true) {
     try {
         def value = sh("doguctl config --global --default DEFAULT_VALUE ${key}" as String)
-        println "reading global config value: '${key}' -> '${value}'"
+        println "reading global config value: '${key}' -> '${logValue ? value : '[REDACTED]'}'"
         return value == "DEFAULT_VALUE" ? '' : value
     } catch (Exception e) {
         e.printStackTrace()

@@ -4,6 +4,7 @@ import jenkins.model.*
 import org.csanchez.jenkins.plugins.kubernetes.*
 import org.csanchez.jenkins.plugins.kubernetes.model.KeyValueEnvVar
 import groovy.json.JsonSlurper
+import java.net.URLEncoder
 
 def jenkins = Jenkins.instance
 
@@ -62,7 +63,7 @@ if (doguctl.isMultinode() && doguctl.getDoguConfigWithDefaultFromDescriptor("ena
     if (proxyEnabled) {
         def proxyServer = doguctl.getGlobalConfig("proxy/server")
         def proxyPort = doguctl.getGlobalConfig("proxy/port")
-        def noProxy = doguctl.getGlobalConfig("proxy/no_proxy")
+        def noProxy = doguctl.getGlobalConfig("proxy/no_proxy_hosts")
 
         if (!proxyServer || !proxyPort) {
             throw new IllegalStateException(
@@ -70,14 +71,28 @@ if (doguctl.isMultinode() && doguctl.getDoguConfigWithDefaultFromDescriptor("ena
             )
         }
 
-        def proxyUrl = "http://${proxyServer}:${proxyPort}"
+        def proxyUser = doguctl.getGlobalConfig("proxy/username", false)
+        def proxyPassword = doguctl.getGlobalConfig("proxy/password", false) ?: ""
+        def proxyUserInfo = ""
+        if (proxyUser) {
+            // encode special characters for use in proxy URLs.
+            def encodedUser = URLEncoder.encode(proxyUser, "UTF-8").replace("+", "%20")
+            def encodedPassword = URLEncoder.encode(proxyPassword, "UTF-8").replace("+", "%20")
+            proxyUserInfo = "${encodedUser}:${encodedPassword}@"
+        }
+        def proxyUrl = "http://${proxyUserInfo}${proxyServer}:${proxyPort}"
 
         def proxyEnvVars = [
+            new KeyValueEnvVar("http_proxy", proxyUrl),
+            new KeyValueEnvVar("https_proxy", proxyUrl),
             new KeyValueEnvVar("HTTP_PROXY", proxyUrl),
             new KeyValueEnvVar("HTTPS_PROXY", proxyUrl)
         ]
 
         if (noProxy) {
+            proxyEnvVars.add(
+                new KeyValueEnvVar("no_proxy", noProxy)
+            )
             proxyEnvVars.add(
                 new KeyValueEnvVar("NO_PROXY", noProxy)
             )
@@ -86,6 +101,8 @@ if (doguctl.isMultinode() && doguctl.getDoguConfigWithDefaultFromDescriptor("ena
         def proxyTemplate = new PodTemplate()
         proxyTemplate.setName(proxyTemplateName)
         proxyTemplate.setEnvVars(proxyEnvVars)
+        // Proxy URLs may contain credentials; suppress pod YAML in build logs.
+        proxyTemplate.setShowRawYaml(false)
 
         templates.add(proxyTemplate)
 
