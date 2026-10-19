@@ -11,7 +11,7 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 ### Added
 - Wenn Kubernetes Pods als Build-Pods in Jenkins genutzt werden und ein globaler Proxy im CES eingestellt ist,
 wird die Proxy-URL in den Build-Pods als Umgebungsvariable HTTP_PROXY und HTTPS_PROXY bereitgestellt.
-
+  - Proxies mit Authentifizierung werden nicht unterstützt
 ## [v2.568.3-2] - 2026-10-05
 ### Fixed
 - Java 21 wird auch im Container als Standard-JDK verwendet.

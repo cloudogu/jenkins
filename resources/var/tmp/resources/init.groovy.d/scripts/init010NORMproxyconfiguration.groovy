@@ -53,7 +53,7 @@ def setProxyServerSettings() {
 def setProxyAuthenticationSettings() {
     // Authentication credentials are optional
     try {
-        proxyPassword = doguctl.getGlobalConfig("proxy/password", false)
+        proxyPassword = doguctl.getGlobalConfig("proxy/password")
         proxyUser = doguctl.getGlobalConfig("proxy/username")
     } catch (FileNotFoundException e) {
         println("proxy authentication configuration is incomplete or not existent.")
