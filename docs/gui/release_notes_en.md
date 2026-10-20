@@ -5,15 +5,15 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Added
+- When Kubernetes pods are used as build pods in Jenkins and a global proxy is configured in CES,
+  the proxy URL is made available in the build pods via the HTTP_PROXY and HTTPS_PROXY environment variables.
+  - Proxies with authentication are not supported
 
 ## [v2.580.1-1] - 2026-10-12
 ### Changed
 - Update Jenkins to v2.580.1
 
-### Added
-- When Kubernetes pods are used as build pods in Jenkins and a global proxy is configured in CES,
-the proxy URL is made available in the build pods via the HTTP_PROXY and HTTPS_PROXY environment variables.
-  - Proxies with authentication are not supported
 ## [v2.568.3-2] - 2026-10-05
 ### Fixed
 - Java 21 is used as the default java version inside the container again.
