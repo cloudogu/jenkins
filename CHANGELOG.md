@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - [#295] Fix [CVE-2026-60002](https://nvd.nist.gov/vuln/detail/CVE-2026-60002)
 
+### Added
+- Kubernetes build pods integrate the global proxy configuration, if it is enabled
+
 ## [v2.568.3-2] - 2026-10-05
 ### Changed
 - [#289] Update makefiles to v11.0.0
