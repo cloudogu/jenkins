@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.580.1-2] - 2026-10-20
+### Added
+- Kubernetes build pods integrate the global proxy configuration, if it is enabled
+
 ## [v2.580.1-1] - 2026-10-12
 ### Changed
 - [#295] Update Jenkins to v2.580.1

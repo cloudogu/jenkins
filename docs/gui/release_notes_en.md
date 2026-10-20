@@ -6,6 +6,12 @@ Technical details on a release can be found in the corresponding [Changelog](htt
 
 ## [Unreleased]
 
+## [v2.580.1-2] - 2026-10-20
+### Added
+- When Kubernetes pods are used as build pods in Jenkins and a global proxy is configured in CES,
+  the proxy URL is made available in the build pods via the HTTP_PROXY and HTTPS_PROXY environment variables.
+  - Proxies with authentication are not supported
+
 ## [v2.580.1-1] - 2026-10-12
 ### Changed
 - Update Jenkins to v2.580.1
