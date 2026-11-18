@@ -1,4 +1,4 @@
-FROM registry.cloudogu.com/official/java:21.0.12-3
+FROM registry.cloudogu.com/official/java:21.0.13-3
 
 LABEL NAME="official/jenkins" \
       VERSION="2.580.1-2" \
@@ -22,9 +22,9 @@ ENV JENKINS_HOME=/var/lib/jenkins \
     SHA256_GLIB_BIN_APK="ee13b7e482f92142d2bec7c4cf09ca908e6913d4782fa35691cad1d9c23f179a" \
     SHA256_GLIB_I18N_APK="94c6f9ed13903b59d5c524c0c2ec9a24ef1a4c2aaa93a8a158465a9e819a8065" \
     # additional java versions for legacy builds
-    ADDITIONAL_OPENJDK11_VERSION="11.0.32_p9-r0" \
-    ADDITIONAL_OPENJDK17_VERSION="17.0.20_p8-r0" \
-    ADDITIONAL_OPENJDK25_VERSION="25.0.4_p7-r0"
+    ADDITIONAL_OPENJDK11_VERSION="11.0.33.1_p0-r0" \
+    ADDITIONAL_OPENJDK17_VERSION="17.0.21.1_p2-r0" \
+    ADDITIONAL_OPENJDK25_VERSION="25.0.5.1_p2-r0"
 
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
 
