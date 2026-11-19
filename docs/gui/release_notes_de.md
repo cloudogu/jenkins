@@ -6,6 +6,13 @@ Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https
 
 ## [Unreleased]
 
+## [v2.580.1-3] - 2026-11-19
+### Changed
+- Die zusätzlichen JDKs für Builds wurden auf v11.0.33.1, v17.0.21.1 und v25.0.5.1 aktualisiert
+
+### Security
+- Sicherheitslücke [CVE-2026-114938](https://nvd.nist.gov/vuln/detail/CVE-2026-114938) (Java4Shell) geschlossen
+
 ## [v2.580.1-2] - 2026-10-20
 ### Added
 - Wenn Kubernetes Pods als Build-Pods in Jenkins genutzt werden und ein globaler Proxy im CES eingestellt ist,

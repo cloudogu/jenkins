@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.580.1-3] - 2026-11-19
+### Changed
+- [#300] Update java base image to v21.0.13-3
+- [#300] Update additional JDKs to v11.0.33.1, v17.0.21.1 and v25.0.5.1
+
+### Security
+- [#300] Fix [CVE-2026-114938](https://nvd.nist.gov/vuln/detail/CVE-2026-114938)
+
 ## [v2.580.1-2] - 2026-10-20
 ### Added
 - Kubernetes build pods integrate the global proxy configuration, if it is enabled
