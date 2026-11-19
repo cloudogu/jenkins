@@ -5,6 +5,8 @@ Im Folgenden finden Sie die Release Notes für das Jenkins-Dogu.
 Technische Details zu einem Release finden Sie im zugehörigen [Changelog](https://docs.cloudogu.com/de/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+
+## [v2.580.1-3] - 2026-11-19
 ### Changed
 - Die zusätzlichen JDKs für Builds wurden auf v11.0.33.1, v17.0.21.1 und v25.0.5.1 aktualisiert
 
