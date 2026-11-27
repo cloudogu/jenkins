@@ -105,6 +105,34 @@ for (def shortName : plugins) {
     }
 }
 
+// Minimal versions of default plugins which fix known vulnerabilities.
+// Installed plugins are not updated automatically, so existing instances would keep vulnerable versions otherwise.
+def MINIMAL_PLUGIN_VERSIONS = [
+        'subversion'     : '1349.v15e470a_46048',
+        'workflow-cps'   : '4403.4405.va_b_cdb_b_d0b_89f',
+        'script-security': '1436.1438.v3dc5ef7d16f2',
+]
+
+println "Checking minimal plugin versions ..."
+MINIMAL_PLUGIN_VERSIONS.each { shortName, minimalVersion ->
+    def installedPlugin = pluginManager.getPlugin(shortName)
+    if (installedPlugin == null) {
+        println "plugin " + shortName + " is not installed; skipping version check"
+        return
+    }
+    if (isVersionSufficient(installedPlugin, new VersionNumber(minimalVersion))) {
+        println "plugin " + shortName + " version " + installedPlugin.getVersion() + " is sufficient"
+        return
+    }
+    def availablePlugin = updateCenter.getPlugin(shortName)
+    if (availablePlugin == null) {
+        println "plugin " + shortName + " version " + installedPlugin.getVersion() + " is lower than " + minimalVersion + " but no update is available"
+        return
+    }
+    println "plugin " + shortName + " version " + installedPlugin.getVersion() + " is lower than " + minimalVersion + "; upgrading to " + availablePlugin.version + " ..."
+    availablePlugin.deploy(true).get()
+}
+
 if (updateCenter.isRestartRequiredForCompletion()) {
     jenkins.restart()
 }
