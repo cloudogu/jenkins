@@ -5,6 +5,14 @@ Below you will find the release notes for the Jenkins Dogu.
 Technical details on a release can be found in the corresponding [Changelog](https://docs.cloudogu.com/en/docs/dogus/jenkins/CHANGELOG/).
 
 ## [Unreleased]
+### Changed
+- On startup, the default plugins Subversion, Pipeline: Groovy and Script Security are updated automatically if their installed version is vulnerable. Jenkins restarts once afterwards.
+  - The update requires access to the Jenkins update center.
+
+### Security
+- Fix vulnerability [CVE-2026-136834](https://nvd.nist.gov/vuln/detail/CVE-2026-136834) (Pipeline: Groovy Plugin)
+- Fix vulnerability [CVE-2026-136835](https://nvd.nist.gov/vuln/detail/CVE-2026-136835) (Script Security Plugin)
+- Fix vulnerability [CVE-2026-136838](https://nvd.nist.gov/vuln/detail/CVE-2026-136838) ([CVE-2026-136839](https://nvd.nist.gov/vuln/detail/CVE-2026-136839)) (Subversion Plugin)
 
 ## [v2.580.1-3] - 2026-11-19
 ### Changed
